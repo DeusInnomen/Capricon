@@ -1,0 +1,793 @@
+body {
+	background: #D8F1F2;	
+	font-family: Verdana, serif;
+	font-size: 16px;
+}
+
+a:link { text-decoration: none; font-weight: bold; color: #3953A4; outline: none; }
+a:visited { text-decoration: none; font-weight: bold; color: #3953A4; outline: none; }
+a:hover { text-decoration: none; font-weight: bold; background: #FFCA5D; outline: none; }
+a:active { text-decoration: none; font-weight: bold; color: #3953A4; outline: none; }
+
+a img {
+	border: none;
+}
+
+a.linkedImage:hover {
+	background: transparent;
+}
+
+select {
+	border: 0;
+	color:#000000;
+	background:transparent;
+	font-weight:bold;
+	padding:2px 2px;
+	background:#B8B8B8;
+}
+
+input[type="submit"] {
+	color: #EEEEEE;
+	background: #3953A4;
+	font-weight:bold;
+	padding: 3px 5px;
+	border: 1px solid #000000;
+	border-radius: 5px;
+}
+
+input[type="submit"][disabled] {
+	color: #444444;
+	background: #162145;
+	font-weight:bold;
+	padding: 3px 5px;
+	border: 1px solid #000000;
+	border-radius: 5px;
+}
+
+.centerboxnarrow {
+	display: inline-block;
+	position: relative;
+	border: 2px groove #3953A4;
+	border-radius: 10px;
+	min-height: 250px;
+	height: auto;
+	width: 400px;
+	margin: 25px auto;
+	padding: 10px;
+	text-align: left;
+	background: #C5DDE0;
+}
+
+.centerboxmedium {
+	display: inline-block;
+	position: relative;
+	border: 2px groove #3953A4;
+	border-radius: 10px;
+	min-height: 650px;
+	height: auto;
+	width: 600px;
+	margin: 25px auto;
+	padding: 10px;
+	text-align: left;
+	background: #C5DDE0;
+}
+
+.centerboxwide {
+	display: inline-block;
+	position: relative;
+	border: 2px groove #3953A4;
+	border-radius: 10px;
+	min-height: 600px;
+	height: auto;
+	width: 900px;
+	margin: 25px auto;
+	padding: 10px;
+	text-align: left;
+	background: #C5DDE0;
+}
+
+.infobox {
+	position: relative;
+	border: 2px groove #3953A4;
+	border-radius: 10px;
+	height: auto;
+	width: 630px;
+	margin: 25px auto 0px;
+	padding: 5px;
+	text-align: left;
+	background: #C5DDE0;
+}
+
+.menubar {
+	padding: 10px;
+	font-size: 18px;
+	text-align: center;
+	color: #000000;
+}
+
+.menubar ul {
+	color: #FFFFFF;
+	padding: 0px;
+	margin: 0px;
+}
+.menubar ul li {
+	list-style-type: none;
+	width: 100%;
+	color: #AAAAAA;
+}
+
+.menubar ul li a {
+	text-decoration: none;
+	display: block;
+	width: 100%;
+	margin: 5px 0px 5px 0px;
+	color: #3953A4;
+}
+.menubar ul li a:hover {
+	text-decoration: none;
+	background-color: #FFCA5D;
+}
+
+.menubarsmall {
+	font-size: 14px;
+	color: #000000;
+	overflow: auto;
+}
+
+.menubarsmall ul {
+	color: #FFFFFF;
+	padding: 0px;
+	margin: 0px;
+}
+.menubarsmall ul li {
+	list-style-type: none;
+	width: 100%;
+	color: #AAAAAA;
+}
+
+.menubarsmall ul li a {
+	text-decoration: none;
+	display: block;
+	width: 100%;
+	margin: 5px 0px 5px 0px;
+	color: #3953A4;
+}
+.menubarsmall ul li a:hover {
+	text-decoration: none;
+	background-color: #F2C852;
+}
+
+.header {
+	position: absolute;
+	height: 105px;
+	top: 5px;
+	left: 0px;
+	width: 100%;
+	float: left;
+	overflow: hidden;
+}
+
+.header div.posLeft {
+	float: left;
+	margin-left: 30px;
+}
+
+.header div.posRight {
+	float: right;
+	margin-right: 30px;
+}
+
+.footer {
+	position: absolute;
+	height: 65px;
+	left: 0px;
+	bottom: 0px;
+	width: 100%;
+	float: left;
+	overflow: hidden;
+}
+
+.footer div.userInfo {
+	float: left;
+	font-size: 0.8em;
+	margin-left: 10px;
+	margin-top: 5px;
+	width: 68%;
+}
+
+.footer span.userName {
+	color: #0000FF;
+	font-weight: bold;
+}
+
+.footer div.footerNotes {
+	text-align: right;
+	font-size: 0.8em;
+	float: right;
+	margin-right: 10px;
+	margin-top: 5px;
+	width: 28%;
+}
+
+.content {
+	position: absolute;
+	top: 105px;
+	bottom: 65px;
+	left: 0px; 
+	right: 0px;
+	margin: 0px auto 0px auto;
+	overflow: auto;
+	text-align: center;
+}
+
+.headertitle {
+	color: #000000;
+	border: 2px groove #3953A4;
+	border-radius: 5px;
+	font-size: 1.05em;
+	width: 70%;
+	float: center;
+	text-align: center;
+	margin: 17px auto 5px auto;
+	clear: both;
+	font-family: Tahoma, Georgia, Verdana, serif;
+}
+
+.goback {
+	position: absolute;
+	height: 25px;
+	bottom: 5px;
+	left: 10px;
+	text-align: left;
+}
+
+#loginMessage p {
+	font-size: 12px;
+	color: #0000FF;
+}
+
+#loginMessage p.errMsg {
+	color: #FF0000;
+}
+
+h1 {
+	font-size: 1.50em;
+	text-align: center;
+	color: #3C4445;
+	margin-top: 0px;
+}
+
+h2 {
+	font-size: 1.35em;
+	text-align: center;
+	color: #3C4445;
+	margin-top: 0px;
+}
+
+h3 {
+	font-size: 1.10em;
+	text-align: center;
+	color: #3C4445;
+	margin-top: 0px;
+}
+
+.requiredField {
+	color: #FF0000;
+	font-size: 1.1em;
+}
+
+input.error {
+	border: 2px solid #FF0000;
+	background-color: #F3F783;
+	margin: 0px;
+	color: #FF0000;
+}
+
+span#codeError {
+	color: #FF0000;
+	font-weight: bold;
+	padding-left: 10px;
+}
+
+#emailWarning {
+	display: none;
+	color: #FF0000;
+	font-weight: bold;
+	font-size: 0.95em;
+	padding-bottom: 5px;
+}
+
+#registerErrorMessage {
+	display: none;
+	width: 98%;
+	float: left;
+	color: #FF0000;
+	font-weight: bold;
+	min-height: 70px;
+}
+
+.clearfix {
+	display: inline-block;
+}
+
+.clearfix:after {
+	margin-bottom: 30px;
+	content: " ";
+	display: block;
+	clear: both;
+}
+
+input[readonly] {
+	background: #EBEBE4;
+	color: #545454;
+}
+
+.accountFooter {
+	position: absolute;
+	text-align: right;
+	vertical-align: text-bottom;
+	float: right;
+	width: 50%;
+	bottom: 10px;
+	right: 10px;
+}
+
+#accountSaveMessage {
+	font-weight: bold;
+}
+
+.errorMessage {
+	color: #FF0000;
+	font-weight: bold;
+}
+
+.errorMessageBold {
+	color: #FF0000;
+	font-weight: bold;
+}
+
+.goodMessage {
+	color: #3953A4;
+	font-weight: bold;
+}
+
+div#orderHistory {
+	overflow: auto;
+}
+
+#orderHistory table {
+	border-collapse:collapse;
+}
+
+#orderHistory table tr td, #orderHistory table tr th {
+	font-size:0.8em;
+	border:1px solid #98bf21;
+	padding:4px 7px 4px 7px;
+}
+
+#orderHistory table tr th {
+	font-size:0.9em;
+	text-align:left;
+	padding: 5px 8px 5px 8px;
+	background-color:#A7C942;
+	color:#FFFFFF;
+}
+
+#orderHistory table tr.other td{
+	color:#000000;
+	background-color:#EAF2D3;
+}
+
+#orderHistory span.noneFound {
+	display: block;
+	text-align: center;
+	color: #43873B;
+	font-weight: bold;
+}
+
+.tooltip {
+	display:none;
+	position:absolute;
+	border:1px solid #333;
+	background-color:#161616;
+	border-radius:3px;
+	padding:5px;
+	color:#fff;
+	font-size:12px Arial;
+	max-width: 400px;
+}
+
+.fieldLabelShort {
+	width: 115px;
+	text-align: right;
+	margin-right: 5px;
+}
+
+.fieldLabelWide {
+	width: 205px;
+	text-align: right;
+	margin-right: 5px;
+}
+
+.badgeList {
+	display: inline-block;
+	margin-top: 5px;
+	float: none;
+	clear: both;
+	width: 100%;
+	font-size: 0.95em;
+}
+
+.badgeList label {
+	float: left;
+	background: #749FE8;
+	border: 1px solid;
+	width: 275px;
+	margin-right: 5px;
+}
+
+.badgeList label span {
+	padding: 2px;
+	text-align: center;
+	display: block;
+}
+
+.badgeList label input {
+	position: absolute;
+	top: -2000px;
+}
+
+.badgeList label input:checked + span {
+	background: #3AF25C url('checkmark.png') no-repeat;
+}
+
+.miniCart {
+	position: fixed;
+	top: 115px;
+	left: 15px;
+	padding: 10px;
+	border: 1px solid #0000FF;
+	border-radius: 5px;
+	background: #C5DDE0;
+	z-index: 10;
+}
+
+.miniCart p {
+	text-align: center;
+	font-weight: bold;
+	margin: 5px 5px 10px 5px;
+}
+
+.miniCart span {
+	font-size: 0.90em;
+}
+
+.miniCart a {
+	display: block;
+	text-align: center;
+}
+
+.noticeSection {
+	width: 100%;
+	font-size: 0.95em;
+	font-weight: bold;
+	color: #FF0000;
+}
+
+#cartList {
+	margin-bottom: 20px;
+}
+
+#cartList table {
+	border-collapse:collapse;
+}
+
+#cartList table tr td {
+	font-size:0.75em;
+	border:1px solid #98bf21;
+	padding:4px 7px 4px 7px;
+}
+
+#cartList table tr th {
+	font-size:0.85em;
+	text-align:left;
+	border:1px solid #98bf21;
+	padding: 5px 8px 5px 8px;
+	background-color:#A7C942;
+	color:#061B61;
+}
+
+#cartList table tr:hover {
+	background: #FFFFFF;
+}
+
+#cartList p.noneFound {
+	text-align: center;
+	color: #43873B;
+	font-weight: bold;
+}
+
+#couponErrors {
+	color: #FF0000;
+	font-size: 1.05em;
+}
+
+.payments {
+	margin-bottom: 30px;
+	font-size: 1.05em;
+}
+
+#paymentMethods {
+	font-size: 1.2em;
+}
+
+#paymentCard {
+	display: block;
+	border: 1px solid black;
+	border-radius: 5px;
+	padding: 5px;
+	margin-top: 10px;
+}
+
+#paymentCard .payment-errors {
+	margin-left: 10px;
+	color: #FF0000;
+	font-size: 1.05em;
+}
+
+#paymentCard img {
+	float: right;
+}
+
+#paymentPaypal {
+	display: none;
+	border: 1px solid black;
+	border-radius: 5px;
+	padding: 5px;
+	margin-top: 10px;
+
+}
+
+#paymentMail {
+	display: none;
+	border: 1px solid black;
+	border-radius: 5px;
+	padding: 5px;
+	margin-top: 10px;
+}
+
+.centeredMessage {
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	height: 70px;
+	width: 400px;
+	margin-top: -35px;
+	margin-left: -200px;
+}
+
+#certList {
+	margin-bottom: 20px;
+}
+
+#certList table {
+	border-collapse:collapse;
+}
+
+#certList table tr td {
+	font-size:0.75em;
+	border:1px solid #98bf21;
+	padding:4px 7px 4px 7px;
+}
+
+#certList table tr th {
+	font-size:0.85em;
+	text-align:left;
+	border:1px solid #98bf21;
+	padding: 5px 8px 5px 8px;
+	background-color:#A7C942;
+	color:#061B61;
+}
+
+#certList table tr:hover {
+	background: #FFFFFF;
+}
+
+#modifyRelatives {
+	margin-bottom: 20px;
+}
+
+#modifyRelatives table {
+	border-collapse:collapse;
+}
+
+#modifyRelatives table tr td {
+	font-size:0.75em;
+	border:1px solid #98bf21;
+	padding:4px 7px 4px 7px;
+}
+
+#modifyRelatives table tr th {
+	font-size:0.85em;
+	text-align:left;
+	border:1px solid #98bf21;
+	padding: 5px 8px 5px 8px;
+	background-color:#A7C942;
+	color:#061B61;
+}
+
+#modifyRelatives table tr:hover {
+	background: #FFFFFF;
+}
+
+#relativeSaveMessage {
+	display: none;
+}
+
+#relativeEditMessage {
+	display: none;
+}
+
+#personDetailsForm {
+	display: none;
+}
+
+#upgradePersonForm {
+	display: none;
+}
+
+#codeList table {
+	border-collapse:collapse;
+}
+
+#codeList table tr td, #codeList table tr th {
+	font-size:0.8em;
+	border:1px solid #98bf21;
+	padding:4px 7px 4px 7px;
+}
+
+#codeList table tr th {
+	font-size:0.9em;
+	text-align:left;
+	padding: 5px 8px 5px 8px;
+	background-color:#A7C942;
+	color:#061B61;
+}
+
+#codeList table tr.expired td {
+	color:#000000;
+	background-color:#948E90;
+}
+
+#codeList span.noticeSection {
+	display: block;
+	text-align: center;
+	color: #43873B;
+	font-weight: bold;
+}
+
+#codeList table tr:hover {
+	background: #FFFFFF;
+}
+
+#regList table {
+	border-collapse:collapse;
+}
+
+#regList table tr td {
+	font-size:0.75em;
+	border:1px solid #98bf21;
+	padding:4px 7px 4px 7px;
+}
+
+#regList table tr th {
+	font-size:0.85em;
+	text-align:left;
+	border:1px solid #98bf21;
+	padding: 5px 8px 5px 8px;
+	background-color:#A7C942;
+	color:#061B61;
+}
+
+#regList table tr:hover {
+	background: #FFFFFF;
+}
+
+#pendingList {
+	margin-bottom: 20px;
+}
+
+#pendingList table {
+	border-collapse:collapse;
+}
+
+#pendingList table tr td {
+	font-size:0.75em;
+	border:1px solid #98bf21;
+	padding:4px 7px 4px 7px;
+}
+
+#pendingList table tr th {
+	font-size:0.85em;
+	text-align:left;
+	border:1px solid #98bf21;
+	padding: 5px 8px 5px 8px;
+	background-color:#A7C942;
+	color:#061B61;
+}
+
+#pendingList table tr:hover {
+	background: #FFFFFF;
+}
+
+#pendingList p.noneFound {
+	text-align: center;
+	color: #43873B;
+	font-weight: bold;
+}
+
+#updateErrors {
+	color: #FF0000;
+	font-size: 1.05em;
+}
+
+#getBadgeNameForm {
+	display: none;
+}
+
+#artShowItemForm {
+	display: none;
+}
+
+#printShopItemForm {
+	display: none;
+}
+
+.standardTable {
+	margin-bottom: 20px;
+}
+
+.standardTable table {
+	border-collapse:collapse;
+}
+
+.standardTable table tr td {
+	font-size:0.75em;
+	border:1px solid #98bf21;
+	padding:4px 7px 4px 7px;
+}
+
+.standardTable table tr th {
+	font-size:0.85em;
+	text-align:left;
+	border:1px solid #98bf21;
+	padding: 5px 8px 5px 8px;
+	background-color:#A7C942;
+	color:#061B61;
+}
+
+.standardTable table tr:hover {
+	background: #FFFFFF;
+}
+
+#interestsTable table {
+	border: 0px;	
+}
+
+#interestsTable table tr {
+	border: 0px;
+	width: 45%
+	text-align: left;
+	padding: 2px 2px 2px 2px;
+}
+
+#expertiseTable table {
+	border: 0px;	
+}
+
+#expertiseTable table tr {
+	border: 0px;
+	width: 30%
+	text-align: left;
+	padding: 2px 2px 2px 2px;
+}

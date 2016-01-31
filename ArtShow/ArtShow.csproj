@@ -1,0 +1,346 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7AD71A65-69EC-418D-A89E-71B76AA81100}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ArtShow</RootNamespace>
+    <AssemblyName>ArtShow</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>Svn</SccProjectName>
+    <SccLocalPath>Svn</SccLocalPath>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccProvider>SubversionScc</SccProvider>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>1415_Paintbrush.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.ReportViewer.Common, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Reference Include="Microsoft.ReportViewer.WinForms, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.1-beta1\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Stripe.net">
+      <HintPath>..\packages\Stripe.net.1.7.6\lib\net40\Stripe.net.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Classes.cs" />
+    <Compile Include="FrmArtistCheckoutSheet.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmArtistCheckoutSheet.Designer.cs">
+      <DependentUpon>FrmArtistCheckoutSheet.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmAuctionReport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmAuctionReport.Designer.cs">
+      <DependentUpon>FrmAuctionReport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmAuctionResults.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmAuctionResults.Designer.cs">
+      <DependentUpon>FrmAuctionResults.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmArtistCheckout.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmArtistCheckout.Designer.cs">
+      <DependentUpon>FrmArtistCheckout.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmAuctionReceipt.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmAuctionReceipt.Designer.cs">
+      <DependentUpon>FrmAuctionReceipt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmAuctionPublicResults.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmAuctionPublicResults.Designer.cs">
+      <DependentUpon>FrmAuctionPublicResults.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmCaptureCard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmCaptureCard.Designer.cs">
+      <DependentUpon>FrmCaptureCard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmGetPersonForAuctionSales.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmGetPersonForAuctionSales.Designer.cs">
+      <DependentUpon>FrmGetPersonForAuctionSales.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmSellAuctionItemsToPerson.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmSellAuctionItemsToPerson.Designer.cs">
+      <DependentUpon>FrmSellAuctionItemsToPerson.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmShowBidEntry.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmShowBidEntry.Designer.cs">
+      <DependentUpon>FrmShowBidEntry.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmPrintShopControl.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmPrintShopControl.Designer.cs">
+      <DependentUpon>FrmPrintShopControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmArtShowControl.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmArtShowControl.Designer.cs">
+      <DependentUpon>FrmArtShowControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmArtistInventory.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmArtistInventory.Designer.cs">
+      <DependentUpon>FrmArtistInventory.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmArtistSearch.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmArtistSearch.Designer.cs">
+      <DependentUpon>FrmArtistSearch.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmArtistDetails.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmArtistDetails.Designer.cs">
+      <DependentUpon>FrmArtistDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmEditShopItem.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmEditShopItem.Designer.cs">
+      <DependentUpon>FrmEditShopItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmEditShowItem.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmEditShowItem.Designer.cs">
+      <DependentUpon>FrmEditShowItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmGetPersonForSale.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmGetPersonForSale.Designer.cs">
+      <DependentUpon>FrmGetPersonForSale.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmHangingFees.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmHangingFees.Designer.cs">
+      <DependentUpon>FrmHangingFees.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmLogin.Designer.cs">
+      <DependentUpon>FrmLogin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmMain.Designer.cs">
+      <DependentUpon>FrmMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmNewPerson.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmNewPerson.Designer.cs">
+      <DependentUpon>FrmNewPerson.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmProcessing.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmProcessing.Designer.cs">
+      <DependentUpon>FrmProcessing.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmSellItems.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmSellItems.Designer.cs">
+      <DependentUpon>FrmSellItems.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmShopReceipt.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmShopReceipt.Designer.cs">
+      <DependentUpon>FrmShopReceipt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="ArtShowControlSheet.rdlc">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AuctionControlSheet.rdlc" />
+    <EmbeddedResource Include="AuctionSalesReceipt.rdlc" />
+    <EmbeddedResource Include="ArtShowCheckoutSheet.rdlc" />
+    <EmbeddedResource Include="AuctionResultsSheet.rdlc" />
+    <EmbeddedResource Include="AuctionResultsPublicSheet.rdlc" />
+    <EmbeddedResource Include="FrmArtistCheckoutSheet.resx">
+      <DependentUpon>FrmArtistCheckoutSheet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmAuctionReport.resx">
+      <DependentUpon>FrmAuctionReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmAuctionResults.resx">
+      <DependentUpon>FrmAuctionResults.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmArtistCheckout.resx">
+      <DependentUpon>FrmArtistCheckout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmAuctionReceipt.resx">
+      <DependentUpon>FrmAuctionReceipt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmAuctionPublicResults.resx">
+      <DependentUpon>FrmAuctionPublicResults.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmCaptureCard.resx">
+      <DependentUpon>FrmCaptureCard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmGetPersonForAuctionSales.resx">
+      <DependentUpon>FrmGetPersonForAuctionSales.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmSellAuctionItemsToPerson.resx">
+      <DependentUpon>FrmSellAuctionItemsToPerson.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmShowBidEntry.resx">
+      <DependentUpon>FrmShowBidEntry.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmPrintShopControl.resx">
+      <DependentUpon>FrmPrintShopControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmArtShowControl.resx">
+      <DependentUpon>FrmArtShowControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmArtistInventory.resx">
+      <DependentUpon>FrmArtistInventory.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmArtistSearch.resx">
+      <DependentUpon>FrmArtistSearch.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmArtistDetails.resx">
+      <DependentUpon>FrmArtistDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmEditShopItem.resx">
+      <DependentUpon>FrmEditShopItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmEditShowItem.resx">
+      <DependentUpon>FrmEditShowItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmGetPersonForSale.resx">
+      <DependentUpon>FrmGetPersonForSale.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmHangingFees.resx">
+      <DependentUpon>FrmHangingFees.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmLogin.resx">
+      <DependentUpon>FrmLogin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmMain.resx">
+      <DependentUpon>FrmMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmNewPerson.resx">
+      <DependentUpon>FrmNewPerson.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmProcessing.resx">
+      <DependentUpon>FrmProcessing.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmSellItems.resx">
+      <DependentUpon>FrmSellItems.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmShopReceipt.resx">
+      <DependentUpon>FrmShopReceipt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PrintShopControlSheet.rdlc" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="PrintShopSalesReceipt.rdlc" />
+    <None Include="app.config" />
+    <None Include="packages.config" />
+    <None Include="Properties\DataSources\ArtShowItem.datasource" />
+    <None Include="Properties\DataSources\CheckoutItems.datasource" />
+    <None Include="Properties\DataSources\PersonPickup.datasource" />
+    <None Include="Properties\DataSources\PrintShopItem.datasource" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\card_logos.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="1415_Paintbrush.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
