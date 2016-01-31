@@ -162,7 +162,6 @@
     <Compile Include="includes\card_logos.gif" />
     <Compile Include="includes\certBorder.png" />
     <Compile Include="includes\checkmark.png" />
-    <Compile Include="includes\dsn.inc" />
     <Compile Include="includes\favicon.ico" />
     <Compile Include="includes\favicon.png" />
     <Compile Include="includes\footer.php" />
