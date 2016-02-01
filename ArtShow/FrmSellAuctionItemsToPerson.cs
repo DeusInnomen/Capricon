@@ -18,11 +18,16 @@ namespace ArtShow
         private decimal TotalDue { get; set; }
         private PersonPickup Person { get; set; }
         private MagneticStripeScan Card { get; set; }
+        private bool StripeFirstTry { get; set; }
+
+        private int SortColumn = 0;
+        private bool SortAscend = true;
 
         public FrmSellAuctionItemsToPerson(PersonPickup person)
         {
             InitializeComponent();
             Person = person;
+            StripeFirstTry = true;
             Text = "Items Won by " + Person.Name;
 
             var payload = "action=GetItemsForPickup&id=" + Person.BadgeID + "&Year=" + Program.Year.ToString();
@@ -79,6 +84,7 @@ namespace ArtShow
                 var dialog = new FrmProcessing
                 {
                     Description = "Auction Pieces",
+                    FirstTry = StripeFirstTry,
                     PayeeName = Person.Name,
                     CardNumber = Card.CardNumber,
                     CardMonth = Card.ExpireMonth,
@@ -93,6 +99,7 @@ namespace ArtShow
                     reference = dialog.Charge.Id;
                 else
                 {
+                    StripeFirstTry = false;
                     MessageBox.Show("The transaction was declined: " + dialog.Error.Message, "Charge Failed",
                                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
@@ -173,6 +180,28 @@ namespace ArtShow
                 txtCVC.Enabled = true;
                 CheckPurchaseButton(sender, e);
             }
+        }
+
+        private void LstItems_ColumnClick(object sender, ColumnClickEventArgs e)
+        {
+            if (Math.Abs(SortColumn) == Math.Abs(e.Column))
+            {
+                SortAscend = !SortAscend;
+                LstItems.Columns[e.Column].ImageIndex = SortAscend ? 0 : 1;
+            }
+            else
+            {
+                LstItems.Columns[SortColumn].ImageIndex = -1;
+                LstItems.Columns[SortColumn].TextAlign = LstItems.Columns[SortColumn].TextAlign;
+                SortAscend = true;
+                SortColumn = e.Column;
+                LstItems.Columns[e.Column].ImageIndex = 0;
+            }
+
+            LstItems.BeginUpdate();
+            LstItems.ListViewItemSorter = new ListViewItemComparer(e.Column, SortAscend);
+            LstItems.Sort();
+            LstItems.EndUpdate();
         }
     }
 }

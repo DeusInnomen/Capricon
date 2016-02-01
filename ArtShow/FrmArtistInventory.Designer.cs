@@ -43,6 +43,7 @@
             this.colShowCheckedIn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.MnuArtShow = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.mnuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.SortImages = new System.Windows.Forms.ImageList(this.components);
             this.BtnCheckInArtShow = new System.Windows.Forms.Button();
             this.BtnHangingFees = new System.Windows.Forms.Button();
             this.BtnAddToArtShow = new System.Windows.Forms.Button();
@@ -111,9 +112,12 @@
             this.lstArtShow.Location = new System.Drawing.Point(12, 45);
             this.lstArtShow.Name = "lstArtShow";
             this.lstArtShow.Size = new System.Drawing.Size(846, 142);
+            this.lstArtShow.SmallImageList = this.SortImages;
             this.lstArtShow.TabIndex = 18;
             this.lstArtShow.UseCompatibleStateImageBehavior = false;
             this.lstArtShow.View = System.Windows.Forms.View.Details;
+            this.lstArtShow.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.lstArtShow_ColumnClick);
+            this.lstArtShow.DoubleClick += new System.EventHandler(this.lstArtShow_DoubleClick);
             // 
             // colShowNumber
             // 
@@ -166,6 +170,13 @@
             this.mnuToolStripMenuItem.Name = "mnuToolStripMenuItem";
             this.mnuToolStripMenuItem.Size = new System.Drawing.Size(99, 22);
             this.mnuToolStripMenuItem.Text = "Mnu";
+            // 
+            // SortImages
+            // 
+            this.SortImages.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("SortImages.ImageStream")));
+            this.SortImages.TransparentColor = System.Drawing.Color.Transparent;
+            this.SortImages.Images.SetKeyName(0, "Down.png");
+            this.SortImages.Images.SetKeyName(1, "Up.png");
             // 
             // BtnCheckInArtShow
             // 
@@ -229,9 +240,12 @@
             this.lstPrintShop.Location = new System.Drawing.Point(12, 297);
             this.lstPrintShop.Name = "lstPrintShop";
             this.lstPrintShop.Size = new System.Drawing.Size(846, 158);
+            this.lstPrintShop.SmallImageList = this.SortImages;
             this.lstPrintShop.TabIndex = 45;
             this.lstPrintShop.UseCompatibleStateImageBehavior = false;
             this.lstPrintShop.View = System.Windows.Forms.View.Details;
+            this.lstPrintShop.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.lstPrintShop_ColumnClick);
+            this.lstPrintShop.DoubleClick += new System.EventHandler(this.lstPrintShop_DoubleClick);
             // 
             // colShopNumber
             // 
@@ -323,8 +337,8 @@
             // 
             // label12
             // 
-            this.label12.Font = new System.Drawing.Font("Microsoft San Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label12.Location = new System.Drawing.Point(14, 17);
+            this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label12.Location = new System.Drawing.Point(14, 12);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(239, 33);
             this.label12.TabIndex = 71;
@@ -497,5 +511,6 @@
         private System.Windows.Forms.Button BtnDeleteShopItem;
         private System.Windows.Forms.Button BtnShowBids;
         private System.Windows.Forms.Button BtnCheckout;
+        private System.Windows.Forms.ImageList SortImages;
     }
 }

@@ -17,11 +17,13 @@ namespace ArtShow
         private decimal FeesDue { get; set; }
         private MagneticStripeScan Card { get; set; }
         private ArtistPresence Presence { get; set; }
+        private bool StripeFirstTry { get; set; }
 
         public FrmHangingFees(ArtistPresence presence, Artist artist, decimal fees)
         {
             InitializeComponent();
             Presence = presence;
+            StripeFirstTry = true;
             CmbPayee.Items.Add(artist.LegalName);
             if (!string.IsNullOrEmpty(Presence.AgentName))
                 CmbPayee.Items.Add(Presence.AgentName);
@@ -51,6 +53,7 @@ namespace ArtShow
                 var dialog = new FrmProcessing
                     {
                         Description = "Hanging Fees",
+                        FirstTry = StripeFirstTry,
                         PayeeName = CmbPayee.SelectedItem.ToString(),
                         CardNumber = Card.CardNumber,
                         CardMonth = Card.ExpireMonth,
@@ -65,6 +68,7 @@ namespace ArtShow
                     reference = dialog.Charge.Id;
                 else
                 {
+                    StripeFirstTry = false;
                     MessageBox.Show("The transaction was declined: " + dialog.Error.Message, "Charge Failed",
                                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;

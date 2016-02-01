@@ -23,6 +23,7 @@ namespace ArtShow
         public decimal Amount { get; set; }
         public StripeCharge Charge { get; private set; }
         public StripeException Error { get; private set; }
+        public bool FirstTry { get; set; }
 
         private bool _processingDone = false;
 
@@ -78,7 +79,28 @@ namespace ArtShow
                         Currency = "usd"
                     };
                     var chargeService = new StripeChargeService(api);
-                    Charge = chargeService.Create(chargeData);
+
+                    if (!FirstTry)
+                    {
+                        // Double-check to see if we already have a charge recently that matches the details of this. Helps with dealing
+                        // with timeout scenarios to prevent double-charges.
+                        var lastCharges = chargeService.List(20, 0, null);
+                        foreach (var charge in lastCharges)
+                        {
+                            if (charge.StripeCard.Last4 == CardNumber.Substring(CardNumber.Length - 4) &&
+                                charge.StripeCard.ExpirationMonth.PadLeft(2, '0') == CardMonth &&
+                                charge.StripeCard.ExpirationYear.Substring(2) == CardYear &&
+                                charge.AmountInCents == Convert.ToInt32(Amount * 100) &&
+                                charge.Description == "Purchases for " + Person.Name + " (#" + Person.PeopleID + ")")
+                            {
+                                Charge = charge;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (Charge == null)
+                        Charge = chargeService.Create(chargeData);
                 }
                 catch (StripeException ex)
                 {
