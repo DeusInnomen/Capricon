@@ -37,6 +37,7 @@
             this.colCartTitle = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colCartArtist = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colCartPrice = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.SortImages = new System.Windows.Forms.ImageList(this.components);
             this.LblAmountDue = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.BtnCancel = new System.Windows.Forms.Button();
@@ -47,7 +48,6 @@
             this.colSaleArtist = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colSalePrice = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colSaleQuantity = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.SortImages = new System.Windows.Forms.ImageList(this.components);
             this.label1 = new System.Windows.Forms.Label();
             this.TabPaymentMethods = new System.Windows.Forms.TabControl();
             this.TabCredit = new System.Windows.Forms.TabPage();
@@ -66,6 +66,9 @@
             this.TabCash = new System.Windows.Forms.TabPage();
             this.label3 = new System.Windows.Forms.Label();
             this.BtnAdd = new System.Windows.Forms.Button();
+            this.txtSearch = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.btnClearFilter = new System.Windows.Forms.Button();
             this.TabPaymentMethods.SuspendLayout();
             this.TabCredit.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PicCards)).BeginInit();
@@ -81,7 +84,7 @@
             this.BtnClearCart.Location = new System.Drawing.Point(148, 604);
             this.BtnClearCart.Name = "BtnClearCart";
             this.BtnClearCart.Size = new System.Drawing.Size(139, 28);
-            this.BtnClearCart.TabIndex = 61;
+            this.BtnClearCart.TabIndex = 13;
             this.BtnClearCart.Text = "Clear All Items";
             this.BtnClearCart.UseVisualStyleBackColor = true;
             this.BtnClearCart.Click += new System.EventHandler(this.BtnClearCart_Click);
@@ -94,7 +97,7 @@
             this.BtnRemoveItem.Location = new System.Drawing.Point(3, 604);
             this.BtnRemoveItem.Name = "BtnRemoveItem";
             this.BtnRemoveItem.Size = new System.Drawing.Size(139, 28);
-            this.BtnRemoveItem.TabIndex = 60;
+            this.BtnRemoveItem.TabIndex = 12;
             this.BtnRemoveItem.Text = "Remove Selected";
             this.BtnRemoveItem.UseVisualStyleBackColor = true;
             this.BtnRemoveItem.Click += new System.EventHandler(this.BtnRemoveItem_Click);
@@ -105,7 +108,7 @@
             this.label6.Location = new System.Drawing.Point(6, 319);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(313, 23);
-            this.label6.TabIndex = 59;
+            this.label6.TabIndex = 1;
             this.label6.Text = "Items Being Sold:";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -123,9 +126,11 @@
             this.LstCart.Location = new System.Drawing.Point(3, 345);
             this.LstCart.Name = "LstCart";
             this.LstCart.Size = new System.Drawing.Size(486, 253);
-            this.LstCart.TabIndex = 58;
+            this.LstCart.SmallImageList = this.SortImages;
+            this.LstCart.TabIndex = 6;
             this.LstCart.UseCompatibleStateImageBehavior = false;
             this.LstCart.View = System.Windows.Forms.View.Details;
+            this.LstCart.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.LstCart_ColumnClick);
             this.LstCart.SelectedIndexChanged += new System.EventHandler(this.LstCart_SelectedIndexChanged);
             this.LstCart.DoubleClick += new System.EventHandler(this.LstCart_DoubleClick);
             // 
@@ -144,6 +149,13 @@
             this.colCartPrice.Text = "Price";
             this.colCartPrice.Width = 86;
             // 
+            // SortImages
+            // 
+            this.SortImages.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("SortImages.ImageStream")));
+            this.SortImages.TransparentColor = System.Drawing.Color.Transparent;
+            this.SortImages.Images.SetKeyName(0, "Down.png");
+            this.SortImages.Images.SetKeyName(1, "Up.png");
+            // 
             // LblAmountDue
             // 
             this.LblAmountDue.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -151,7 +163,7 @@
             this.LblAmountDue.Location = new System.Drawing.Point(661, 345);
             this.LblAmountDue.Name = "LblAmountDue";
             this.LblAmountDue.Size = new System.Drawing.Size(129, 23);
-            this.LblAmountDue.TabIndex = 57;
+            this.LblAmountDue.TabIndex = 8;
             this.LblAmountDue.Text = "$0.00";
             this.LblAmountDue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -161,7 +173,7 @@
             this.label2.Location = new System.Drawing.Point(526, 345);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(129, 23);
-            this.label2.TabIndex = 56;
+            this.label2.TabIndex = 7;
             this.label2.Text = "Total Due:";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
@@ -172,7 +184,7 @@
             this.BtnCancel.Location = new System.Drawing.Point(550, 610);
             this.BtnCancel.Name = "BtnCancel";
             this.BtnCancel.Size = new System.Drawing.Size(130, 28);
-            this.BtnCancel.TabIndex = 55;
+            this.BtnCancel.TabIndex = 14;
             this.BtnCancel.Text = "Cancel";
             this.BtnCancel.UseVisualStyleBackColor = true;
             this.BtnCancel.Click += new System.EventHandler(this.BtnCancel_Click);
@@ -185,7 +197,7 @@
             this.BtnPurchase.Location = new System.Drawing.Point(686, 610);
             this.BtnPurchase.Name = "BtnPurchase";
             this.BtnPurchase.Size = new System.Drawing.Size(130, 28);
-            this.BtnPurchase.TabIndex = 54;
+            this.BtnPurchase.TabIndex = 0;
             this.BtnPurchase.Text = "Purchase";
             this.BtnPurchase.UseVisualStyleBackColor = true;
             this.BtnPurchase.Click += new System.EventHandler(this.BtnPurchase_Click);
@@ -201,14 +213,13 @@
             this.LstItems.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LstItems.FullRowSelect = true;
             this.LstItems.GridLines = true;
-            this.LstItems.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.LstItems.HideSelection = false;
             this.LstItems.Location = new System.Drawing.Point(4, 2);
             this.LstItems.MultiSelect = false;
             this.LstItems.Name = "LstItems";
             this.LstItems.Size = new System.Drawing.Size(808, 305);
             this.LstItems.SmallImageList = this.SortImages;
-            this.LstItems.TabIndex = 53;
+            this.LstItems.TabIndex = 0;
             this.LstItems.UseCompatibleStateImageBehavior = false;
             this.LstItems.View = System.Windows.Forms.View.Details;
             this.LstItems.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.LstItems_ColumnClick);
@@ -240,20 +251,13 @@
             this.colSaleQuantity.Text = "# Left";
             this.colSaleQuantity.Width = 74;
             // 
-            // SortImages
-            // 
-            this.SortImages.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("SortImages.ImageStream")));
-            this.SortImages.TransparentColor = System.Drawing.Color.Transparent;
-            this.SortImages.Images.SetKeyName(0, "Down.png");
-            this.SortImages.Images.SetKeyName(1, "Up.png");
-            // 
             // label1
             // 
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(496, 367);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(313, 23);
-            this.label1.TabIndex = 52;
+            this.label1.TabIndex = 10;
             this.label1.Text = "Payment Method:";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -267,7 +271,7 @@
             this.TabPaymentMethods.Name = "TabPaymentMethods";
             this.TabPaymentMethods.SelectedIndex = 0;
             this.TabPaymentMethods.Size = new System.Drawing.Size(321, 205);
-            this.TabPaymentMethods.TabIndex = 51;
+            this.TabPaymentMethods.TabIndex = 11;
             this.TabPaymentMethods.SelectedIndexChanged += new System.EventHandler(this.DoUpdatePurchaseButton);
             // 
             // TabCredit
@@ -282,7 +286,7 @@
             this.TabCredit.Controls.Add(this.PicCards);
             this.TabCredit.Location = new System.Drawing.Point(4, 29);
             this.TabCredit.Name = "TabCredit";
-            this.TabCredit.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.TabCredit.Padding = new System.Windows.Forms.Padding(3);
             this.TabCredit.Size = new System.Drawing.Size(313, 172);
             this.TabCredit.TabIndex = 0;
             this.TabCredit.Text = "Credit Card";
@@ -296,7 +300,7 @@
             this.txtExpires.Name = "txtExpires";
             this.txtExpires.ReadOnly = true;
             this.txtExpires.Size = new System.Drawing.Size(80, 26);
-            this.txtExpires.TabIndex = 60;
+            this.txtExpires.TabIndex = 4;
             // 
             // txtCardNumber
             // 
@@ -306,7 +310,7 @@
             this.txtCardNumber.Name = "txtCardNumber";
             this.txtCardNumber.ReadOnly = true;
             this.txtCardNumber.Size = new System.Drawing.Size(80, 26);
-            this.txtCardNumber.TabIndex = 59;
+            this.txtCardNumber.TabIndex = 2;
             // 
             // label8
             // 
@@ -315,7 +319,7 @@
             this.label8.Location = new System.Drawing.Point(152, 46);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(65, 20);
-            this.label8.TabIndex = 58;
+            this.label8.TabIndex = 3;
             this.label8.Text = "Expires:";
             // 
             // label7
@@ -325,7 +329,7 @@
             this.label7.Location = new System.Drawing.Point(159, 19);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(60, 20);
-            this.label7.TabIndex = 57;
+            this.label7.TabIndex = 1;
             this.label7.Text = "Card #:";
             // 
             // btnScanCard
@@ -333,7 +337,7 @@
             this.btnScanCard.Location = new System.Drawing.Point(15, 34);
             this.btnScanCard.Name = "btnScanCard";
             this.btnScanCard.Size = new System.Drawing.Size(120, 39);
-            this.btnScanCard.TabIndex = 56;
+            this.btnScanCard.TabIndex = 0;
             this.btnScanCard.Text = "Scan Card";
             this.btnScanCard.UseVisualStyleBackColor = true;
             this.btnScanCard.Click += new System.EventHandler(this.btnScanCard_Click);
@@ -345,7 +349,7 @@
             this.label10.Location = new System.Drawing.Point(173, 75);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(46, 20);
-            this.label10.TabIndex = 54;
+            this.label10.TabIndex = 5;
             this.label10.Text = "CVC:";
             // 
             // txtCVC
@@ -356,7 +360,7 @@
             this.txtCVC.MaxLength = 4;
             this.txtCVC.Name = "txtCVC";
             this.txtCVC.Size = new System.Drawing.Size(80, 26);
-            this.txtCVC.TabIndex = 55;
+            this.txtCVC.TabIndex = 6;
             this.txtCVC.UseSystemPasswordChar = true;
             this.txtCVC.TextChanged += new System.EventHandler(this.DoUpdatePurchaseButton);
             // 
@@ -377,7 +381,7 @@
             this.TabCheck.Controls.Add(this.label4);
             this.TabCheck.Location = new System.Drawing.Point(4, 29);
             this.TabCheck.Name = "TabCheck";
-            this.TabCheck.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.TabCheck.Padding = new System.Windows.Forms.Padding(3);
             this.TabCheck.Size = new System.Drawing.Size(313, 172);
             this.TabCheck.TabIndex = 1;
             this.TabCheck.Text = "Check";
@@ -441,21 +445,55 @@
             // BtnAdd
             // 
             this.BtnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnAdd.Enabled = false;
             this.BtnAdd.Font = new System.Drawing.Font("Lucida Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BtnAdd.Location = new System.Drawing.Point(682, 314);
             this.BtnAdd.Name = "BtnAdd";
             this.BtnAdd.Size = new System.Drawing.Size(130, 28);
-            this.BtnAdd.TabIndex = 49;
+            this.BtnAdd.TabIndex = 5;
             this.BtnAdd.Text = "Add Selected";
             this.BtnAdd.UseVisualStyleBackColor = true;
             this.BtnAdd.Click += new System.EventHandler(this.BtnAdd_Click);
+            // 
+            // txtSearch
+            // 
+            this.txtSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtSearch.Location = new System.Drawing.Point(530, 316);
+            this.txtSearch.MaxLength = 4;
+            this.txtSearch.Name = "txtSearch";
+            this.txtSearch.Size = new System.Drawing.Size(146, 26);
+            this.txtSearch.TabIndex = 4;
+            this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
+            // 
+            // label9
+            // 
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Location = new System.Drawing.Point(400, 318);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(129, 23);
+            this.label9.TabIndex = 3;
+            this.label9.Text = "Filter Above List:";
+            this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // btnClearFilter
+            // 
+            this.btnClearFilter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnClearFilter.Font = new System.Drawing.Font("Lucida Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnClearFilter.Location = new System.Drawing.Point(317, 314);
+            this.btnClearFilter.Name = "btnClearFilter";
+            this.btnClearFilter.Size = new System.Drawing.Size(83, 28);
+            this.btnClearFilter.TabIndex = 2;
+            this.btnClearFilter.Text = "Clear Filter";
+            this.btnClearFilter.UseVisualStyleBackColor = true;
+            this.btnClearFilter.Click += new System.EventHandler(this.btnClearFilter_Click);
             // 
             // FrmSellItems
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(819, 641);
+            this.Controls.Add(this.btnClearFilter);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.txtSearch);
             this.Controls.Add(this.BtnAdd);
             this.Controls.Add(this.BtnClearCart);
             this.Controls.Add(this.BtnRemoveItem);
@@ -483,6 +521,7 @@
             this.TabCheck.PerformLayout();
             this.TabCash.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -524,5 +563,8 @@
         private System.Windows.Forms.Button btnScanCard;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox txtCVC;
+        private System.Windows.Forms.TextBox txtSearch;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Button btnClearFilter;
     }
 }
