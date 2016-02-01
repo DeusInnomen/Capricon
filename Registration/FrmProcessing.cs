@@ -75,8 +75,8 @@ namespace Registration
                         foreach (var charge in lastCharges)
                         {
                             if (charge.StripeCard.Last4 == CardNumber.Substring(CardNumber.Length - 4) &&
-                                charge.StripeCard.ExpirationMonth == CardMonth &&
-                                charge.StripeCard.ExpirationYear == CardYear &&
+                                charge.StripeCard.ExpirationMonth.PadLeft(2, '0') == CardMonth &&
+                                charge.StripeCard.ExpirationYear.Substring(2) == CardYear &&
                                 charge.AmountInCents == Convert.ToInt32(Amount * 100) &&
                                 charge.Description == "Purchases for " + Person.Name + " (#" + Person.PeopleID + ")")
                             {
@@ -86,7 +86,7 @@ namespace Registration
                         }
                     }
 
-                    if(Charge != null)
+                    if (Charge == null)
                         Charge = chargeService.Create(chargeData);
                 }
                 catch (StripeException ex)

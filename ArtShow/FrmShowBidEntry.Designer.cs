@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmShowBidEntry));
             this.LstItems = new System.Windows.Forms.ListView();
             this.colNumber = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -46,6 +47,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.ChkAuction = new System.Windows.Forms.CheckBox();
             this.BtnMoveNext = new System.Windows.Forms.Button();
+            this.SortImages = new System.Windows.Forms.ImageList(this.components);
             this.SuspendLayout();
             // 
             // LstItems
@@ -55,7 +57,7 @@
             this.colTitle,
             this.colBuyerNumber,
             this.colFinalBid});
-            this.LstItems.Font = new System.Drawing.Font("Microsoft San Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LstItems.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LstItems.FullRowSelect = true;
             this.LstItems.GridLines = true;
             this.LstItems.HideSelection = false;
@@ -63,9 +65,11 @@
             this.LstItems.MultiSelect = false;
             this.LstItems.Name = "LstItems";
             this.LstItems.Size = new System.Drawing.Size(426, 282);
+            this.LstItems.SmallImageList = this.SortImages;
             this.LstItems.TabIndex = 12;
             this.LstItems.UseCompatibleStateImageBehavior = false;
             this.LstItems.View = System.Windows.Forms.View.Details;
+            this.LstItems.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.LstItems_ColumnClick);
             this.LstItems.SelectedIndexChanged += new System.EventHandler(this.LstItems_SelectedIndexChanged);
             // 
             // colNumber
@@ -91,76 +95,76 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft San Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(477, 41);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(55, 13);
+            this.label1.Size = new System.Drawing.Size(37, 16);
             this.label1.TabIndex = 2;
             this.label1.Text = "Title:";
             // 
             // TxtTitle
             // 
-            this.TxtTitle.Font = new System.Drawing.Font("Microsoft San Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TxtTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TxtTitle.Location = new System.Drawing.Point(538, 38);
             this.TxtTitle.Name = "TxtTitle";
             this.TxtTitle.ReadOnly = true;
-            this.TxtTitle.Size = new System.Drawing.Size(191, 20);
+            this.TxtTitle.Size = new System.Drawing.Size(191, 22);
             this.TxtTitle.TabIndex = 3;
             // 
             // TxtNumber
             // 
-            this.TxtNumber.Font = new System.Drawing.Font("Microsoft San Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TxtNumber.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TxtNumber.Location = new System.Drawing.Point(538, 12);
             this.TxtNumber.Name = "TxtNumber";
             this.TxtNumber.ReadOnly = true;
-            this.TxtNumber.Size = new System.Drawing.Size(61, 20);
+            this.TxtNumber.Size = new System.Drawing.Size(61, 22);
             this.TxtNumber.TabIndex = 1;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft San Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(461, 15);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(71, 13);
+            this.label2.Size = new System.Drawing.Size(56, 16);
             this.label2.TabIndex = 0;
             this.label2.Text = "Piece #:";
             // 
             // TxtBuyerNum
             // 
-            this.TxtBuyerNum.Font = new System.Drawing.Font("Microsoft San Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TxtBuyerNum.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TxtBuyerNum.Location = new System.Drawing.Point(538, 67);
             this.TxtBuyerNum.Name = "TxtBuyerNum";
-            this.TxtBuyerNum.Size = new System.Drawing.Size(61, 20);
+            this.TxtBuyerNum.Size = new System.Drawing.Size(61, 22);
             this.TxtBuyerNum.TabIndex = 5;
             this.TxtBuyerNum.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TxtFinalBid_KeyPress);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft San Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Location = new System.Drawing.Point(461, 70);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(71, 13);
+            this.label3.Size = new System.Drawing.Size(56, 16);
             this.label3.TabIndex = 4;
             this.label3.Text = "Buyer #:";
             // 
             // TxtFinalBid
             // 
-            this.TxtFinalBid.Font = new System.Drawing.Font("Microsoft San Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TxtFinalBid.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TxtFinalBid.Location = new System.Drawing.Point(538, 93);
             this.TxtFinalBid.Name = "TxtFinalBid";
-            this.TxtFinalBid.Size = new System.Drawing.Size(95, 20);
+            this.TxtFinalBid.Size = new System.Drawing.Size(95, 22);
             this.TxtFinalBid.TabIndex = 7;
             this.TxtFinalBid.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TxtFinalBid_KeyPress);
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft San Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.Location = new System.Drawing.Point(445, 96);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(87, 13);
+            this.label4.Size = new System.Drawing.Size(63, 16);
             this.label4.TabIndex = 6;
             this.label4.Text = "Final Bid:";
             // 
@@ -178,7 +182,7 @@
             // 
             // label5
             // 
-            this.label5.Font = new System.Drawing.Font("Microsoft San Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.Location = new System.Drawing.Point(445, 144);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(285, 65);
@@ -189,10 +193,10 @@
             // ChkAuction
             // 
             this.ChkAuction.AutoSize = true;
-            this.ChkAuction.Font = new System.Drawing.Font("Microsoft San Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ChkAuction.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ChkAuction.Location = new System.Drawing.Point(538, 119);
             this.ChkAuction.Name = "ChkAuction";
-            this.ChkAuction.Size = new System.Drawing.Size(146, 17);
+            this.ChkAuction.Size = new System.Drawing.Size(119, 20);
             this.ChkAuction.TabIndex = 8;
             this.ChkAuction.Text = "Went to Auction";
             this.ChkAuction.UseVisualStyleBackColor = true;
@@ -209,6 +213,13 @@
             this.BtnMoveNext.Text = "Move Next";
             this.BtnMoveNext.UseVisualStyleBackColor = true;
             this.BtnMoveNext.Click += new System.EventHandler(this.BtnMoveNext_Click);
+            // 
+            // SortImages
+            // 
+            this.SortImages.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("SortImages.ImageStream")));
+            this.SortImages.TransparentColor = System.Drawing.Color.Transparent;
+            this.SortImages.Images.SetKeyName(0, "Down.png");
+            this.SortImages.Images.SetKeyName(1, "Up.png");
             // 
             // FrmShowBidEntry
             // 
@@ -258,5 +269,6 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.CheckBox ChkAuction;
         private System.Windows.Forms.Button BtnMoveNext;
+        private System.Windows.Forms.ImageList SortImages;
     }
 }
