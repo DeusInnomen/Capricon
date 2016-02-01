@@ -59,7 +59,7 @@
                       <rd:DefaultName>Textbox16</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
+                          <Color>DimGray</Color>
                           <Style>Solid</Style>
                         </Border>
                         <VerticalAlign>Top</VerticalAlign>
@@ -96,7 +96,7 @@
                       <rd:DefaultName>Textbox9</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
+                          <Color>DimGray</Color>
                           <Style>Solid</Style>
                         </Border>
                         <VerticalAlign>Top</VerticalAlign>
@@ -133,7 +133,7 @@
                       <rd:DefaultName>Textbox15</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
+                          <Color>DimGray</Color>
                           <Style>Solid</Style>
                         </Border>
                         <VerticalAlign>Top</VerticalAlign>
@@ -170,7 +170,7 @@
                       <rd:DefaultName>Textbox1</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
+                          <Color>DimGray</Color>
                           <Style>Solid</Style>
                         </Border>
                         <VerticalAlign>Top</VerticalAlign>
@@ -207,7 +207,7 @@
                       <rd:DefaultName>Textbox11</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
+                          <Color>DimGray</Color>
                           <Style>Solid</Style>
                         </Border>
                         <VerticalAlign>Top</VerticalAlign>
@@ -244,7 +244,7 @@
                       <rd:DefaultName>Textbox13</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
+                          <Color>DimGray</Color>
                           <Style>Solid</Style>
                         </Border>
                         <VerticalAlign>Top</VerticalAlign>
@@ -281,7 +281,7 @@
                       <rd:DefaultName>Textbox18</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
+                          <Color>DimGray</Color>
                           <Style>Solid</Style>
                         </Border>
                         <VerticalAlign>Top</VerticalAlign>
@@ -318,7 +318,7 @@
                       <rd:DefaultName>Textbox19</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
+                          <Color>DimGray</Color>
                           <Style>Solid</Style>
                         </Border>
                         <VerticalAlign>Top</VerticalAlign>
@@ -356,7 +356,7 @@
                       <rd:DefaultName>LocationCode</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
+                          <Color>DimGray</Color>
                           <Style>Solid</Style>
                         </Border>
                         <VerticalAlign>Middle</VerticalAlign>
@@ -389,7 +389,7 @@
                       <rd:DefaultName>ShowNumber</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
+                          <Color>DimGray</Color>
                           <Style>Solid</Style>
                         </Border>
                         <VerticalAlign>Middle</VerticalAlign>
@@ -422,7 +422,7 @@
                       <rd:DefaultName>Title</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
+                          <Color>DimGray</Color>
                           <Style>Solid</Style>
                         </Border>
                         <VerticalAlign>Middle</VerticalAlign>
@@ -455,7 +455,7 @@
                       <rd:DefaultName>ArtistDisplayName</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
+                          <Color>DimGray</Color>
                           <Style>Solid</Style>
                         </Border>
                         <VerticalAlign>Middle</VerticalAlign>
@@ -488,7 +488,7 @@
                       <rd:DefaultName>Media</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
+                          <Color>DimGray</Color>
                           <Style>Solid</Style>
                         </Border>
                         <VerticalAlign>Middle</VerticalAlign>
@@ -523,7 +523,7 @@
                       <rd:DefaultName>FinalSalePrice</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
+                          <Color>DimGray</Color>
                           <Style>Solid</Style>
                         </Border>
                         <VerticalAlign>Middle</VerticalAlign>
@@ -556,7 +556,7 @@
                       <rd:DefaultName>PurchaserNumber1</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
+                          <Color>DimGray</Color>
                           <Style>Solid</Style>
                         </Border>
                         <VerticalAlign>Middle</VerticalAlign>
@@ -589,7 +589,7 @@
                       <rd:DefaultName>FinalSalePrice2</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
+                          <Color>DimGray</Color>
                           <Style>Solid</Style>
                         </Border>
                         <VerticalAlign>Middle</VerticalAlign>

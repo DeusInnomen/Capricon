@@ -17,15 +17,19 @@ namespace ArtShow
     {
         private Person Purchaser { get; set; }
         private MagneticStripeScan Card { get; set; }
-        private List<PrintShopItem> Items { get; set; } 
+        private List<PrintShopItem> Items { get; set; }
+        private bool StripeFirstTry { get; set; }
 
-        private int SortColumn = 0;
-        private bool SortAscend = true;
-        
+        private int ItemsSortColumn = 0;
+        private bool ItemsSortAscend = true;
+        private int CartSortColumn = 0;
+        private bool CartSortAscend = true;
+
         public FrmSellItems(Person purchaser)
         {
             InitializeComponent();
             Purchaser = purchaser;
+            StripeFirstTry = true;
 
             var data = Encoding.ASCII.GetBytes("action=GetPrintShopList&Year=" + Program.Year.ToString());
             var request = WebRequest.Create(Program.URL + "/functions/artQuery.php");
@@ -63,25 +67,24 @@ namespace ArtShow
 
         private void LstItems_ColumnClick(object sender, ColumnClickEventArgs e)
         {
-            if (Math.Abs(SortColumn) == Math.Abs(e.Column))
+            if (Math.Abs(ItemsSortColumn) == Math.Abs(e.Column))
             {
-                SortAscend = !SortAscend;
-                LstItems.Columns[e.Column].ImageIndex = SortAscend ? 0 : 1;
+                ItemsSortAscend = !ItemsSortAscend;
+                LstItems.Columns[e.Column].ImageIndex = ItemsSortAscend ? 0 : 1;
             }
             else
             {
-                LstItems.Columns[SortColumn].ImageIndex = -1;
-                LstItems.Columns[SortColumn].TextAlign = LstItems.Columns[SortColumn].TextAlign;
-                SortAscend = true;
-                SortColumn = e.Column;
+                LstItems.Columns[ItemsSortColumn].ImageIndex = -1;
+                LstItems.Columns[ItemsSortColumn].TextAlign = LstItems.Columns[ItemsSortColumn].TextAlign;
+                ItemsSortAscend = true;
+                ItemsSortColumn = e.Column;
                 LstItems.Columns[e.Column].ImageIndex = 0;
             }
 
             LstItems.BeginUpdate();
-            LstItems.ListViewItemSorter = new ListViewItemComparer(e.Column, SortAscend);
+            LstItems.ListViewItemSorter = new ListViewItemComparer(e.Column, ItemsSortAscend);
             LstItems.Sort();
             LstItems.EndUpdate();
-
         }
 
         private void LstItems_DoubleClick(object sender, EventArgs e)
@@ -166,6 +169,7 @@ namespace ArtShow
 
         private void BtnPurchase_Click(object sender, EventArgs e)
         {
+            Cursor = Cursors.WaitCursor;
             string reference;
             string source;
             var total = CalculateTotal();
@@ -174,6 +178,7 @@ namespace ArtShow
                 source = "Stripe";
                 var dialog = new FrmProcessing
                 {
+                    FirstTry = StripeFirstTry,
                     Person = Purchaser,
                     Description = "Print Shop Purchases",
                     CardNumber = Card.CardNumber,
@@ -189,6 +194,8 @@ namespace ArtShow
                     reference = dialog.Charge.Id;
                 else
                 {
+                    StripeFirstTry = false;
+                    Cursor = Cursors.Default;
                     MessageBox.Show("The transaction was declined: " + dialog.Error.Message, "Charge Failed",
                                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
@@ -275,5 +282,60 @@ namespace ArtShow
             }
         }
 
+        private void LstCart_ColumnClick(object sender, ColumnClickEventArgs e)
+        {
+            if (Math.Abs(CartSortColumn) == Math.Abs(e.Column))
+            {
+                CartSortAscend = !CartSortAscend;
+                LstCart.Columns[e.Column].ImageIndex = CartSortAscend ? 0 : 1;
+            }
+            else
+            {
+                LstCart.Columns[CartSortColumn].ImageIndex = -1;
+                LstCart.Columns[CartSortColumn].TextAlign = LstCart.Columns[CartSortColumn].TextAlign;
+                CartSortAscend = true;
+                CartSortColumn = e.Column;
+                LstCart.Columns[e.Column].ImageIndex = 0;
+            }
+
+            LstCart.BeginUpdate();
+            LstCart.ListViewItemSorter = new ListViewItemComparer(e.Column, CartSortAscend);
+            LstCart.Sort();
+            LstCart.EndUpdate();
+        }
+
+        private void txtSearch_TextChanged(object sender, EventArgs e)
+        {
+            LstItems.BeginUpdate();
+            LstItems.Items.Clear();
+            var filtered = txtSearch.TextLength > 0 ?
+                Items.Where(i => i.Title.ToLower().Contains(txtSearch.Text.ToLower())).ToList() :
+                Items;
+            foreach (var shopItem in filtered)
+            {
+                var item = new ListViewItem
+                {
+                    Text = shopItem.ShowNumber.ToString()
+                };
+                item.SubItems.Add(shopItem.Title);
+                item.SubItems.Add(shopItem.ArtistName);
+                item.SubItems.Add(shopItem.Price.ToString("C"));
+                item.SubItems.Add((shopItem.QuantitySent - shopItem.QuantitySold).ToString());
+                if (shopItem.QuantitySent - shopItem.QuantitySold == 0)
+                {
+                    item.ForeColor = Color.Red;
+                    item.BackColor = Color.LightGray;
+                }
+                item.Tag = shopItem;
+                LstItems.Items.Add(item);
+            }
+            LstItems.EndUpdate();
+        }
+
+        private void btnClearFilter_Click(object sender, EventArgs e)
+        {
+            txtSearch.Text = "";
+
+        }
     }
 }

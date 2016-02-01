@@ -16,6 +16,12 @@ namespace ArtShow
     {
         private List<CheckoutItems> Items { get; set; }
         private ArtistPresence Presence { get; set; }
+
+        private int ArtShowSortColumn = 0;
+        private bool ArtShowSortAscend = true;
+        private int PrintShopSortColumn = 0;
+        private bool PrintShopSortAscend = true;
+
         public FrmArtistCheckout(ArtistPresence presence)
         {
             InitializeComponent();
@@ -126,6 +132,50 @@ namespace ArtShow
             dialog.ShowDialog();
             dialog.Close();
             DialogResult = DialogResult.None;
+        }
+
+        private void LstShowItems_ColumnClick(object sender, ColumnClickEventArgs e)
+        {
+            if (Math.Abs(ArtShowSortColumn) == Math.Abs(e.Column))
+            {
+                ArtShowSortAscend = !ArtShowSortAscend;
+                LstShowItems.Columns[e.Column].ImageIndex = ArtShowSortAscend ? 0 : 1;
+            }
+            else
+            {
+                LstShowItems.Columns[ArtShowSortColumn].ImageIndex = -1;
+                LstShowItems.Columns[ArtShowSortColumn].TextAlign = LstShowItems.Columns[ArtShowSortColumn].TextAlign;
+                ArtShowSortAscend = true;
+                ArtShowSortColumn = e.Column;
+                LstShowItems.Columns[e.Column].ImageIndex = 0;
+            }
+
+            LstShowItems.BeginUpdate();
+            LstShowItems.ListViewItemSorter = new ListViewItemComparer(e.Column, ArtShowSortAscend);
+            LstShowItems.Sort();
+            LstShowItems.EndUpdate();
+        }
+
+        private void LstShopItems_ColumnClick(object sender, ColumnClickEventArgs e)
+        {
+            if (Math.Abs(PrintShopSortColumn) == Math.Abs(e.Column))
+            {
+                PrintShopSortAscend = !PrintShopSortAscend;
+                LstShopItems.Columns[e.Column].ImageIndex = PrintShopSortAscend ? 0 : 1;
+            }
+            else
+            {
+                LstShopItems.Columns[PrintShopSortColumn].ImageIndex = -1;
+                LstShopItems.Columns[PrintShopSortColumn].TextAlign = LstShopItems.Columns[PrintShopSortColumn].TextAlign;
+                PrintShopSortAscend = true;
+                PrintShopSortColumn = e.Column;
+                LstShopItems.Columns[e.Column].ImageIndex = 0;
+            }
+
+            LstShopItems.BeginUpdate();
+            LstShopItems.ListViewItemSorter = new ListViewItemComparer(e.Column, PrintShopSortAscend);
+            LstShopItems.Sort();
+            LstShopItems.EndUpdate();
         }
     }
 }
