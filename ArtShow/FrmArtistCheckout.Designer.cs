@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmArtistCheckout));
             this.LstShowItems = new System.Windows.Forms.ListView();
             this.colShowNumber = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -57,6 +58,7 @@
             this.BtnMarkClaimed = new System.Windows.Forms.Button();
             this.CmbMarkMode = new System.Windows.Forms.ComboBox();
             this.BtnPrintCheckout = new System.Windows.Forms.Button();
+            this.SortImages = new System.Windows.Forms.ImageList(this.components);
             this.SuspendLayout();
             // 
             // LstShowItems
@@ -74,9 +76,11 @@
             this.LstShowItems.Location = new System.Drawing.Point(12, 36);
             this.LstShowItems.Name = "LstShowItems";
             this.LstShowItems.Size = new System.Drawing.Size(597, 233);
+            this.LstShowItems.SmallImageList = this.SortImages;
             this.LstShowItems.TabIndex = 19;
             this.LstShowItems.UseCompatibleStateImageBehavior = false;
             this.LstShowItems.View = System.Windows.Forms.View.Details;
+            this.LstShowItems.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.LstShowItems_ColumnClick);
             // 
             // colShowNumber
             // 
@@ -124,9 +128,11 @@
             this.LstShopItems.Location = new System.Drawing.Point(12, 308);
             this.LstShopItems.Name = "LstShopItems";
             this.LstShopItems.Size = new System.Drawing.Size(597, 194);
+            this.LstShopItems.SmallImageList = this.SortImages;
             this.LstShopItems.TabIndex = 46;
             this.LstShopItems.UseCompatibleStateImageBehavior = false;
             this.LstShopItems.View = System.Windows.Forms.View.Details;
+            this.LstShopItems.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.LstShopItems_ColumnClick);
             // 
             // colShopNumber
             // 
@@ -186,7 +192,7 @@
             // label12
             // 
             this.label12.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label12.Font = new System.Drawing.Font("Microsoft San Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label12.Location = new System.Drawing.Point(628, 36);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(146, 16);
@@ -197,7 +203,7 @@
             // label2
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label2.Font = new System.Drawing.Font("Microsoft San Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(615, 68);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(159, 16);
@@ -208,7 +214,7 @@
             // label3
             // 
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label3.Font = new System.Drawing.Font("Microsoft San Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Location = new System.Drawing.Point(615, 99);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(159, 16);
@@ -219,7 +225,7 @@
             // LblShowTotal
             // 
             this.LblShowTotal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.LblShowTotal.Font = new System.Drawing.Font("Microsoft San Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LblShowTotal.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LblShowTotal.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.LblShowTotal.Location = new System.Drawing.Point(780, 36);
             this.LblShowTotal.Name = "LblShowTotal";
@@ -230,7 +236,7 @@
             // LblShopTotal
             // 
             this.LblShopTotal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.LblShopTotal.Font = new System.Drawing.Font("Microsoft San Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LblShopTotal.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LblShopTotal.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.LblShopTotal.Location = new System.Drawing.Point(780, 68);
             this.LblShopTotal.Name = "LblShopTotal";
@@ -241,7 +247,7 @@
             // LblConShare
             // 
             this.LblConShare.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.LblConShare.Font = new System.Drawing.Font("Microsoft San Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LblConShare.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LblConShare.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.LblConShare.Location = new System.Drawing.Point(780, 99);
             this.LblConShare.Name = "LblConShare";
@@ -252,7 +258,7 @@
             // LblTotalOwed
             // 
             this.LblTotalOwed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.LblTotalOwed.Font = new System.Drawing.Font("Microsoft San Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LblTotalOwed.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LblTotalOwed.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.LblTotalOwed.Location = new System.Drawing.Point(780, 134);
             this.LblTotalOwed.Name = "LblTotalOwed";
@@ -263,7 +269,7 @@
             // label5
             // 
             this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label5.Font = new System.Drawing.Font("Microsoft San Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.Location = new System.Drawing.Point(615, 134);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(159, 16);
@@ -306,6 +312,13 @@
             this.BtnPrintCheckout.Text = "Print Checkout Sheet";
             this.BtnPrintCheckout.UseVisualStyleBackColor = true;
             this.BtnPrintCheckout.Click += new System.EventHandler(this.BtnPrintCheckout_Click);
+            // 
+            // SortImages
+            // 
+            this.SortImages.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("SortImages.ImageStream")));
+            this.SortImages.TransparentColor = System.Drawing.Color.Transparent;
+            this.SortImages.Images.SetKeyName(0, "Down.png");
+            this.SortImages.Images.SetKeyName(1, "Up.png");
             // 
             // FrmArtistCheckout
             // 
@@ -366,5 +379,6 @@
         private System.Windows.Forms.ColumnHeader colShopClaimed;
         private System.Windows.Forms.ComboBox CmbMarkMode;
         private System.Windows.Forms.Button BtnPrintCheckout;
+        private System.Windows.Forms.ImageList SortImages;
     }
 }

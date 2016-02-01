@@ -196,5 +196,10 @@ namespace ArtShow
             var report = new FrmAuctionResults(auctionPieces);
             report.ShowDialog();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

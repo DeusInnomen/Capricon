@@ -15,6 +15,9 @@ namespace ArtShow
         private ArtShowItem Current { get; set; }
         private int CurrentIndex { get; set; }
 
+        private int SortColumn = 0;
+        private bool SortAscend = true;
+
         public FrmShowBidEntry(List<ArtShowItem> items )
         {
             InitializeComponent();
@@ -138,6 +141,28 @@ namespace ArtShow
             else
                 LstItems.Items[0].Selected = true;
             TxtBuyerNum.Focus();
+        }
+
+        private void LstItems_ColumnClick(object sender, ColumnClickEventArgs e)
+        {
+            if (Math.Abs(SortColumn) == Math.Abs(e.Column))
+            {
+                SortAscend = !SortAscend;
+                LstItems.Columns[e.Column].ImageIndex = SortAscend ? 0 : 1;
+            }
+            else
+            {
+                LstItems.Columns[SortColumn].ImageIndex = -1;
+                LstItems.Columns[SortColumn].TextAlign = LstItems.Columns[SortColumn].TextAlign;
+                SortAscend = true;
+                SortColumn = e.Column;
+                LstItems.Columns[e.Column].ImageIndex = 0;
+            }
+
+            LstItems.BeginUpdate();
+            LstItems.ListViewItemSorter = new ListViewItemComparer(e.Column, SortAscend);
+            LstItems.Sort();
+            LstItems.EndUpdate();
         }
     }
 }

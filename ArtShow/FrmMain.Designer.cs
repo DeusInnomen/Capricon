@@ -44,10 +44,9 @@
             // BtnSellItems
             // 
             this.BtnSellItems.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnSellItems.Location = new System.Drawing.Point(459, 37);
-            this.BtnSellItems.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.BtnSellItems.Location = new System.Drawing.Point(306, 24);
             this.BtnSellItems.Name = "BtnSellItems";
-            this.BtnSellItems.Size = new System.Drawing.Size(370, 92);
+            this.BtnSellItems.Size = new System.Drawing.Size(247, 60);
             this.BtnSellItems.TabIndex = 3;
             this.BtnSellItems.Text = "Sell Items";
             this.BtnSellItems.UseVisualStyleBackColor = true;
@@ -56,10 +55,9 @@
             // BtnLookup
             // 
             this.BtnLookup.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnLookup.Location = new System.Drawing.Point(58, 37);
-            this.BtnLookup.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.BtnLookup.Location = new System.Drawing.Point(39, 24);
             this.BtnLookup.Name = "BtnLookup";
-            this.BtnLookup.Size = new System.Drawing.Size(370, 92);
+            this.BtnLookup.Size = new System.Drawing.Size(247, 60);
             this.BtnLookup.TabIndex = 2;
             this.BtnLookup.Text = "Look Up Artist";
             this.BtnLookup.UseVisualStyleBackColor = true;
@@ -68,10 +66,9 @@
             // BtnPrintAllSheets
             // 
             this.BtnPrintAllSheets.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnPrintAllSheets.Location = new System.Drawing.Point(58, 351);
-            this.BtnPrintAllSheets.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.BtnPrintAllSheets.Location = new System.Drawing.Point(39, 228);
             this.BtnPrintAllSheets.Name = "BtnPrintAllSheets";
-            this.BtnPrintAllSheets.Size = new System.Drawing.Size(370, 92);
+            this.BtnPrintAllSheets.Size = new System.Drawing.Size(247, 60);
             this.BtnPrintAllSheets.TabIndex = 4;
             this.BtnPrintAllSheets.Text = "Print All Control Sheets";
             this.BtnPrintAllSheets.UseVisualStyleBackColor = true;
@@ -80,10 +77,9 @@
             // BtnAuctionSales
             // 
             this.BtnAuctionSales.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnAuctionSales.Location = new System.Drawing.Point(58, 140);
-            this.BtnAuctionSales.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.BtnAuctionSales.Location = new System.Drawing.Point(39, 91);
             this.BtnAuctionSales.Name = "BtnAuctionSales";
-            this.BtnAuctionSales.Size = new System.Drawing.Size(370, 95);
+            this.BtnAuctionSales.Size = new System.Drawing.Size(247, 62);
             this.BtnAuctionSales.TabIndex = 5;
             this.BtnAuctionSales.Text = "Enter Auction Sales";
             this.BtnAuctionSales.UseVisualStyleBackColor = true;
@@ -92,10 +88,9 @@
             // BtnAuctionReport
             // 
             this.BtnAuctionReport.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnAuctionReport.Location = new System.Drawing.Point(459, 140);
-            this.BtnAuctionReport.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.BtnAuctionReport.Location = new System.Drawing.Point(306, 91);
             this.BtnAuctionReport.Name = "BtnAuctionReport";
-            this.BtnAuctionReport.Size = new System.Drawing.Size(370, 95);
+            this.BtnAuctionReport.Size = new System.Drawing.Size(247, 62);
             this.BtnAuctionReport.TabIndex = 6;
             this.BtnAuctionReport.Text = "Print Going to Auction Report";
             this.BtnAuctionReport.UseVisualStyleBackColor = true;
@@ -104,10 +99,9 @@
             // BtnCheckoutSales
             // 
             this.BtnCheckoutSales.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnCheckoutSales.Location = new System.Drawing.Point(58, 245);
-            this.BtnCheckoutSales.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.BtnCheckoutSales.Location = new System.Drawing.Point(39, 159);
             this.BtnCheckoutSales.Name = "BtnCheckoutSales";
-            this.BtnCheckoutSales.Size = new System.Drawing.Size(370, 95);
+            this.BtnCheckoutSales.Size = new System.Drawing.Size(247, 62);
             this.BtnCheckoutSales.TabIndex = 7;
             this.BtnCheckoutSales.Text = "Check Out Sales";
             this.BtnCheckoutSales.UseVisualStyleBackColor = true;
@@ -116,10 +110,9 @@
             // BtnAuctionResults
             // 
             this.BtnAuctionResults.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnAuctionResults.Location = new System.Drawing.Point(459, 245);
-            this.BtnAuctionResults.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.BtnAuctionResults.Location = new System.Drawing.Point(306, 159);
             this.BtnAuctionResults.Name = "BtnAuctionResults";
-            this.BtnAuctionResults.Size = new System.Drawing.Size(370, 95);
+            this.BtnAuctionResults.Size = new System.Drawing.Size(247, 62);
             this.BtnAuctionResults.TabIndex = 8;
             this.BtnAuctionResults.Text = "Print Public Auction Results Sheets";
             this.BtnAuctionResults.UseVisualStyleBackColor = true;
@@ -128,21 +121,20 @@
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(58, 453);
-            this.button1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.button1.Location = new System.Drawing.Point(39, 294);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(370, 92);
+            this.button1.Size = new System.Drawing.Size(247, 60);
             this.button1.TabIndex = 9;
             this.button1.Text = "Print All Checkout Sheets";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // BtnExportInventory
             // 
             this.BtnExportInventory.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnExportInventory.Location = new System.Drawing.Point(459, 453);
-            this.BtnExportInventory.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.BtnExportInventory.Location = new System.Drawing.Point(306, 294);
             this.BtnExportInventory.Name = "BtnExportInventory";
-            this.BtnExportInventory.Size = new System.Drawing.Size(370, 92);
+            this.BtnExportInventory.Size = new System.Drawing.Size(247, 60);
             this.BtnExportInventory.TabIndex = 10;
             this.BtnExportInventory.Text = "Export Inventory Summary";
             this.BtnExportInventory.UseVisualStyleBackColor = true;
@@ -151,10 +143,9 @@
             // BtnAuctionPrivateResults
             // 
             this.BtnAuctionPrivateResults.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnAuctionPrivateResults.Location = new System.Drawing.Point(459, 351);
-            this.BtnAuctionPrivateResults.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.BtnAuctionPrivateResults.Location = new System.Drawing.Point(306, 228);
             this.BtnAuctionPrivateResults.Name = "BtnAuctionPrivateResults";
-            this.BtnAuctionPrivateResults.Size = new System.Drawing.Size(370, 95);
+            this.BtnAuctionPrivateResults.Size = new System.Drawing.Size(247, 62);
             this.BtnAuctionPrivateResults.TabIndex = 11;
             this.BtnAuctionPrivateResults.Text = "Print Private Auction Results Sheets";
             this.BtnAuctionPrivateResults.UseVisualStyleBackColor = true;
@@ -162,9 +153,9 @@
             // 
             // FrmMain
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(890, 586);
+            this.ClientSize = new System.Drawing.Size(593, 381);
             this.Controls.Add(this.BtnAuctionPrivateResults);
             this.Controls.Add(this.BtnExportInventory);
             this.Controls.Add(this.button1);
@@ -177,7 +168,6 @@
             this.Controls.Add(this.BtnLookup);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.MaximizeBox = false;
             this.Name = "FrmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
