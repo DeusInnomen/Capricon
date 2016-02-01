@@ -8,7 +8,7 @@
 	
 	$thisYear = date("n") >= 3 ? date("Y") + 1: date("Y");
 	$codes = array();
-	$result = $db->query("SELECT CodeID, Code, Discount, Expiration, UsesLeft, COUNT(pb.PromoCodeID) AS Uses FROM PromoCodes pc LEFT OUTER JOIN PurchasedBadges pb ON pc.CodeID = pb.PromoCodeID WHERE pc.Year = $thisYear AND (Expiration IS NULL OR DATE_ADD(Expiration, INTERVAL 3 MONTH) > NOW()) GROUP BY CodeID, Code, Discount, Expiration, UsesLeft ORDER BY Expiration DESC");
+	$result = $db->query("SELECT CodeID, Code, Discount, Expiration, UsesLeft, COUNT(pb.PromoCodeID) AS Uses FROM PromoCodes pc LEFT OUTER JOIN PurchasedBadges pb ON pc.CodeID = pb.PromoCodeID WHERE pc.Year = $thisYear AND (Expiration IS NULL OR DATE_ADD(Expiration, INTERVAL 3 MONTH) > NOW()) GROUP BY CodeID, Code, Discount, Expiration, UsesLeft ORDER BY Expiration DESC, Code ASC");
 	if($result->num_rows > 0)
 	{
 		while($row = $result->fetch_array())
