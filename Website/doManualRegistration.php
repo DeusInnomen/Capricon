@@ -86,7 +86,7 @@
 		$total = $payment["amount"];
 		if($total > 0 && $payment["method"] == "credit")
 		{
-			Stripe::setApiKey("sk_live_ZEyQTepq0r6gqhPfaI7ClUBg");
+			Stripe::setApiKey($stripeKey);
 
 			$token = $payment["stripeToken"];
 			$source = "Stripe";
