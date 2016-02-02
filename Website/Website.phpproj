@@ -22,6 +22,7 @@
     <IncludeDebugInformation>false</IncludeDebugInformation>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="doManualRegistration.php" />
     <Compile Include="functions\.htaccess" />
     <Compile Include="functions\artQuery.php" />
     <Compile Include="functions\authQuery.php" />
@@ -179,6 +180,7 @@
     <Compile Include="includes\selectivizr-min.js" />
     <Compile Include="includes\stripe.png" />
     <Compile Include="includes\style.css" />
+    <Compile Include="stripeWebhook.php" />
     <Compile Include="Stripe\data\ca-certificates.crt" />
     <Compile Include="Stripe\Stripe\Util\Set.php" />
     <Compile Include="Stripe\Stripe\Account.php" />
@@ -230,7 +232,6 @@
     <Compile Include="doCreation.php" />
     <Compile Include="doIssueCompBadge.php" />
     <Compile Include="doIssueStaffBadge.php" />
-    <Compile Include="doManualRegistration.php" />
     <Compile Include="doProgramSurveyFunctions.php" />
     <Compile Include="doPromoCodeAction.php" />
     <Compile Include="doResetPassword.php" />
@@ -288,7 +289,6 @@
     <Compile Include="resetpassword.php" />
     <Compile Include="shoppingCart.php" />
     <Compile Include="staffBadges.php" />
-    <Compile Include="stripeWebhook.php" />
     <Compile Include="transferToPayPal.php" />
     <Compile Include="treasurerStats.php" />
     <Compile Include="viewCatanSignups.php" />
