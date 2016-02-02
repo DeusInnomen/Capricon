@@ -2,7 +2,7 @@
 	include_once('includes/functions.php');
 	require_once("Stripe/Stripe.php");
 
-	Stripe::setApiKey("sk_live_ZEyQTepq0r6gqhPfaI7ClUBg");
+	Stripe::setApiKey($stripeKey);
 
 	// Retrieve the request's body and parse it as JSON
 	$body = @file_get_contents('php://input');
