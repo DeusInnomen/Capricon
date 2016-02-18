@@ -10,15 +10,15 @@
 	$where = "";
 	$order = $_POST["sort"];
 	if(isset($_POST["email"]) && strlen($_POST["email"]) > 0)
-		$where .= "Email LIKE '" . $db->real_escape_string($_POST["email"]) . "%' AND ";
+		$where .= "AND Email LIKE '" . $db->real_escape_string($_POST["email"]) . "%' ";
 
 	if(isset($_POST["lastname"]) && strlen($_POST["lastname"]) > 0)
-		$where .= "LastName LIKE '" . $db->real_escape_string($_POST["lastname"]) . "%' AND ";
+		$where .= "AND LastName LIKE '" . $db->real_escape_string($_POST["lastname"]) . "%' ";
 
 	if(isset($_POST["badgename"]) && strlen($_POST["badgename"]) > 0)
-		$where .= "BadgeName LIKE '" . $db->real_escape_string($_POST["badgename"]) . "%' AND ";
+		$where .= "AND BadgeName LIKE '" . $db->real_escape_string($_POST["badgename"]) . "%' ";
 
-	if(strlen($where) > 0) $where = "WHERE " . substr($where, 0, -5) . " ";	
+	if(strlen($where) > 0) $where = "WHERE p.IsCharity = 0 $where ";	
 	if(strlen($order) == 0) $order = " LastName, FirstName";
 	$sql .= $where . "ORDER BY $order";
 	

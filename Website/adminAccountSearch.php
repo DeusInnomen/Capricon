@@ -5,7 +5,7 @@
 		header('Location: /index.php');
 
 	$sql = "SELECT PeopleID, FirstName, LastName, BadgeName, Email FROM People ";
-	$where = "WHERE Email != '' ";
+	$where = "WHERE IsCharity = 0 AND Email != '' ";
 	$order = $_POST["sort"];
 	if(isset($_POST["email"]) && strlen($_POST["email"]) > 0)
 		$where .= "AND Email LIKE '" . $db->real_escape_string($_POST["email"]) . "%' ";
