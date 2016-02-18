@@ -12,9 +12,18 @@
 	{
 		$year = date("n") >= 3 ? date("Y") + 1: date("Y");
 		$capriconYear = $year - 1980;
-		
-		$result = $db->query("SELECT ap.ArtistAttendingID, ap.Status, ap.StatusReason, ad.IsEAP FROM ArtistPresence ap INNER JOIN " . 
-			"ArtistDetails ad ON ad.ArtistID = ap.ArtistID WHERE ap.Year = $year AND ad.PeopleID = " . $_SESSION["PeopleID"]);
+		if(!empty($_GET["attendID"])) {
+            if(!DoesUserBelongHere("ArtShowLead"))
+                header('Location: /main.php');
+            $attendID = $_GET["attendID"];
+		    $result = $db->query("SELECT ap.ArtistAttendingID, ap.Status, ap.StatusReason, ad.IsEAP, ad.DisplayName, p.IsCharity " .
+    			"FROM ArtistPresence ap INNER JOIN ArtistDetails ad ON ad.ArtistID = ap.ArtistID INNER JOIN People p ON ad.peopleID = p.PeopleID WHERE ap.ArtistAttendingID = $attendID");
+        }
+        else {
+            $attendID = 0;
+		    $result = $db->query("SELECT ap.ArtistAttendingID, ap.Status, ap.StatusReason, ad.IsEAP, ad.DisplayName, p.IsCharity " .
+    			"FROM ArtistPresence ap INNER JOIN ArtistDetails ad ON ad.ArtistID = ap.ArtistID INNER JOIN People p ON ad.peopleID = p.PeopleID WHERE ap.Year = $year AND ad.PeopleID = " . $_SESSION["PeopleID"]);
+        }
 			
 		if($result->num_rows > 0)
 		{
@@ -22,7 +31,14 @@
 			$result->close();
 			$id = $request["ArtistAttendingID"];
 			$isEAP = $request["IsEAP"];
-			
+            $isCharity = $request["IsCharity"];
+            if(DoesUserBelongHere("ArtShowLead"))
+                $pieceLimit = 9999999;
+            else
+                $pieceLimit = 50;
+			if($attendID != 0)
+                $displayName = $request["DisplayName"];
+
 			if($request["Status"] != "Approved")
 			{
 				$needsApproval = "Your application to show art is presently " . $request["Status"] . ". ";
@@ -88,12 +104,15 @@
 				if(e.target.type !== "radio")
 					$(":radio", this).trigger("click");
 			});
-			$("#artShowForm input[type=radio]").change(function() {
-				$("#artShowDelete").removeProp("disabled");
+			$("#artShowForm input[type=radio]").change(function () {
+			    $("#artShowEdit").removeProp("disabled");
+			    $("#artShowDelete").removeProp("disabled");
 			});
-			$("#printShopForm input[type=radio]").change(function() {
-				$("#printShopDelete").removeProp("disabled");
+			$("#printShopForm input[type=radio]").change(function () {
+			    $("#printShopEdit").removeProp("disabled");
+			    $("#printShopDelete").removeProp("disabled");
 			});
+            <?php if(count($showPieces) < $pieceLimit) { ?>
 			$("#artShowItemForm").dialog({
 				autoOpen: false,
 				height: 570,
@@ -145,11 +164,23 @@
 				}
 			});
 		});
-		
+
 		function addArtShowPiece() {
 			$("#artShowItemForm").dialog("open");
 		}
-		
+
+		function addPrintShopPiece() {
+		    $("#printShopItemForm").dialog("open");
+		}
+
+        <?php } ?>
+
+        function editArtShowPiece() {
+		    var id = $("#artShowForm input[type=radio]:checked").val();
+            var url = '/editArtItem.php?artID=' + id<?php echo ($attendID > 0 ? " + \"&attendID=$attendID\"" : ""); ?>;
+		    window.location.href = url;
+		}
+
 		function deleteArtShowPiece() {
 			var id = $("#artShowForm input[type=radio]:checked").val();
 			$.post("doArtistFunctions.php", { task: "DeleteArtShowItem", id: id }, function(result) {
@@ -159,11 +190,13 @@
 					$("#noticeArtShow").html(result.message);
 			}, 'json');
 		}
-		
-		function addPrintShopPiece() {
-			$("#printShopItemForm").dialog("open");
-		}
-		
+
+        function editPrintShopPiece() {
+            var id = $("#printShopForm input[type=radio]:checked").val();
+            var url = '/editArtItem.php?artID=' + id<?php echo ($attendID > 0 ? " + \"&attendID=$attendID\"" : ""); ?>;
+		    window.location.href = url;
+        }
+
 		function deletePrintShopPiece() {
 			var id = $("#printShopForm input[type=radio]:checked").val();
 			$.post("doArtistFunctions.php", { task: "DeletePrintShopItem", id: id }, function(result) {
@@ -173,24 +206,26 @@
 					$("#noticePrintShop").html(result.message);
 			}, 'json');
 		}
-		
+
 		function payHangingFees() {
 			$.post("doArtistFunctions.php", { task: "AddFees" }, function(result) {
 				location.reload();
 			}, 'json');
 		}
-		
+
 		function printInventoryReport() {
 			window.location = "/artistInventory.php";
 		}
-		
+
 	</script>
 </head>
 <body>	
 	<?php include('includes/header.php'); ?>
-	<div id="artShowItemForm" title="Art Show Item Details">
-		<form id="newArtShowItem" method="post">
-			<input type="hidden" name="task" value="AddArtShowItem">
+    <?php if(count($showPieces) < $pieceLimit) { ?>
+    <div id="artShowItemForm" title="Art Show Item Details">
+        <form id="newArtShowItem" method="post">
+			<input type="hidden" name="task" value="AddArtShowItem" />
+            <?php if($attendID != 0) echo "<input type=\"hidden\" name=\"attendID\" value=\"$attendID\" />"; ?>
 			<label for="showItemTitle" class="fieldLabelShort">Title: </label><br />
 			<input type="text" name="showItemTitle" id="showItemTitle" placeholder="Required" style="width: 90%;" /><br />
 			<label for="showItemIsOriginal"><input type="checkbox" name="showItemIsOriginal" id="showItemIsOriginal" checked>This is an Original Work (not a print).</label><br />
@@ -201,16 +236,15 @@
 			<input type="text" name="showItemMaxPrintNumber" id="showItemMaxPrintNumber" placeholder="Optional" style="width: 20%;" /><br />
 			<label for="showItemMinimumBid" class="fieldLabelShort">Minimum Bid: </label><br />
 			$<input type="text" name="showItemMinimumBid" id="showItemMinimumBid" placeholder="Leave Blank if Not For Sale" style="width: 60%;" /><br />
-			<!--<label for="showItemQuickSale" class="fieldLabelShort">Sunday / Quick Sale Price: </label><br />
-			$<input type="text" name="showItemQuickSale" id="showItemQuickSale" placeholder="Optional" style="width: 60%;" /><br /> -->
 			<label for="showItemNotes" class="fieldLabelShort">Additional Notes:</label></br />
 			<textarea id="showItemNotes" name="showItemNotes" placeholder="Optional" maxlength="500" rows="4" style="width: 90%;" ></textarea><br /><br />
 		</form>
 	</div>
 	<div id="printShopItemForm" title="Print Shop Item Details">
 		<form id="newPrintShopItem" method="post">
-			<input type="hidden" name="task" value="AddPrintShopItem">
-			<label for="printItemTitle" class="fieldLabelShort">Title: </label><br />
+			<input type="hidden" name="task" value="AddPrintShopItem" />
+            <?php if($attendID != 0) echo "<input type=\"hidden\" name=\"attendID\" value=\"$attendID\" />"; ?>
+            <label for="printItemTitle" class="fieldLabelShort">Title: </label><br />
 			<input type="text" name="printItemTitle" id="printItemTitle" placeholder="Required" style="width: 90%;" /><br />
 			<label for="printItemOriginalMedia" class="fieldLabelShort">Original Media: </label><br />
 			<input type="text" name="printItemOriginalMedia" id="printItemOriginalMedia" placeholder="Required" style="width: 90%;" /><br />
@@ -222,10 +256,14 @@
 			<textarea id="printItemNotes" name="printItemNotes" placeholder="Optional" maxlength="500" rows="4" style="width: 90%;" ></textarea><br /><br />
 		</form>
 	</div>
+    <?php } ?>
 	<div class="content">
 		<div class="centerboxwide">
 			<h1>Art Being Shown at Capricon <?php echo $capriconYear; ?></h1>
-		<?php if($needsApproval != "") { ?>
+            <?php if($attendID != 0)
+                      echo "<h2>Managing Inventory for \"$displayName\"" . ($isCharity ? " [Charity]" : "") . "</h2>\r\n";
+            ?>
+        <?php if($needsApproval != "") { ?>
 			<p style="font-size: 1.2em; margin-top: 100px;"><?php echo $needsApproval; ?></p>
 		<?php } else { ?>
 			<div class="headertitle">Art Show Pieces</div>
@@ -234,13 +272,12 @@
 				<table>
 					<tr><th>Select</th><th>Title</th><th>Original Media</th><th>Print #</th><th>Minimum Bid</th><th>Fees Paid?</th></tr>
 <?php
-					//<tr><th>Select</th><th>Title</th><th>Original Media</th><th>Print #</th><th>Minimum Bid</th><th>Quick Sale Price</th><th>Fees Paid?</th></tr>
 					foreach($showPieces as $piece)
 					{
-						echo "<tr class=\"masterTooltip\" title=\"Notes: " . $piece["Notes"] . "<br>Original Piece? " . 
+						echo "<tr class=\"masterTooltip\" title=\"Notes: " . htmlspecialchars($piece["Notes"]) . "<br>Original Piece? " . 
 							($piece["IsOriginal"] == 1 ? "Yes" : "No") . "<br>Show Piece Number: " . $piece["ShowNumber"] . "\">";
-						echo "<td style=\"text-align: center;\"><input type=\"radio\" value=\"" . $piece["ArtID"] .
-							"\" " . ($piece["FeesPaid"] == 0 ? "" : "disabled") . "/></td><td>" . $piece["Title"] . "</td><td>" . $piece["OriginalMedia"] . "</td><td>" .
+						echo "<td style=\"text-align: center;\"><input type=\"radio\" id=\"artShowID\" name=\"artShowID\" value=\"" . $piece["ArtID"] .
+							"\" /></td><td>" . $piece["Title"] . "</td><td>" . $piece["OriginalMedia"] . "</td><td>" .
 							$piece["PrintNumber"];
 						if($piece["PrintMaxNumber"] !== null)
 							echo " of " . $piece["PrintMaxNumber"];
@@ -249,16 +286,14 @@
 							echo sprintf("$%01.2f", $piece["MinimumBid"]);
 						else
 							echo "Not For Sale";
-						//echo "</td><td>";
-						//if($piece["QuickSalePrice"] !== null)
-						//	echo sprintf("$%01.2f", $piece["QuickSalePrice"]);
-						//else
-						//	echo "n/a";
 						echo "</td><td>" . ($isEAP ? "N/A" : ($piece["FeesPaid"] == 0 ? "No" : "Yes")) . "</td></tr>\r\n";
 					} ?>
 				</table>
-				With Selected: <input type="submit" id="artShowDelete" onclick="deleteArtShowPiece(); return false;" value="Delete" disabled><br />
-				<input type="submit" id="showAddNew" onclick="addArtShowPiece(); return false;" value="Add New Art Show Piece"><br/>
+				With Selected: <input type="submit" id="artShowEdit" onclick="editArtShowPiece(); return false;" value="Edit" disabled />&nbsp;
+                <input type="submit" id="artShowDelete" onclick="deleteArtShowPiece(); return false;" value="Delete" disabled><br />
+                <input type="submit" <?php if(count($showPieces) < $pieceLimit) { ?> onclick="addArtShowPiece(); return false;" 
+                       <?php } else { ?> class="masterTooltip" title="You have met or exceeded the show piece limit of <?php echo $pieceLimit; ?> pieces. Please contact artshow@capricon.org." readonly <?php } ?>
+                       value="Add New Art Show Piece"><br/>
 				<span id="noticeArtShow" style="font-size: 1.05em; font-weight: bold;">&nbsp;</span>
 				</form>
 			</div>
@@ -277,14 +312,15 @@
 <?php
 					foreach($printShopPieces as $piece)
 					{
-						echo "<tr class=\"masterTooltip\" title=\"Notes: " . $piece["Notes"] . "<br>Show Piece Number: " . 
+						echo "<tr class=\"masterTooltip\" title=\"Notes: " . htmlspecialchars($piece["Notes"]) . "<br>Show Piece Number: " . 
 							$piece["ShowNumber"] . "\">";
-						echo "<td style=\"text-align: center;\"><input type=\"radio\" value=\"" . $piece["ArtID"] .
+						echo "<td style=\"text-align: center;\"><input type=\"radio\"  id=\"printShopID\" name=\"printShopID\" value=\"" . $piece["ArtID"] .
 							"\" /></td><td>" . $piece["Title"] . "</td><td>" . $piece["OriginalMedia"] . "</td><td>" .
 							$piece["QuantitySent"] . "</td><td>" . sprintf("$%01.2f", $piece["QuickSalePrice"]) . "</td></tr>\r\n";
 					} ?>
 				</table>
-				With Selected: <input type="submit" id="printShopDelete" onclick="deletePrintShopPiece(); return false;" value="Delete" disabled><br />
+				With Selected: <input type="submit" id="printShopEdit" onclick="editPrintShopPiece(); return false;" value="Edit" disabled>&nbsp;
+                <input type="submit" id="printShopDelete" onclick="deletePrintShopPiece(); return false;" value="Delete" disabled><br />
 				<input type="submit" id="shopAddNew" onclick="addPrintShopPiece(); return false;" value="Add New Print Shop Piece"><br />
 				<span id="noticePrintShop" style="font-size: 1.05em; font-weight: bold;">&nbsp;</span>
 				</form>

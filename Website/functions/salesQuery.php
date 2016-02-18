@@ -198,14 +198,26 @@
 					$row = $result->fetch_array();
 					$recipientName = $row["Name"];
 					$result->close();
-					
+
+					$sql = "INSERT INTO PurchaseHistory (PurchaserID, PurchaserOneTimeID, ItemTypeName, ItemTypeID, Details, PeopleID, OneTimeID, Price, Year, Purchased, PaymentSource, PaymentReference) VALUES ($purchaser, $onetime, 'Badge', $badgeTypeID, '$badgeName', $recipientPeopleID, $recipientOneTimeID, $price, $year, NOW(), '$source', '$ref')";
+					if($db->query($sql) === false)
+					{
+						$response["Result"] = "Failure";
+						$response["Message"] = $db->error;
+						$response["Debug"] = $sql;
+						header("Content-type: application/json");
+						echo json_encode($response);
+						exit();
+					}
+                    $recordID = $db->insert_id;
+
 					$sql = "SELECT CASE WHEN EXISTS (SELECT BadgeNumber FROM PurchasedBadges WHERE BadgeNumber = 150 AND Year = $year) THEN 99999 ELSE 150 END AS Next UNION SELECT (p1.BadgeNumber + 1) as Next FROM PurchasedBadges p1 WHERE NOT EXISTS (SELECT p2.BadgeNumber FROM PurchasedBadges p2 WHERE p2.BadgeNumber = p1.BadgeNumber + 1 AND p2.Year = $year) AND p1.Year = $year HAVING Next >= 150 ORDER BY Next";
 					$result = $db->query($sql);
 					$row = $result->fetch_array();
 					$badgeNumber = $row["Next"];
 					$result->close();
 					
-					$sql = "INSERT INTO PurchasedBadges (Year, PeopleID, OneTimeID, PurchaserID, OneTimePurchaserID, BadgeNumber, BadgeTypeID, BadgeName, Status, OriginalPrice, AmountPaid, PaymentSource, PaymentReference, PromoCodeID, CertificateID, Created) VALUES ($year, $recipientPeopleID, $recipientOneTimeID, $purchaser, $onetime, $badgeNumber, $badgeTypeID, '$badgeName', 'Paid', $originalPrice, $price, '$source', '$ref', $promoID, $certID, NOW())";
+					$sql = "INSERT INTO PurchasedBadges (Year, PeopleID, OneTimeID, PurchaserID, OneTimePurchaserID, BadgeNumber, BadgeTypeID, BadgeName, Status, OriginalPrice, AmountPaid, PaymentSource, PaymentReference, PromoCodeID, CertificateID, RecordID, Created) VALUES ($year, $recipientPeopleID, $recipientOneTimeID, $purchaser, $onetime, $badgeNumber, $badgeTypeID, '$badgeName', 'Paid', $originalPrice, $price, '$source', '$ref', $promoID, $certID, $recordID, NOW())";
 					if($db->query($sql) === false)
 					{
 						$response["Result"] = "Failure";
@@ -221,17 +233,6 @@
 					
 					if($year == $thisYear)
 						$badgeNums[$recipientPeopleID != "NULL" ? $recipientPeopleID : "!" . $recipientOneTimeID] = $badgeNumber;
-					
-					$sql = "INSERT INTO PurchaseHistory (PurchaserID, PurchaserOneTimeID, ItemTypeName, ItemTypeID, Details, PeopleID, OneTimeID, Price, Year, Purchased, PaymentSource, PaymentReference) VALUES ($purchaser, $onetime, 'Badge', $badgeTypeID, '$badgeName', $recipientPeopleID, $recipientOneTimeID, $price, $year, NOW(), '$source', '$ref')";
-					if($db->query($sql) === false)
-					{
-						$response["Result"] = "Failure";
-						$response["Message"] = $db->error;
-						$response["Debug"] = $sql;
-						header("Content-type: application/json");
-						echo json_encode($response);
-						exit();
-					}
 					
 				}
 				elseif($item["CategoryID"] == 2) // Catan

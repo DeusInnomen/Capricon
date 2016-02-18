@@ -64,14 +64,11 @@ namespace ArtShow
                 item.SubItems.Add(piece.Claimed ? "Yes" : "No");
                 item.Tag = piece;
                 LstShowItems.Items.Add(item);
-<<<<<<< HEAD
-=======
                 if (piece.FeesPaid || piece.IsEAP) continue;
                 if (piece.MinimumBid != null && piece.MinimumBid < 100)
                     feesDue += (decimal)0.5;
                 else
                     feesDue += 1;
->>>>>>> 125873defb062e01225d6164327f8cbaffde51c4
             }
 
             foreach (var piece in Items.FindAll(i => i.IsPrintShop))
