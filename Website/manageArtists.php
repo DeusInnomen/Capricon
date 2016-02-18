@@ -7,7 +7,13 @@
 		header('Location: /index.php');
 	
 	$year = date("n") >= 3 ? date("Y") + 1: date("Y");
-	$result = $db->query("SELECT p.PeopleID, p.LastName, CONCAT(p.FirstName, ' ', p.LastName) AS Name, CASE WHEN m.Permission IS NULL THEN 0 ELSE 1 END AS Artist, p.Email, CASE WHEN ap.ArtistAttendingID IS NOT NULL THEN 1 ELSE 0 END AS Applied FROM People p LEFT OUTER JOIN Permissions m ON p.PeopleID = m.PeopleID AND m.Permission = 'Artist' LEFT OUTER JOIN ArtistDetails ad ON p.PeopleID = ad.PeopleID LEFT OUTER JOIN ArtistPresence ap ON ad.ArtistID = ap.ArtistID AND ap.Year = $year WHERE p.PeopleID IN (SELECT PeopleID FROM PeopleInterests WHERE Interest = 'ArtShow') UNION SELECT p.PeopleID, p.LastName, CONCAT(p.FirstName, ' ', p.LastName) AS Name, 1 AS Artist, p.Email, CASE WHEN ap.ArtistAttendingID IS NOT NULL THEN 1 ELSE 0 END AS Applied FROM People p INNER JOIN Permissions m ON p.PeopleID = m.PeopleID AND m.Permission = 'Artist' LEFT OUTER JOIN ArtistDetails ad ON p.PeopleID = ad.PeopleID LEFT OUTER JOIN ArtistPresence ap ON ad.ArtistID = ap.ArtistID AND ap.Year = $year ORDER BY LastName");
+	$result = $db->query("SELECT p.PeopleID, p.LastName, CONCAT(p.FirstName, ' ', p.LastName) AS Name, ad.DisplayName, CASE WHEN m.Permission IS NULL THEN 0 ELSE 1 END AS Artist, p.Email, " . 
+        "CASE WHEN ap.ArtistAttendingID IS NOT NULL THEN 1 ELSE 0 END AS Applied, ap.ArtistAttendingID FROM People p LEFT OUTER JOIN Permissions m ON p.PeopleID = m.PeopleID AND " . 
+        "m.Permission = 'Artist' LEFT OUTER JOIN ArtistDetails ad ON p.PeopleID = ad.PeopleID LEFT OUTER JOIN ArtistPresence ap ON ad.ArtistID = ap.ArtistID AND ap.Year = $year " . 
+        "WHERE p.PeopleID IN (SELECT PeopleID FROM PeopleInterests WHERE Interest = 'ArtShow') " . 
+        "UNION SELECT p.PeopleID, p.LastName, CONCAT(p.FirstName, ' ', p.LastName) AS Name, ad.DisplayName, 1 AS Artist, p.Email, CASE WHEN ap.ArtistAttendingID IS NOT NULL THEN 1 ELSE 0 END AS Applied, " . 
+        "ap.ArtistAttendingID FROM People p INNER JOIN Permissions m ON p.PeopleID = m.PeopleID AND m.Permission = 'Artist' LEFT OUTER JOIN ArtistDetails ad ON p.PeopleID = ad.PeopleID " . 
+        "LEFT OUTER JOIN ArtistPresence ap ON ad.ArtistID = ap.ArtistID AND ap.Year = $year ORDER BY LastName");
 	
 	$people = array();
 	while($row = $result->fetch_array())
@@ -29,7 +35,7 @@
 			$(".standardTable tr").click(function(e) {
 				if(e.target.type !== "checkbox")
 					$(":checkbox", this).trigger("click");
-			});
+			}); 
 			$("#search_form").submit(function () {
 				var email = $("#email").val();
 				var lastname = $("#lastname").val();
@@ -86,7 +92,7 @@
 			});
 			if(toRemove.length > 0) toRemove = toRemove.substring(1);
 			
-			if(toAdd.length == 0 && toRemove.length == 0)
+			if (toAdd.length == 0 && toRemove.length == 0)
 				$("#updateMessage").html("No changes were made.");
 			else
 			{
@@ -118,18 +124,21 @@
 			<p>The following is a list of people who have expressed interest in the Art Show or are presently considered Artists
 			by the Registration system.</p>
 			<p>To authorize/deauthorize people as Artists, check or uncheck the "Artist?" box as appropriate then click the button
-			below the list.</p>
+			below the list. <?php if(DoesUserBelongHere("ArtShowLead")) { ?>If the artist has applied for this year's
+            show, the "Manage Inventory" link will let you view and update their art inventory.<?php } ?></p>
 			<div class="standardTable">
 				<form id="artistForm" method="post">
 				<table>
-					<tr><th>Name</th><th>Artist?</th><th>Email</th><th>Applied?</th></tr>
+					<tr><th>Name</th><th>Display Name</th></th><th>Artist?</th><th>Email</th><th>Applied?</th><th>Inventories</th></tr>
 <?php
 					foreach($people as $person)
 					{
-						echo "<tr><td>" . $person["Name"] . "</td><td style=\"text-align: center;\"><input type=\"checkbox\" id=\"" . 
-							$person["PeopleID"] . "\" current=\"" . $person["Artist"] . "\" " .
-							($person["Artist"] == 1 ? "checked" : "") . "/></td><td>" . $person["Email"] . "</td><td style=\"text-align: center;\"><input type=\"checkbox\" " .
-							($person["Applied"] == 1 ? "checked" : "") . " disabled /></td></tr>\r\n";
+						echo "<tr><td>" . $person["Name"] . "</td><td>" . $person["DisplayName"] . "</td><td style=\"text-align: center;\"><input type=\"checkbox\" id=\"" . 
+                            $person["PeopleID"] . "\" current=\"" . $person["Artist"] . "\" " .
+                            ($person["Artist"] == 1 ? "checked" : "") . "/></td><td>" . $person["Email"] . "</td><td style=\"text-align: center;\"><input type=\"checkbox\" " .
+                            ($person["Applied"] == 1 ? "checked" : "") . " disabled /></td><td style=\"text-align: center;\">" . 
+                            ($person["Applied"] == 1 && DoesUserBelongHere("ArtShowLead") ? "<a href=\"artistSubmissions.php?attendID=" . $person["ArtistAttendingID"] . 
+                            "\">Manage Inventory</a>" : "") . "</td></tr>\r\n";
 					} ?>
 				</table>
 				<br />

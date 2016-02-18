@@ -77,6 +77,9 @@
             this.NumGrid = new System.Windows.Forms.NumericUpDown();
             this.label20 = new System.Windows.Forms.Label();
             this.ChkIsEAP = new System.Windows.Forms.CheckBox();
+            this.label21 = new System.Windows.Forms.Label();
+            this.TxtShippingDetails = new System.Windows.Forms.TextBox();
+            this.ChkCharity = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.NumTables)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumGrid)).BeginInit();
             this.SuspendLayout();
@@ -85,7 +88,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(19, 48);
+            this.label1.Location = new System.Drawing.Point(33, 48);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(97, 16);
             this.label1.TabIndex = 1;
@@ -103,7 +106,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(35, 74);
+            this.label2.Location = new System.Drawing.Point(45, 74);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(85, 16);
             this.label2.TabIndex = 3;
@@ -132,7 +135,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(414, 74);
+            this.label3.Location = new System.Drawing.Point(431, 74);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(62, 16);
             this.label3.TabIndex = 7;
@@ -150,7 +153,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(422, 48);
+            this.label4.Location = new System.Drawing.Point(432, 48);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(61, 16);
             this.label4.TabIndex = 5;
@@ -206,7 +209,7 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(19, 171);
+            this.label8.Location = new System.Drawing.Point(19, 173);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(50, 16);
             this.label8.TabIndex = 13;
@@ -215,7 +218,7 @@
             // TxtArtistNum
             // 
             this.TxtArtistNum.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TxtArtistNum.Location = new System.Drawing.Point(104, 168);
+            this.TxtArtistNum.Location = new System.Drawing.Point(104, 170);
             this.TxtArtistNum.Name = "TxtArtistNum";
             this.TxtArtistNum.ReadOnly = true;
             this.TxtArtistNum.Size = new System.Drawing.Size(50, 22);
@@ -225,7 +228,7 @@
             // 
             this.ChkIsAttending.AutoSize = true;
             this.ChkIsAttending.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ChkIsAttending.Location = new System.Drawing.Point(22, 193);
+            this.ChkIsAttending.Location = new System.Drawing.Point(22, 195);
             this.ChkIsAttending.Name = "ChkIsAttending";
             this.ChkIsAttending.Size = new System.Drawing.Size(96, 20);
             this.ChkIsAttending.TabIndex = 17;
@@ -272,7 +275,7 @@
             // 
             this.ChkElectricity.AutoSize = true;
             this.ChkElectricity.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ChkElectricity.Location = new System.Drawing.Point(22, 262);
+            this.ChkElectricity.Location = new System.Drawing.Point(22, 264);
             this.ChkElectricity.Name = "ChkElectricity";
             this.ChkElectricity.Size = new System.Drawing.Size(195, 20);
             this.ChkElectricity.TabIndex = 19;
@@ -283,7 +286,7 @@
             // 
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(192, 171);
+            this.label11.Location = new System.Drawing.Point(210, 171);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(117, 16);
             this.label11.TabIndex = 15;
@@ -291,7 +294,7 @@
             // 
             // NumTables
             // 
-            this.NumTables.Location = new System.Drawing.Point(333, 168);
+            this.NumTables.Location = new System.Drawing.Point(333, 170);
             this.NumTables.Maximum = new decimal(new int[] {
             10,
             0,
@@ -305,7 +308,7 @@
             // 
             this.label12.AutoSize = true;
             this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label12.Location = new System.Drawing.Point(19, 290);
+            this.label12.Location = new System.Drawing.Point(19, 292);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(47, 16);
             this.label12.TabIndex = 20;
@@ -314,18 +317,18 @@
             // TxtExhibitNotes
             // 
             this.TxtExhibitNotes.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TxtExhibitNotes.Location = new System.Drawing.Point(80, 287);
+            this.TxtExhibitNotes.Location = new System.Drawing.Point(72, 289);
             this.TxtExhibitNotes.Multiline = true;
             this.TxtExhibitNotes.Name = "TxtExhibitNotes";
             this.TxtExhibitNotes.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.TxtExhibitNotes.Size = new System.Drawing.Size(300, 108);
+            this.TxtExhibitNotes.Size = new System.Drawing.Size(302, 108);
             this.TxtExhibitNotes.TabIndex = 21;
             // 
             // label14
             // 
             this.label14.AutoSize = true;
             this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label14.Location = new System.Drawing.Point(435, 249);
+            this.label14.Location = new System.Drawing.Point(435, 246);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(118, 16);
             this.label14.TabIndex = 28;
@@ -363,7 +366,7 @@
             // 
             this.label15.AutoSize = true;
             this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label15.Location = new System.Drawing.Point(451, 353);
+            this.label15.Location = new System.Drawing.Point(451, 382);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(102, 16);
             this.label15.TabIndex = 34;
@@ -377,7 +380,7 @@
             "Pending",
             "Approved",
             "Rejected"});
-            this.CmbStatus.Location = new System.Drawing.Point(559, 352);
+            this.CmbStatus.Location = new System.Drawing.Point(559, 381);
             this.CmbStatus.Name = "CmbStatus";
             this.CmbStatus.Size = new System.Drawing.Size(188, 21);
             this.CmbStatus.TabIndex = 35;
@@ -386,7 +389,7 @@
             // 
             this.label16.AutoSize = true;
             this.label16.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label16.Location = new System.Drawing.Point(423, 382);
+            this.label16.Location = new System.Drawing.Point(456, 411);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(97, 16);
             this.label16.TabIndex = 36;
@@ -395,16 +398,16 @@
             // TxtStatusReason
             // 
             this.TxtStatusReason.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TxtStatusReason.Location = new System.Drawing.Point(526, 379);
+            this.TxtStatusReason.Location = new System.Drawing.Point(559, 408);
             this.TxtStatusReason.Name = "TxtStatusReason";
-            this.TxtStatusReason.Size = new System.Drawing.Size(221, 22);
+            this.TxtStatusReason.Size = new System.Drawing.Size(188, 22);
             this.TxtStatusReason.TabIndex = 37;
             // 
             // BtnSave
             // 
             this.BtnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.BtnSave.Font = new System.Drawing.Font("Lucida Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnSave.Location = new System.Drawing.Point(617, 433);
+            this.BtnSave.Location = new System.Drawing.Point(617, 444);
             this.BtnSave.Name = "BtnSave";
             this.BtnSave.Size = new System.Drawing.Size(130, 27);
             this.BtnSave.TabIndex = 40;
@@ -416,7 +419,7 @@
             // 
             this.BtnInventory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.BtnInventory.Font = new System.Drawing.Font("Lucida Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnInventory.Location = new System.Drawing.Point(481, 433);
+            this.BtnInventory.Location = new System.Drawing.Point(481, 444);
             this.BtnInventory.Name = "BtnInventory";
             this.BtnInventory.Size = new System.Drawing.Size(130, 27);
             this.BtnInventory.TabIndex = 41;
@@ -428,7 +431,7 @@
             // 
             this.BtnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.BtnClose.Font = new System.Drawing.Font("Lucida Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnClose.Location = new System.Drawing.Point(345, 433);
+            this.BtnClose.Location = new System.Drawing.Point(345, 444);
             this.BtnClose.Name = "BtnClose";
             this.BtnClose.Size = new System.Drawing.Size(130, 27);
             this.BtnClose.TabIndex = 42;
@@ -441,7 +444,7 @@
             this.ChkHasBadge.AutoSize = true;
             this.ChkHasBadge.Enabled = false;
             this.ChkHasBadge.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ChkHasBadge.Location = new System.Drawing.Point(22, 216);
+            this.ChkHasBadge.Location = new System.Drawing.Point(22, 218);
             this.ChkHasBadge.Name = "ChkHasBadge";
             this.ChkHasBadge.Size = new System.Drawing.Size(157, 20);
             this.ChkHasBadge.TabIndex = 18;
@@ -452,7 +455,7 @@
             // 
             this.LblMessage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.LblMessage.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LblMessage.Location = new System.Drawing.Point(19, 404);
+            this.LblMessage.Location = new System.Drawing.Point(19, 415);
             this.LblMessage.Name = "LblMessage";
             this.LblMessage.Size = new System.Drawing.Size(320, 56);
             this.LblMessage.TabIndex = 43;
@@ -462,7 +465,7 @@
             // 
             this.label17.AutoSize = true;
             this.label17.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label17.Location = new System.Drawing.Point(422, 408);
+            this.label17.Location = new System.Drawing.Point(49, 411);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(98, 16);
             this.label17.TabIndex = 38;
@@ -471,7 +474,7 @@
             // TxtLocationCode
             // 
             this.TxtLocationCode.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TxtLocationCode.Location = new System.Drawing.Point(526, 405);
+            this.TxtLocationCode.Location = new System.Drawing.Point(153, 408);
             this.TxtLocationCode.Name = "TxtLocationCode";
             this.TxtLocationCode.Size = new System.Drawing.Size(221, 22);
             this.TxtLocationCode.TabIndex = 39;
@@ -516,7 +519,7 @@
             // 
             this.ChkPrintShop.AutoSize = true;
             this.ChkPrintShop.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ChkPrintShop.Location = new System.Drawing.Point(22, 239);
+            this.ChkPrintShop.Location = new System.Drawing.Point(22, 241);
             this.ChkPrintShop.Name = "ChkPrintShop";
             this.ChkPrintShop.Size = new System.Drawing.Size(116, 20);
             this.ChkPrintShop.TabIndex = 44;
@@ -525,7 +528,7 @@
             // 
             // NumGrid
             // 
-            this.NumGrid.Location = new System.Drawing.Point(333, 190);
+            this.NumGrid.Location = new System.Drawing.Point(333, 192);
             this.NumGrid.Maximum = new decimal(new int[] {
             10,
             0,
@@ -539,7 +542,7 @@
             // 
             this.label20.AutoSize = true;
             this.label20.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label20.Location = new System.Drawing.Point(192, 193);
+            this.label20.Location = new System.Drawing.Point(228, 192);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(99, 16);
             this.label20.TabIndex = 45;
@@ -556,11 +559,44 @@
             this.ChkIsEAP.Text = "Emerging Artist Program";
             this.ChkIsEAP.UseVisualStyleBackColor = true;
             // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label21.Location = new System.Drawing.Point(444, 356);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(109, 16);
+            this.label21.TabIndex = 48;
+            this.label21.Text = "Shipping Details:";
+            // 
+            // TxtShippingDetails
+            // 
+            this.TxtShippingDetails.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TxtShippingDetails.Location = new System.Drawing.Point(559, 353);
+            this.TxtShippingDetails.Name = "TxtShippingDetails";
+            this.TxtShippingDetails.Size = new System.Drawing.Size(188, 22);
+            this.TxtShippingDetails.TabIndex = 49;
+            // 
+            // ChkCharity
+            // 
+            this.ChkCharity.AutoSize = true;
+            this.ChkCharity.Enabled = false;
+            this.ChkCharity.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ChkCharity.Location = new System.Drawing.Point(22, 145);
+            this.ChkCharity.Name = "ChkCharity";
+            this.ChkCharity.Size = new System.Drawing.Size(124, 20);
+            this.ChkCharity.TabIndex = 50;
+            this.ChkCharity.Text = "Artist is a Charity";
+            this.ChkCharity.UseVisualStyleBackColor = true;
+            // 
             // FrmArtistDetails
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(772, 472);
+            this.ClientSize = new System.Drawing.Size(772, 483);
+            this.Controls.Add(this.ChkCharity);
+            this.Controls.Add(this.label21);
+            this.Controls.Add(this.TxtShippingDetails);
             this.Controls.Add(this.ChkIsEAP);
             this.Controls.Add(this.NumGrid);
             this.Controls.Add(this.label20);
@@ -671,5 +707,8 @@
         private System.Windows.Forms.NumericUpDown NumGrid;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.CheckBox ChkIsEAP;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.TextBox TxtShippingDetails;
+        private System.Windows.Forms.CheckBox ChkCharity;
     }
 }

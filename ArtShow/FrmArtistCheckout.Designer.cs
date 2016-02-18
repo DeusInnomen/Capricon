@@ -37,6 +37,7 @@
             this.colShowMedia = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colShowFinalBid = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colShowClaimed = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.SortImages = new System.Windows.Forms.ImageList(this.components);
             this.LstShopItems = new System.Windows.Forms.ListView();
             this.colShopNumber = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colShopLocation = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -58,7 +59,10 @@
             this.BtnMarkClaimed = new System.Windows.Forms.Button();
             this.CmbMarkMode = new System.Windows.Forms.ComboBox();
             this.BtnPrintCheckout = new System.Windows.Forms.Button();
-            this.SortImages = new System.Windows.Forms.ImageList(this.components);
+            this.LblShippingCost = new System.Windows.Forms.Label();
+            this.LblShippingCostText = new System.Windows.Forms.Label();
+            this.LblHangingFees = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // LstShowItems
@@ -111,6 +115,13 @@
             // 
             this.colShowClaimed.Text = "Claimed";
             this.colShowClaimed.Width = 50;
+            // 
+            // SortImages
+            // 
+            this.SortImages.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("SortImages.ImageStream")));
+            this.SortImages.TransparentColor = System.Drawing.Color.Transparent;
+            this.SortImages.Images.SetKeyName(0, "Down.png");
+            this.SortImages.Images.SetKeyName(1, "Up.png");
             // 
             // LstShopItems
             // 
@@ -204,7 +215,7 @@
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(615, 68);
+            this.label2.Location = new System.Drawing.Point(615, 60);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(159, 16);
             this.label2.TabIndex = 73;
@@ -215,7 +226,7 @@
             // 
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(615, 99);
+            this.label3.Location = new System.Drawing.Point(615, 84);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(159, 16);
             this.label3.TabIndex = 74;
@@ -226,7 +237,7 @@
             // 
             this.LblShowTotal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.LblShowTotal.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LblShowTotal.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.LblShowTotal.ForeColor = System.Drawing.Color.Green;
             this.LblShowTotal.Location = new System.Drawing.Point(780, 36);
             this.LblShowTotal.Name = "LblShowTotal";
             this.LblShowTotal.Size = new System.Drawing.Size(81, 16);
@@ -237,8 +248,8 @@
             // 
             this.LblShopTotal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.LblShopTotal.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LblShopTotal.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.LblShopTotal.Location = new System.Drawing.Point(780, 68);
+            this.LblShopTotal.ForeColor = System.Drawing.Color.Green;
+            this.LblShopTotal.Location = new System.Drawing.Point(780, 60);
             this.LblShopTotal.Name = "LblShopTotal";
             this.LblShopTotal.Size = new System.Drawing.Size(81, 16);
             this.LblShopTotal.TabIndex = 76;
@@ -248,8 +259,8 @@
             // 
             this.LblConShare.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.LblConShare.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LblConShare.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.LblConShare.Location = new System.Drawing.Point(780, 99);
+            this.LblConShare.ForeColor = System.Drawing.Color.Red;
+            this.LblConShare.Location = new System.Drawing.Point(780, 84);
             this.LblConShare.Name = "LblConShare";
             this.LblConShare.Size = new System.Drawing.Size(81, 16);
             this.LblConShare.TabIndex = 77;
@@ -259,10 +270,10 @@
             // 
             this.LblTotalOwed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.LblTotalOwed.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LblTotalOwed.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.LblTotalOwed.Location = new System.Drawing.Point(780, 134);
+            this.LblTotalOwed.ForeColor = System.Drawing.Color.Green;
+            this.LblTotalOwed.Location = new System.Drawing.Point(780, 175);
             this.LblTotalOwed.Name = "LblTotalOwed";
-            this.LblTotalOwed.Size = new System.Drawing.Size(81, 16);
+            this.LblTotalOwed.Size = new System.Drawing.Size(81, 25);
             this.LblTotalOwed.TabIndex = 79;
             this.LblTotalOwed.Text = "$0.00";
             // 
@@ -270,7 +281,7 @@
             // 
             this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(615, 134);
+            this.label5.Location = new System.Drawing.Point(615, 175);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(159, 16);
             this.label5.TabIndex = 78;
@@ -313,18 +324,59 @@
             this.BtnPrintCheckout.UseVisualStyleBackColor = true;
             this.BtnPrintCheckout.Click += new System.EventHandler(this.BtnPrintCheckout_Click);
             // 
-            // SortImages
+            // LblShippingCost
             // 
-            this.SortImages.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("SortImages.ImageStream")));
-            this.SortImages.TransparentColor = System.Drawing.Color.Transparent;
-            this.SortImages.Images.SetKeyName(0, "Down.png");
-            this.SortImages.Images.SetKeyName(1, "Up.png");
+            this.LblShippingCost.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.LblShippingCost.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LblShippingCost.ForeColor = System.Drawing.Color.Gray;
+            this.LblShippingCost.Location = new System.Drawing.Point(780, 132);
+            this.LblShippingCost.Name = "LblShippingCost";
+            this.LblShippingCost.Size = new System.Drawing.Size(81, 16);
+            this.LblShippingCost.TabIndex = 84;
+            this.LblShippingCost.Text = "$0.00";
+            // 
+            // LblShippingCostText
+            // 
+            this.LblShippingCostText.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.LblShippingCostText.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LblShippingCostText.Location = new System.Drawing.Point(615, 132);
+            this.LblShippingCostText.Name = "LblShippingCostText";
+            this.LblShippingCostText.Size = new System.Drawing.Size(159, 16);
+            this.LblShippingCostText.TabIndex = 83;
+            this.LblShippingCostText.Text = "Shipping Cost:";
+            this.LblShippingCostText.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // LblHangingFees
+            // 
+            this.LblHangingFees.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.LblHangingFees.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LblHangingFees.ForeColor = System.Drawing.Color.Red;
+            this.LblHangingFees.Location = new System.Drawing.Point(780, 108);
+            this.LblHangingFees.Name = "LblHangingFees";
+            this.LblHangingFees.Size = new System.Drawing.Size(81, 16);
+            this.LblHangingFees.TabIndex = 86;
+            this.LblHangingFees.Text = "$0.00";
+            // 
+            // label7
+            // 
+            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(615, 108);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(159, 16);
+            this.label7.TabIndex = 85;
+            this.label7.Text = "Hanging Fees Due:";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // FrmArtistCheckout
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(872, 514);
+            this.Controls.Add(this.LblHangingFees);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.LblShippingCost);
+            this.Controls.Add(this.LblShippingCostText);
             this.Controls.Add(this.BtnPrintCheckout);
             this.Controls.Add(this.CmbMarkMode);
             this.Controls.Add(this.BtnMarkClaimed);
@@ -380,5 +432,9 @@
         private System.Windows.Forms.ComboBox CmbMarkMode;
         private System.Windows.Forms.Button BtnPrintCheckout;
         private System.Windows.Forms.ImageList SortImages;
+        private System.Windows.Forms.Label LblShippingCost;
+        private System.Windows.Forms.Label LblShippingCostText;
+        private System.Windows.Forms.Label LblHangingFees;
+        private System.Windows.Forms.Label label7;
     }
 }

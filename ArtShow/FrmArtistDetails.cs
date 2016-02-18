@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Text;
 using System.Web;
@@ -22,7 +18,7 @@ namespace ArtShow
         {
             InitializeComponent();
 
-            var data = Encoding.ASCII.GetBytes("action=GetArtist&PeopleID=" + person.PeopleID + "&Year=" + Program.Year.ToString());
+            var data = Encoding.ASCII.GetBytes("action=GetArtist&PeopleID=" + person.PeopleID + "&year=" + Program.Year.ToString());
 
             var request = WebRequest.Create(Program.URL + "/functions/artQuery.php");
             request.ContentLength = data.Length;
@@ -45,6 +41,7 @@ namespace ArtShow
                 TxtWebsite.Text = Artist.Website;
                 TxtArtType.Text = Artist.ArtType;
                 TxtArtistNotes.Text = Artist.Notes;
+                ChkCharity.Checked = Artist.IsCharity;
             }
             else
                 Artist = new Artist
@@ -73,6 +70,7 @@ namespace ArtShow
                 TxtLocationCode.Text = Presence.LocationCode;
                 TxtShippingCost.Text = Presence.ShippingCost.ToString();
                 TxtShippingPrepaid.Text = Presence.ShippingPrepaid.ToString();
+                TxtShippingDetails.Text = Presence.ShippingDetails;
                 BtnInventory.Enabled = true;
             }
             else
@@ -91,6 +89,7 @@ namespace ArtShow
 
         private void BtnInventory_Click(object sender, EventArgs e)
         {
+            LblMessage.Text = "";
             var inventory = new FrmArtistInventory(Artist, Presence);
             inventory.ShowDialog();
         }
@@ -120,8 +119,9 @@ namespace ArtShow
             Presence.LocationCode = TxtLocationCode.Text;
             Presence.ShippingCost = TxtShippingCost.TextLength > 0 ? Convert.ToDecimal(TxtShippingCost.Text) : (decimal?) null;
             Presence.ShippingPrepaid = TxtShippingPrepaid.TextLength > 0 ? Convert.ToDecimal(TxtShippingPrepaid.Text) : (decimal?)null;
+            Presence.ShippingDetails = TxtShippingDetails.Text;
 
-            var payload = "action=SaveArtist&Year=" + Program.Year.ToString() + 
+            var payload = "action=SaveArtist&year=" + Program.Year.ToString() + 
                 "&artist=" + HttpUtility.UrlEncode(JsonConvert.SerializeObject(Artist)) +
                 "&presence=" + HttpUtility.UrlEncode(JsonConvert.SerializeObject(Presence));
             var data = Encoding.ASCII.GetBytes(payload);

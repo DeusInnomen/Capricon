@@ -58,11 +58,29 @@ namespace ArtShow
             SaleForm = null;
         }
 
-        private void BtnPrintAllSheets_Click(object sender, EventArgs e)
+        private void BtnPrintAllControlSheets_Click(object sender, EventArgs e)
         {
             var showPieces = GetAllInventory();
             var report = new FrmArtShowControl(showPieces);
             report.ShowDialog();
+        }
+
+        private void BtnPrintAllCheckoutSheets_Click(object sender, EventArgs e)
+        {
+            var data = Encoding.ASCII.GetBytes("action=GetArtistCheckout&year=" + Program.Year.ToString());
+            var request = WebRequest.Create(Program.URL + "/functions/artQuery.php");
+            request.ContentLength = data.Length;
+            request.ContentType = "application/x-www-form-urlencoded";
+            request.Method = "POST";
+            using (var stream = request.GetRequestStream())
+                stream.Write(data, 0, data.Length);
+
+            var response = (HttpWebResponse)request.GetResponse();
+            var results = new StreamReader(response.GetResponseStream()).ReadToEnd();
+            var Items = JsonConvert.DeserializeObject<List<CheckoutItems>>(results);
+
+            var dialog = new FrmArtistCheckoutSheet(Items);
+            dialog.ShowDialog();
         }
 
         private void BtnAuctionSales_Click(object sender, EventArgs e)
@@ -98,7 +116,7 @@ namespace ArtShow
 
         private List<ArtShowItem> GetAllInventory()
         {
-            var data = Encoding.ASCII.GetBytes("action=GetInventory&Year=" + Program.Year);
+            var data = Encoding.ASCII.GetBytes("action=GetInventory&year=" + Program.Year);
 
             var request = WebRequest.Create(Program.URL + "/functions/artQuery.php");
             request.ContentLength = data.Length;
@@ -161,7 +179,7 @@ namespace ArtShow
                 return;
             var filename = dialog.FileName;
 
-            var data = Encoding.ASCII.GetBytes("action=GetInventoryList&Year=" + Program.Year);
+            var data = Encoding.ASCII.GetBytes("action=GetInventoryList&year=" + Program.Year);
             var request = WebRequest.Create(Program.URL + "/functions/artQuery.php");
             request.ContentLength = data.Length;
             request.ContentType = "application/x-www-form-urlencoded";
@@ -197,9 +215,60 @@ namespace ArtShow
             report.ShowDialog();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void BtnWaivedFeesReport_Click(object sender, EventArgs e)
         {
+            var data = Encoding.ASCII.GetBytes("action=GetWaivedFeesReport&year=" + Program.Year);
 
+            var request = WebRequest.Create(Program.URL + "/functions/artQuery.php");
+            request.ContentLength = data.Length;
+            request.ContentType = "application/x-www-form-urlencoded";
+            request.Method = "POST";
+            using (var stream = request.GetRequestStream())
+                stream.Write(data, 0, data.Length);
+
+            var response = (HttpWebResponse)request.GetResponse();
+            var results = new StreamReader(response.GetResponseStream()).ReadToEnd();
+            var records = JsonConvert.DeserializeObject<List<ArtistWithWaivedFees>>(results);
+
+            var report = new FrmArtistsWithWaivedFees(records);
+            report.ShowDialog();
+        }
+
+        private void BtnExportArtistSummary_Click(object sender, EventArgs e)
+        {
+            var dialog = new SaveFileDialog
+            {
+                Title = "Select location to save report...",
+                CheckPathExists = true,
+                CreatePrompt = false,
+                DefaultExt = "csv",
+                Filter = "Comma Separate Values (.csv)|*.csv",
+                OverwritePrompt = true
+            };
+            if (dialog.ShowDialog() == DialogResult.Cancel)
+                return;
+            var filename = dialog.FileName;
+
+            var data = Encoding.ASCII.GetBytes("action=GetArtistsSummaryList&year=" + Program.Year);
+            var request = WebRequest.Create(Program.URL + "/functions/artQuery.php");
+            request.ContentLength = data.Length;
+            request.ContentType = "application/x-www-form-urlencoded";
+            request.Method = "POST";
+            using (var stream = request.GetRequestStream())
+                stream.Write(data, 0, data.Length);
+
+            var response = (HttpWebResponse)request.GetResponse();
+            var results = new StreamReader(response.GetResponseStream()).ReadToEnd();
+            var records = JsonConvert.DeserializeObject<List<ArtistSummary>>(results);
+
+            using (var sw = new StreamWriter(new FileStream(filename, FileMode.Create, FileAccess.Write, FileShare.ReadWrite)))
+            {
+                sw.WriteLine("DisplayName,LegalName,Address1,Address2,City,State,ZipCode,Country,StartDate,EndDate,Location");
+                foreach (var record in records)
+                    sw.WriteLine("\"" + record.DisplayName + "\",\"" + record.LegalName + "\",\"" + record.Address1 + "\",\"" + record.Address2 + "\",\"" + record.City + "\",\"" + 
+                        record.State + "\",\"" + record.ZipCode + "\",\"" + record.Country + "\",\"" + record.StartDate.ToShortDateString() + "\",\"" + 
+                        record.EndDate.ToShortDateString() + "\",\"" + record.Location + "\"");
+            }
         }
     }
 }
