@@ -7,7 +7,7 @@
 	$terms = $_POST["terms"];
 	if($terms != '')
 	{
-		$sql = "SELECT PeopleID, FirstName, LastName, Address1, Address2, City, State, ZipCode, Country, Phone1, Phone1Type, Email, HeardFrom FROM People WHERE ";
+		$sql = "SELECT PeopleID, FirstName, LastName, Address1, Address2, City, State, ZipCode, Country, Phone1, Phone1Type, Email, HeardFrom FROM People WHERE IsCharity = 0 AND ";
 		if(strpos($terms, "@") === false)
 		{
 			if(strpos($terms, " ") === false)

@@ -44,7 +44,7 @@ namespace ArtShow
             using (var stream = request.GetRequestStream())
                 stream.Write(data, 0, data.Length);
 
-            if (artist.IsEAP)
+            if (artist.IsEAP || artist.IsCharity)
                 BtnHangingFees.Enabled = false;
 
             var response = (HttpWebResponse)request.GetResponse();
@@ -71,7 +71,7 @@ namespace ArtShow
                     item.SubItems.Add(piece.Category);
                     item.SubItems.Add(piece.CheckedIn ? "Yes" : "No");
                     item.Tag = piece;
-                    if (piece.FeesPaid || artist.IsEAP) item.BackColor = Color.LightGreen;
+                    if (piece.FeesPaid || Artist.IsEAP || Artist.IsCharity) item.BackColor = Color.LightGreen;
                     lstArtShow.Items.Add(item);
                 }
 
@@ -226,7 +226,7 @@ namespace ArtShow
             foreach (ListViewItem item in lstArtShow.Items)
             {
                 var showItem = (ArtShowItem) item.Tag;
-                if (showItem.FeesPaid) continue;
+                if (showItem.FeesPaid || Artist.IsEAP || Artist.IsCharity) continue;
                 if (showItem.MinimumBid != null && showItem.MinimumBid < 100)
                     feesDue += (decimal) 0.5;
                 else

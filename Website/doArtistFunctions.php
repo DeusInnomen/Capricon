@@ -182,12 +182,19 @@
 	}
 	elseif($task == "AddArtShowItem")
 	{
-		$result = $db->query("SELECT ap.ArtistAttendingID FROM ArtistPresence ap INNER JOIN ArtistDetails ad ON " .
-			"ad.ArtistID = ap.ArtistID WHERE ap.Year = $year AND ad.PeopleID = " . $_SESSION["PeopleID"]);
-		$row = $result->fetch_array();
-		$attendingID = $row["ArtistAttendingID"];
-		$result->close();
-
+        if(!empty($_POST["attendID"])) {
+            $attendingID = $_POST["attendID"];
+            $skipFees = true;
+        }
+        else
+        {
+            $result = $db->query("SELECT ap.ArtistAttendingID FROM ArtistPresence ap INNER JOIN ArtistDetails ad ON " .
+                "ad.ArtistID = ap.ArtistID WHERE ap.Year = $year AND ad.PeopleID = " . $_SESSION["PeopleID"]);
+            $row = $result->fetch_array();
+            $attendingID = $row["ArtistAttendingID"];
+            $result->close();
+            $skipFees = false;
+        }
 		$result = $db->query("SELECT IFNULL(MAX(s.ShowNumber), 0) + 1 AS ShowNumber FROM ArtSubmissions s INNER JOIN " . 
 			"ArtistPresence ap ON ap.ArtistAttendingID = s.ArtistAttendingID WHERE ap.Year = $year");
 		$row = $result->fetch_array();
@@ -195,7 +202,6 @@
 		$result->close();
 		
 		$title = $db->real_escape_string($_POST["showItemTitle"]);
-		//$canPhoto = (isset($_POST["showItemCanPhoto"]) ? 1 : 0);
 		$isOriginal = (isset($_POST["showItemIsOriginal"]) ? 1 : 0);
 		$media = $db->real_escape_string($_POST["showItemOriginalMedia"]);
 		$printNumber = !empty($_POST["showItemPrintNumber"]) ? "'" . $db->real_escape_string($_POST["showItemPrintNumber"]) . "'" : "NULL";
@@ -210,13 +216,15 @@
 			"0, $isOriginal, '$media', $printNumber, $printMaxNumber, $minimumBid, $quickSale, 0)";
 		if($db->query($sql))
 		{
-			// If we have hanging fees in the cart already, update them.
-			$result = $db->query("SELECT * FROM ShoppingCart WHERE PurchaserID = " . $_SESSION["PeopleID"] . " AND ItemTypeName = 'HangingFees'");
-			if($result->num_rows > 0)
-			{
-				$result->close();
-				AddHangingFees();
-			}
+            if(!$skipFees) {
+                // If we have hanging fees in the cart already, update them.
+                $result = $db->query("SELECT * FROM ShoppingCart WHERE PurchaserID = " . $_SESSION["PeopleID"] . " AND ItemTypeName = 'HangingFees'");
+                if($result->num_rows > 0)
+                {
+                    $result->close();
+                    AddHangingFees();
+                }
+            }
 			echo '{ "success": true, "message": "Your item have been successfully added." }';
 		}
 		else
@@ -230,12 +238,19 @@
 	}
 	elseif($task == "AddPrintShopItem")
 	{
-		$result = $db->query("SELECT ap.ArtistAttendingID FROM ArtistPresence ap INNER JOIN ArtistDetails ad ON " .
-			"ad.ArtistID = ap.ArtistID WHERE ap.Year = $year AND ad.PeopleID = " . $_SESSION["PeopleID"]);
-		$row = $result->fetch_array();
-		$attendingID = $row["ArtistAttendingID"];
-		$result->close();
-
+        if(!empty($_POST["attendID"])) {
+            $attendingID = $_POST["attendID"];
+            $skipFees = true;
+        }
+        else
+        {
+            $result = $db->query("SELECT ap.ArtistAttendingID FROM ArtistPresence ap INNER JOIN ArtistDetails ad ON " .
+                "ad.ArtistID = ap.ArtistID WHERE ap.Year = $year AND ad.PeopleID = " . $_SESSION["PeopleID"]);
+            $row = $result->fetch_array();
+            $attendingID = $row["ArtistAttendingID"];
+            $result->close();
+            $skipFees = false;
+        }
 		$result = $db->query("SELECT IFNULL(MAX(s.ShowNumber), 0) + 1 AS ShowNumber FROM ArtSubmissions s INNER JOIN " . 
 			"ArtistPresence ap ON ap.ArtistAttendingID = s.ArtistAttendingID WHERE ap.Year = $year");
 		$row = $result->fetch_array();
@@ -253,14 +268,15 @@
 			"QuickSalePrice, QuantitySent, QuantitySold) VALUES ($attendingID, $showNumber, '$title', '$notes', 1, '$media', " . 
 			"$salePrice, $quantity, 0)"))
 		{
-			// If we have hanging fees in the cart already, update them.
-			$result = $db->query("SELECT * FROM ShoppingCart WHERE PurchaserID = " . $_SESSION["PeopleID"] . " AND ItemTypeName = 'HangingFees'");
-			if($result->num_rows > 0)
-			{
-				$result->close();
-				AddHangingFees();
-			}
-			
+            if(!$skipFees) {
+                // If we have hanging fees in the cart already, update them.
+                $result = $db->query("SELECT * FROM ShoppingCart WHERE PurchaserID = " . $_SESSION["PeopleID"] . " AND ItemTypeName = 'HangingFees'");
+                if($result->num_rows > 0)
+                {
+                    $result->close();
+                    AddHangingFees();
+                }
+            }
 			// If they're adding Print Shop items, set HasPrintShop to 1/true automatically.
 			$db->query("UPDATE ArtistPresence SET HasPrintShop = 1 WHERE ArtistAttendingID = $attendingID");
 			
@@ -322,9 +338,8 @@
 		$toRemove = explode("|", $db->real_escape_string($_POST["remove"]));
 		foreach($toRemove as $id)
 			$db->query("DELETE FROM Permissions WHERE PeopleID = $id AND Permission = 'Artist'");
-			
-		echo '{ "success": true, "message": "Permissions successfully updated.' . 
-		(strlen($sentTo) > 0 ? " The following people were notified: " . substr($sentTo, 2) . "." : "") . '" }';
+
+        echo '{ "success": true, "message": "Permissions successfully updated.' . (strlen($sentTo) > 0 ? " The following people were notified: " . substr($sentTo, 2) . "." : "") . '" }';        
 	}
 	elseif($task == "FindPeople")
 	{
@@ -450,6 +465,79 @@
 		
 		echo '{ "success": true, "message": "Requests successfully updated." }';
 	}
+    elseif($task == "AddCharityToShow")
+    {
+		$artistID = $db->real_escape_string($_POST["id"]);
+        $result = $db->query("SELECT ArtistAttendingID FROM ArtistPresnce WHERE ArtistID = $artistID AND Year = $year");
+    	if($result->num_rows == 0)
+        {
+			$result = $db->query("SELECT IFNULL(MAX(ArtistNumber), 1) + 1 AS ArtistNumber FROM ArtistPresence WHERE Year = $year");
+			$row = $result->fetch_array();
+			$number = $row["ArtistNumber"];
+			$result->close();
+
+			$db->query("INSERT INTO ArtistPresence (ArtistID, Year, ArtistNumber, IsAttending, AgentName, AgentContact, " .
+				"ShippingPref, ShippingAddress, NeedsElectricity, NumTables, NumGrid, HasPrintShop, Notes, Status, StatusReason, FeesWaivedReason) " .
+                "VALUES ($artistID, $year, $number, 1, NULL, NULL, NULL, NULL, 0, 1, 0, 0, '', 'Approved', '', 'Charity')");
+            echo '{ "success": true, "message": "Charity added to the art show." }';
+        }
+        else
+        {
+            $result->close();
+            echo '{ "success": false, "message": "This charity is already part of this year\'s art show." }';
+        }
+    }
+    elseif($task == "AddNewCharity")
+    {
+        $name = $db->real_escape_string($_POST["name"]);
+        $db->query("INSERT INTO People (FirstName, LastName, Address1, City, Country, Email, Password, BadgeName, Registered, IsCharity) VALUES " .
+            "('Charity', 'Auction', '555 Main Street', 'Chicago', 'USA', '', '', '$name', NOW(), 1)");
+        $peopleID = $db->insert_id;
+        $db->query("INSERT INTO Permissions (PeopleID, Permission, Expiration) VALUES ($peopleID, 'Artist', NULL)");
+        $db->query("INSERT INTO ArtistDetails (PeopleID, DisplayName, LegalName, IsPro, IsEAP, CanPhoto, Website, ArtType, Notes) VALUES " .
+            "($peopleID, '$name', '$name', 0, 0, 1, '', '', 'Charity')");
+		echo '{ "success": true, "message": "Charity successfully added." }';
+    }
+    elseif($task == "EditArtShowItem")
+    {
+        $artID = $_POST["artID"];
+        $title = $db->real_escape_string($_POST["showItemTitle"]);
+		$isOriginal = (isset($_POST["showItemIsOriginal"]) ? 1 : 0);
+		$media = $db->real_escape_string($_POST["showItemOriginalMedia"]);
+		$printNumber = !empty($_POST["showItemPrintNumber"]) ? "'" . $db->real_escape_string($_POST["showItemPrintNumber"]) . "'" : "NULL";
+		$printMaxNumber = !empty($_POST["showItemMaxPrintNumber"]) ? "'" . $db->real_escape_string($_POST["showItemMaxPrintNumber"]) . "'" : "NULL";
+		$minimumBid = !empty($_POST["showItemMinimumBid"]) ? $db->real_escape_string($_POST["showItemMinimumBid"]) : "NULL";
+		$minimumBid = str_replace("$", "", $minimumBid);
+		$notes = $db->real_escape_string($_POST["showItemNotes"]);
+
+        if($db->query("UPDATE ArtSubmissions SET Title = '$title', Notes = '$notes', IsOriginal = $isOriginal, OriginalMedia = '$media', PrintNumber = $printNumber, PrintMaxNumber = $printMaxNumber, MinimumBid = $minimumBid WHERE ArtID = $artID"))
+        {
+            echo '{ "success": true, "message": "Item successfully edited." }';
+        }
+        else
+        {
+            echo '{ "success": false, "message": "Failed to edit item: ' . $db->error . '" }';
+        }
+    }
+    elseif($task == "EditPrintShopItem")
+    {
+        $artID = $_POST["artID"];
+		$title = $db->real_escape_string($_POST["printItemTitle"]);
+		$media = $db->real_escape_string($_POST["printItemOriginalMedia"]);
+		$quantity = $db->real_escape_string($_POST["printItemQuantity"]);
+		$salePrice = !empty($_POST["printItemSalePrice"]) ? $db->real_escape_string($_POST["printItemSalePrice"]) : "NULL";
+		$notes = $db->real_escape_string($_POST["printItemNotes"]);
+
+        if($db->query("UPDATE ArtSubmissions SET Title = '$title', Notes = '$notes', OriginalMedia = '$media', QuickSalePrice = $salePrice, QuantitySent = $quantity WHERE ArtID = $artID"))
+        {
+            echo '{ "success": true, "message": "Item successfully edited." }';
+        }
+        else
+        {
+            echo '{ "success": false, "message": "Failed to edit item: ' . $db->error . '" }';
+        }
+
+    }
 	else
 		echo '{ "success": false, "message": "Unknown request submitted." }';
 ?>

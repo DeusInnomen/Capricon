@@ -35,14 +35,15 @@
 	$result->close();
 	$source = $badgeTypeID == 1 ? "Comp" : "Generated";
 
-	$sql = "INSERT INTO PurchasedBadges (Year, PeopleID, OneTimeID, PurchaserID, OneTimePurchaserID, BadgeNumber, BadgeTypeID, BadgeName, Department, Status, OriginalPrice, AmountPaid, PaymentSource, PaymentReference, PromoCodeID, CertificateID, Created) VALUES ($year, $peopleID, $oneTimeID, $peopleID, $oneTimeID, $badgeNumber, $badgeTypeID, '$badgename', '$department', 'Paid', 0.00, 0.00, '$source', 'NoCharge', NULL, NULL, NOW())";
+    $sql = "INSERT INTO PurchaseHistory (PurchaserID, PurchaserOneTimeID, ItemTypeName, ItemTypeID, Details, PeopleID, OneTimeID, Price, Year, Purchased, PaymentSource, PaymentReference) VALUES ($peopleID, $oneTimeID, 'Badge', $badgeTypeID, '$badgename', $peopleID, $oneTimeID, 0.00, $year, NOW(), '$source', 'NoCharge')";
+    $db->query($sql);
+    $recordID = $db->insert_id;
+
+    $sql = "INSERT INTO PurchasedBadges (Year, PeopleID, OneTimeID, PurchaserID, OneTimePurchaserID, BadgeNumber, BadgeTypeID, BadgeName, Department, Status, OriginalPrice, AmountPaid, PaymentSource, PaymentReference, PromoCodeID, CertificateID, RecordID, Created) VALUES ($year, $peopleID, $oneTimeID, $peopleID, $oneTimeID, $badgeNumber, $badgeTypeID, '$badgename', '$department', 'Paid', 0.00, 0.00, '$source', 'NoCharge', NULL, NULL, $recordID, NOW())";
 	if($db->query($sql) === false)
 		echo '{ "success": false, "message": "' . $db->error . '" }';
 	else
 	{
-		$sql = "INSERT INTO PurchaseHistory (PurchaserID, PurchaserOneTimeID, ItemTypeName, ItemTypeID, Details, PeopleID, OneTimeID, Price, Year, Purchased, PaymentSource, PaymentReference) VALUES ($peopleID, $oneTimeID, 'Badge', $badgeTypeID, '$badgename', $peopleID, $oneTimeID, 0.00, $year, NOW(), '$source', 'NoCharge')";
-		$db->query($sql);
-		
 		$order = $_POST["resultsOrder"] == "Department" ? "Department, LastName" : "BadgeNumber";
 		$sql  = "SELECT pb.BadgeID, pb.BadgeNumber, CASE WHEN pb.PeopleID IS NULL THEN CONCAT(ot.FirstName, ' ', ot.LastName) ELSE CONCAT(p.FirstName, ' ', p.LastName) END AS Name, pb.BadgeName, CASE WHEN pb.PeopleID IS NULL THEN ot.FirstName ELSE p.FirstName END AS FirstName, CASE WHEN pb.PeopleID IS NULL THEN ot.LastName ELSE p.LastName END AS LastName, pb.Department, bt.Description AS BadgeType FROM PurchasedBadges pb JOIN BadgeTypes bt ON pb.BadgeTypeID = bt.BadgeTypeID LEFT OUTER JOIN People p ON p.PeopleID = pb.PeopleID LEFT OUTER JOIN OneTimeRegistrations ot ON ot.OneTimeID = pb.OneTimeID WHERE pb.Year = $year AND pb.Department IS NOT NULL AND pb.BadgeTypeID IN (3, 4, 5) ORDER BY $order";
 		
