@@ -60,8 +60,10 @@
 								if(DoesUserBelongHere("ArtShowStaff"))
 								{
 									echo '<hr><div class="headertitle">Art Show Functions</div>' . "\r\n";
-									if(DoesUserBelongHere("ArtShowLead"))
+									if(DoesUserBelongHere("ArtShowLead")) {
 										echo '<li><a href="manageArtists.php">Manage Artists List</a></li>' . "\r\n";
+                                        echo '<li><a href="manageCharities.php">Manage Charities</a></li>' . "\r\n";
+                                    }
 									echo '<li><a href="manageArtistRequests.php">View Requests to Show Art</a></li>' . "\r\n";
 									echo '<li><a href="artistExhibitsSummary.php">Artist Exhibits Summary</a></li>' . "\r\n";
 								}

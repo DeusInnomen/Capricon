@@ -14,20 +14,20 @@ namespace ArtShow
 {
     public partial class FrmArtistSearch : Form
     {
-        private int SortColumn = 2;
+        private int SortColumn = 1;
         private bool SortAscend = true;
         
         public FrmArtistSearch()
         {
             InitializeComponent();
-            LstPeople.Columns[2].ImageIndex = 0;
+            LstPeople.Columns[1].ImageIndex = 0;
         }
 
         private void BtnSearch_Click(object sender, EventArgs e)
         {
             var payload = "action=GetArtists";
-            if (TxtID.TextLength > 0)
-                payload += "&year=" + Program.Year.ToString() + "&id=" + TxtID.Text;
+            if (TxtDisplayName.TextLength > 0)
+                payload += "&whereField=DisplayName&whereTerm=" + TxtDisplayName.Text + "&whereSimilar=true";
             else if (TxtLastName.TextLength > 0)
                 payload += "&whereField=LastName&whereTerm=" + TxtLastName.Text + "&whereSimilar=true";
             else if (TxtEmail.TextLength > 0)
@@ -51,6 +51,10 @@ namespace ArtShow
             foreach (var user in users)
             {
                 var item = new ListViewItem {Text = user.PeopleID.ToString()};
+                if(user.DisplayName != null && user.DisplayName != "")
+                    item.SubItems.Add(user.DisplayName);
+                else
+                    item.SubItems.Add(user.Name);
                 item.SubItems.Add(user.FirstName);
                 item.SubItems.Add(user.LastName);
                 item.SubItems.Add(user.Email);
@@ -59,8 +63,12 @@ namespace ArtShow
                 else
                     item.SubItems.Add("");
                 item.Tag = user;
+                if (user.IsCharity)
+                    item.BackColor = Color.LightGreen;
                 LstPeople.Items.Add(item);
             }
+            LstPeople.ListViewItemSorter = new ListViewItemComparer(SortColumn, SortAscend);
+            LstPeople.Sort();
             LstPeople.EndUpdate();
         }
 
@@ -96,7 +104,7 @@ namespace ArtShow
         private void BtnClear_Click(object sender, EventArgs e)
         {
             TxtEmail.Text = "";
-            TxtID.Text = "";
+            TxtDisplayName.Text = "";
             TxtLastName.Text = "";
         }
 

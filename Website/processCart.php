@@ -226,18 +226,20 @@
 					$result = $db->query($sql);
 					$row = $result->fetch_array();
 					$badgeNumber = $row["Next"];
-					$badgeName = $db->real_escape_string($item["ItemDetail"]);
+                    $badgeName = $item["ItemDetail"];
+					$badgeNameEscaped = $db->real_escape_string($badgeName);
 					$result->close();
 					
-					$sql = "INSERT INTO PurchasedBadges (Year, PeopleID, PurchaserID, BadgeNumber, BadgeTypeID, BadgeName, Status, " . 
-						"OriginalPrice, AmountPaid, PaymentSource, PaymentReference, PromoCodeID, CertificateID, Created) VALUES ($year, " .
-						"$recipientID, $id, $badgeNumber, $badgeTypeID, '$badgeName', '" . ($isPending ? "Pending" : "Paid") . 
-						"', $originalPrice, $price, '$source', '$ref', $promoID, $certID, NOW())";
-					$db->query($sql);
-					
 					$sql = "INSERT INTO PurchaseHistory (PurchaserID, ItemTypeName, ItemTypeID, Details, PeopleID, Price, Year, Purchased, " .
-						"PaymentSource, PaymentReference) VALUES ($id, 'Badge', $badgeTypeID, '$badgeName', $recipientID, $price, $year, NOW(), " . 
+						"PaymentSource, PaymentReference) VALUES ($id, 'Badge', $badgeTypeID, '$badgeNameEscaped', $recipientID, $price, $year, NOW(), " . 
 						"'$source', '$ref')";
+					$db->query($sql);
+                    $recordID = $db->insert_id;
+					
+					$sql = "INSERT INTO PurchasedBadges (Year, PeopleID, PurchaserID, BadgeNumber, BadgeTypeID, BadgeName, Status, " . 
+						"OriginalPrice, AmountPaid, PaymentSource, PaymentReference, PromoCodeID, CertificateID, RecordID, Created) VALUES ($year, " .
+						"$recipientID, $id, $badgeNumber, $badgeTypeID, '$badgeNameEscaped', '" . ($isPending ? "Pending" : "Paid") . 
+						"', $originalPrice, $price, '$source', '$ref', $promoID, $certID, $recordID, NOW())";
 					$db->query($sql);
 					
 					$message .= "<li>$year $description " . (!stripos($description, "badge") ? "Badge " : "") .
@@ -351,7 +353,7 @@
 					$result->close();
 					
 					$db->query("INSERT INTO PurchaseHistory (PurchaserID, PeopleID, ItemTypeName, ItemTypeID, Details, Price, Year, Purchased, " .
-							"PaymentSource, PaymentReference) VALUES ($id, $id, 'HangingFees', $attendingID, '$details', $price, $year, NOW(), " . 
+							"PaymentSource, PaymentReference) VALUES ($id, $id, 'Hanging Fees', $attendingID, '$details', $price, $year, NOW(), " . 
 							"'$source', '$ref')");
 
 					$message .= "<li>Art Show Hanging Fees for $details for '$recipientName'</li>";

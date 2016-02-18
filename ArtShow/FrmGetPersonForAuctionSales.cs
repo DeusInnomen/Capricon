@@ -53,7 +53,7 @@ namespace ArtShow
 
         private void BtnSearch_Click(object sender, EventArgs e)
         {
-            var payload = "action=GetPeopleForPickup&Year=" + Program.Year.ToString();
+            var payload = "action=GetPeopleForPickup&year=" + Program.Year.ToString();
             if (TxtID.TextLength > 0)
                 payload += "&id=" + TxtID.Text;
             else if (TxtLastName.TextLength > 0)

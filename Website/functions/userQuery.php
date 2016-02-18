@@ -315,9 +315,10 @@
 		$badgeNumber = $row["Next"];
 		$result->close();
 
-		$sql = "INSERT INTO PurchasedBadges (Year, PeopleID, PurchaserID, BadgeNumber, BadgeTypeID, BadgeName, Department, Status, OriginalPrice, AmountPaid, PaymentSource, PaymentReference, PromoCodeID, CertificateID, Created) VALUES ($year, $peopleID, $purchaserID, $badgeNumber, 1, '$badgeName', '$department', 'Paid', 0.00, 0.00, 'Comp', 'NoCharge', NULL, NULL, NOW())";
-		$db->query($sql);
 		$sql = "INSERT INTO PurchaseHistory (PurchaserID, ItemTypeName, ItemTypeID, Year, Details, PeopleID, Price, Purchased, PaymentSource, PaymentReference) VALUES ($purchaserID, 'Badge', 1, $year, '$badgeName', $peopleID, $oneTimeID, 0.00, NOW(), 'Comp', 'NoCharge')";
+		$db->query($sql);
+        $recordID = $db->insert_id;
+		$sql = "INSERT INTO PurchasedBadges (Year, PeopleID, PurchaserID, BadgeNumber, BadgeTypeID, BadgeName, Department, Status, OriginalPrice, AmountPaid, PaymentSource, PaymentReference, PromoCodeID, CertificateID, RecordID, Created) VALUES ($year, $peopleID, $purchaserID, $badgeNumber, 1, '$badgeName', '$department', 'Paid', 0.00, 0.00, 'Comp', 'NoCharge', NULL, NULL, $recordID, NOW())";
 		$db->query($sql);
 
 		$response["result"] = "Success";

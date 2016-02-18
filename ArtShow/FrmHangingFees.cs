@@ -88,8 +88,10 @@ namespace ArtShow
                     source = "Waived";
             }
 
-            var payload = "action=PayHangingFees&fees=" + FeesDue + "&id=" + Presence.ArtistAttendingID + "&Year=" + 
+            var payload = "action=PayHangingFees&fees=" + FeesDue + "&id=" + Presence.ArtistAttendingID + "&year=" + 
                 Program.Year.ToString() + "&source=" + source + "&reference=" + reference;
+            if (source == "Waived")
+                payload += "&reason" + TxtWaiverReason.Text;
 
             var data = Encoding.ASCII.GetBytes(payload);
             var request = WebRequest.Create(Program.URL + "/functions/artQuery.php");
