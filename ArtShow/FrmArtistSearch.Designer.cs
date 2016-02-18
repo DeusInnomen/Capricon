@@ -43,10 +43,11 @@
             this.label2 = new System.Windows.Forms.Label();
             this.TxtEmail = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.TxtID = new System.Windows.Forms.TextBox();
+            this.TxtDisplayName = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.BtnClear = new System.Windows.Forms.Button();
             this.BtnNewAccount = new System.Windows.Forms.Button();
+            this.colDisplayName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SuspendLayout();
             // 
             // LstPeople
@@ -56,6 +57,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.LstPeople.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.colID,
+            this.colDisplayName,
             this.colFirstName,
             this.colLastName,
             this.colEmail,
@@ -66,7 +68,7 @@
             this.LstPeople.Location = new System.Drawing.Point(0, 87);
             this.LstPeople.MultiSelect = false;
             this.LstPeople.Name = "LstPeople";
-            this.LstPeople.Size = new System.Drawing.Size(744, 346);
+            this.LstPeople.Size = new System.Drawing.Size(906, 346);
             this.LstPeople.SmallImageList = this.SortImages;
             this.LstPeople.TabIndex = 10;
             this.LstPeople.UseCompatibleStateImageBehavior = false;
@@ -109,7 +111,11 @@
             // BtnSearch
             // 
             this.BtnSearch.Font = new System.Drawing.Font("Lucida Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+<<<<<<< HEAD
             this.BtnSearch.Location = new System.Drawing.Point(327, 51);
+=======
+            this.BtnSearch.Location = new System.Drawing.Point(492, 51);
+>>>>>>> 125873defb062e01225d6164327f8cbaffde51c4
             this.BtnSearch.Name = "BtnSearch";
             this.BtnSearch.Size = new System.Drawing.Size(130, 27);
             this.BtnSearch.TabIndex = 7;
@@ -120,7 +126,7 @@
             // TxtLastName
             // 
             this.TxtLastName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TxtLastName.Location = new System.Drawing.Point(138, 35);
+            this.TxtLastName.Location = new System.Drawing.Point(125, 37);
             this.TxtLastName.Name = "TxtLastName";
             this.TxtLastName.Size = new System.Drawing.Size(159, 22);
             this.TxtLastName.TabIndex = 0;
@@ -130,7 +136,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(45, 38);
+            this.label1.Location = new System.Drawing.Point(43, 40);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(76, 16);
             this.label1.TabIndex = 1;
@@ -140,7 +146,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(13, 65);
+            this.label2.Location = new System.Drawing.Point(20, 65);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(99, 16);
             this.label2.TabIndex = 5;
@@ -149,7 +155,7 @@
             // TxtEmail
             // 
             this.TxtEmail.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TxtEmail.Location = new System.Drawing.Point(138, 61);
+            this.TxtEmail.Location = new System.Drawing.Point(125, 62);
             this.TxtEmail.Name = "TxtEmail";
             this.TxtEmail.Size = new System.Drawing.Size(159, 22);
             this.TxtEmail.TabIndex = 4;
@@ -159,35 +165,35 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(85, 12);
+            this.label4.Location = new System.Drawing.Point(22, 12);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(34, 16);
+            this.label4.Size = new System.Drawing.Size(97, 16);
             this.label4.TabIndex = 3;
-            this.label4.Text = "ID #:";
+            this.label4.Text = "Display Name:";
             // 
-            // TxtID
+            // TxtDisplayName
             // 
-            this.TxtID.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TxtID.Location = new System.Drawing.Point(138, 9);
-            this.TxtID.Name = "TxtID";
-            this.TxtID.Size = new System.Drawing.Size(159, 22);
-            this.TxtID.TabIndex = 2;
-            this.TxtID.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.SearchField_KeyPress);
+            this.TxtDisplayName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TxtDisplayName.Location = new System.Drawing.Point(125, 9);
+            this.TxtDisplayName.Name = "TxtDisplayName";
+            this.TxtDisplayName.Size = new System.Drawing.Size(159, 22);
+            this.TxtDisplayName.TabIndex = 2;
+            this.TxtDisplayName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.SearchField_KeyPress);
             // 
             // label5
             // 
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(324, 9);
+            this.label5.Location = new System.Drawing.Point(489, 9);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(425, 39);
+            this.label5.Size = new System.Drawing.Size(405, 39);
             this.label5.TabIndex = 6;
             this.label5.Text = "You may search for only one of these at any time. Leave all fields blank to show " +
-    "all artists.";
+    "all artists. Green background indicates charities.";
             // 
             // BtnClear
             // 
             this.BtnClear.Font = new System.Drawing.Font("Lucida Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnClear.Location = new System.Drawing.Point(463, 51);
+            this.BtnClear.Location = new System.Drawing.Point(628, 51);
             this.BtnClear.Name = "BtnClear";
             this.BtnClear.Size = new System.Drawing.Size(130, 27);
             this.BtnClear.TabIndex = 8;
@@ -198,7 +204,7 @@
             // BtnNewAccount
             // 
             this.BtnNewAccount.Font = new System.Drawing.Font("Lucida Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnNewAccount.Location = new System.Drawing.Point(599, 51);
+            this.BtnNewAccount.Location = new System.Drawing.Point(764, 51);
             this.BtnNewAccount.Name = "BtnNewAccount";
             this.BtnNewAccount.Size = new System.Drawing.Size(130, 27);
             this.BtnNewAccount.TabIndex = 9;
@@ -206,16 +212,21 @@
             this.BtnNewAccount.UseVisualStyleBackColor = true;
             this.BtnNewAccount.Click += new System.EventHandler(this.BtnNewAccount_Click);
             // 
+            // colDisplayName
+            // 
+            this.colDisplayName.Text = "Display Name";
+            this.colDisplayName.Width = 166;
+            // 
             // FrmArtistSearch
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(744, 433);
+            this.ClientSize = new System.Drawing.Size(906, 433);
             this.Controls.Add(this.BtnNewAccount);
             this.Controls.Add(this.BtnClear);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.TxtID);
+            this.Controls.Add(this.TxtDisplayName);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.TxtEmail);
             this.Controls.Add(this.label1);
@@ -247,10 +258,11 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox TxtEmail;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox TxtID;
+        private System.Windows.Forms.TextBox TxtDisplayName;
         private System.Windows.Forms.ImageList SortImages;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button BtnClear;
         private System.Windows.Forms.Button BtnNewAccount;
+        private System.Windows.Forms.ColumnHeader colDisplayName;
     }
 }

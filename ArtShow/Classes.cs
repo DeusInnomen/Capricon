@@ -80,6 +80,10 @@ namespace ArtShow
         public string ParentName { get; set; }
         [JsonProperty("ParentContact")]
         public string ParentContact { get; set; }
+        [JsonProperty("IsCharity"), JsonConverter(typeof(BoolConverter))]
+        public bool IsCharity { get; set; }
+        [JsonProperty("DisplayName")]
+        public string DisplayName { get; set; }
 
         public string LastError { get; set; }
 
@@ -150,6 +154,8 @@ namespace ArtShow
         public bool IsPro { get; set; }
         [JsonProperty("IsEAP"), JsonConverter(typeof(BoolConverter))]
         public bool IsEAP { get; set; }
+        [JsonProperty("IsCharity"), JsonConverter(typeof(BoolConverter))]
+        public bool IsCharity { get; set; }
         [JsonProperty("Website")]
         public string Website { get; set; }
         [JsonProperty("ArtType")]
@@ -180,6 +186,8 @@ namespace ArtShow
         public decimal? ShippingCost { get; set; }
         [JsonProperty("ShippingPrepaid")]
         public decimal? ShippingPrepaid { get; set; }
+        [JsonProperty("ShippingDetails")]
+        public string ShippingDetails { get; set; }
         [JsonProperty("NeedsElectricity"), JsonConverter(typeof(BoolConverter))]
         public bool NeedsElectricity { get; set; }
         [JsonProperty("NumTables")]
@@ -196,6 +204,8 @@ namespace ArtShow
         public string StatusReason { get; set; }
         [JsonProperty("LocationCode")]
         public string LocationCode { get; set; }
+        [JsonProperty("FeesWaivedReason")]
+        public string FeesWaivedReason { get; set; }        
     }
 
     public class ArtShowItem
@@ -292,7 +302,7 @@ namespace ArtShow
             }
             var payload = "action=";
             payload += ArtID != null ? "UpdateShowItem" : "NewShowItem";
-            payload += "&id=" + ArtistAttendingID + "&Year=" + Program.Year.ToString() + "&item=" + HttpUtility.UrlEncode(JsonConvert.SerializeObject(this));
+            payload += "&id=" + ArtistAttendingID + "&year=" + Program.Year.ToString() + "&item=" + HttpUtility.UrlEncode(JsonConvert.SerializeObject(this));
             var data = Encoding.ASCII.GetBytes(payload);
 
             var request = WebRequest.Create(Program.URL + "/functions/artQuery.php");
@@ -361,7 +371,7 @@ namespace ArtShow
             }
             var payload = "action=";
             payload += ArtID != null ? "UpdateShopItem" : "NewShopItem";
-            payload += "&id=" + ArtistAttendingID + "&Year=" + Program.Year.ToString() + "&item=" + HttpUtility.UrlEncode(JsonConvert.SerializeObject(this));
+            payload += "&id=" + ArtistAttendingID + "&year=" + Program.Year.ToString() + "&item=" + HttpUtility.UrlEncode(JsonConvert.SerializeObject(this));
             var data = Encoding.ASCII.GetBytes(payload);
 
             var request = WebRequest.Create(Program.URL + "/functions/artQuery.php");
@@ -462,6 +472,10 @@ namespace ArtShow
         public decimal? ShippingCost { get; set; }
         [JsonProperty("ShippingPrepaid")]
         public decimal? ShippingPrepaid { get; set; }
+        [JsonProperty("ShippingDetails")]
+        public string ShippingDetails { get; set; }
+        [JsonProperty("IsEAP"), JsonConverter(typeof(BoolConverter))]
+        public bool IsEAP { get; set; }
 
         public string LastError { get; set; }
 
@@ -496,7 +510,7 @@ namespace ArtShow
         {
             get
             {
-                if (IsPrintShop) return 0;
+                if (IsPrintShop || IsEAP) return 0;
                 if (MinimumBid != null && MinimumBid < 100)
                     return (decimal)0.50;
                 return (decimal)1.00;
@@ -505,7 +519,7 @@ namespace ArtShow
 
         public decimal HangingFeeOwed
         {
-            get { return !IsPrintShop ? (!FeesPaid ? HangingFee : 0) : 0; }
+            get { return !IsPrintShop ? (!FeesPaid && !IsEAP ? HangingFee : 0) : 0; }
         }
     }
 
@@ -976,5 +990,73 @@ namespace ArtShow
         public int ArtShowPieces { get; set; }
         [JsonProperty("PrintShopPieces")]
         public int PrintShopPieces { get; set; }
+    }
+
+    public class ArtistWithWaivedFees
+    {
+        [JsonProperty("DisplayName")]
+        public string ArtistName { get; set; }
+        [JsonProperty("FeesWaivedReason")]
+        public string WaiverReason { get; set; }
+    }
+
+    public class ArtistSummary
+    {
+        [JsonProperty("DisplayName")]
+        public string DisplayName { get; set; }
+        [JsonProperty("LegalName")]
+        public string LegalName { get; set; }
+        [JsonProperty("Address1")]
+        public string Address1 { get; set; }
+        [JsonProperty("Address2")]
+        public string Address2 { get; set; }
+        [JsonProperty("City")]
+        public string City { get; set; }
+        [JsonProperty("State")]
+        public string State { get; set; }
+        [JsonProperty("ZipCode")]
+        public string ZipCode { get; set; }
+        [JsonProperty("Country")]
+        public string Country { get; set; }
+        [JsonProperty("StartDate")]
+        public DateTime StartDate { get; set; }
+        [JsonProperty("EndDate")]
+        public DateTime EndDate { get; set; }
+        [JsonProperty("Location")]
+        public string Location { get; set; }
+    }
+
+    public class ReceiptDetails
+    {
+        [JsonProperty("RecordID")]
+        public int RecordID { get; set; }
+        [JsonProperty("PurchaserID")]
+        public int? PurchaserID { get; set; }
+        [JsonProperty("PurchaserOneTimeID")]
+        public int? PurchaserOneTimeID { get; set; }
+        [JsonProperty("FirstName")]
+        public string FirstName { get; set; }
+        [JsonProperty("LastName")]
+        public string LastName { get; set; }
+        [JsonProperty("BadgeName")]
+        public string BadgeName { get; set; }
+        [JsonProperty("ItemTypeName")]
+        public string ItemTypeName { get; set; }
+        [JsonProperty("TotalPrice")]
+        public decimal TotalPrice { get; set; }
+        [JsonProperty("PiecePrint")]
+        public decimal? PiecePrint { get; set; }
+        [JsonProperty("DisplayName")]
+        public string DisplayName { get; set; }
+        [JsonProperty("Title")]
+        public string Title { get; set; }
+        [JsonProperty("Purchased")]
+        public DateTime Purchased { get; set; }
+        [JsonProperty("PaymentSource")]
+        public string PaymentSource { get; set; }
+        [JsonProperty("PaymentReference")]
+        public string PaymentReference { get; set; }
+        [JsonProperty("CheckNumber")]
+        public string CheckNumber { get; set; }
     }
 }

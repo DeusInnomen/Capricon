@@ -30,7 +30,7 @@ namespace ArtShow
             StripeFirstTry = true;
             Text = "Items Won by " + Person.Name;
 
-            var payload = "action=GetItemsForPickup&id=" + Person.BadgeID + "&Year=" + Program.Year.ToString();
+            var payload = "action=GetItemsForPickup&id=" + Person.BadgeID + "&year=" + Program.Year.ToString();
             var data = Encoding.ASCII.GetBytes(payload);
 
             var request = WebRequest.Create(Program.URL + "/functions/artQuery.php");
@@ -119,7 +119,7 @@ namespace ArtShow
                     source = "Waived";
             }
 
-            var payload = "action=SellAuctionItems&Year=" + Program.Year.ToString() + "&total=" + TotalDue + "&id=" + 
+            var payload = "action=SellAuctionItems&year=" + Program.Year.ToString() + "&total=" + TotalDue + "&id=" + 
                 Person.BadgeID + "&pieces=" + Items.Count + "&source=" + source + "&reference=" + reference;
 
             var data = Encoding.ASCII.GetBytes(payload);
