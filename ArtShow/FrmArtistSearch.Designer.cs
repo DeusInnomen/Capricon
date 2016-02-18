@@ -111,11 +111,7 @@
             // BtnSearch
             // 
             this.BtnSearch.Font = new System.Drawing.Font("Lucida Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-<<<<<<< HEAD
-            this.BtnSearch.Location = new System.Drawing.Point(327, 51);
-=======
             this.BtnSearch.Location = new System.Drawing.Point(492, 51);
->>>>>>> 125873defb062e01225d6164327f8cbaffde51c4
             this.BtnSearch.Name = "BtnSearch";
             this.BtnSearch.Size = new System.Drawing.Size(130, 27);
             this.BtnSearch.TabIndex = 7;
