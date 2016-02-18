@@ -28,7 +28,7 @@ namespace ArtShow
             Presence = presence;
             CmbMarkMode.SelectedIndex = 0;
 
-            var data = Encoding.ASCII.GetBytes("action=GetArtistCheckout&id=" + Presence.ArtistAttendingID + "&Year=" + Program.Year.ToString());
+            var data = Encoding.ASCII.GetBytes("action=GetArtistCheckout&id=" + Presence.ArtistAttendingID + "&year=" + Program.Year.ToString());
             var request = WebRequest.Create(Program.URL + "/functions/artQuery.php");
             request.ContentLength = data.Length;
             request.ContentType = "application/x-www-form-urlencoded";
@@ -42,6 +42,8 @@ namespace ArtShow
 
             decimal showTotal = 0;
             decimal shopTotal = 0;
+            decimal feesDue = 0;
+            decimal shippingCost = 0;
 
             foreach (var piece in Items.FindAll(i => !i.IsPrintShop))
             {
@@ -62,6 +64,14 @@ namespace ArtShow
                 item.SubItems.Add(piece.Claimed ? "Yes" : "No");
                 item.Tag = piece;
                 LstShowItems.Items.Add(item);
+<<<<<<< HEAD
+=======
+                if (piece.FeesPaid || piece.IsEAP) continue;
+                if (piece.MinimumBid != null && piece.MinimumBid < 100)
+                    feesDue += (decimal)0.5;
+                else
+                    feesDue += 1;
+>>>>>>> 125873defb062e01225d6164327f8cbaffde51c4
             }
 
             foreach (var piece in Items.FindAll(i => i.IsPrintShop))
@@ -81,11 +91,25 @@ namespace ArtShow
                 shopTotal += (decimal)piece.QuantitySold * (decimal)piece.QuickSalePrice;
             }
 
+            if (Presence.ShippingCost != null && Presence.ShippingPrepaid != null)
+            {
+                shippingCost = (decimal)Presence.ShippingCost - (decimal)Presence.ShippingPrepaid;
+                LblShippingCost.Text = shippingCost.ToString("C");
+                LblShippingCost.ForeColor = shippingCost >= 0 ? Color.Red : Color.Green;
+                LblShippingCostText.Text = shippingCost >= 0 ? "Shipping Cost" : "Shipping Refund";
+            }
+            else
+            {
+                LblShippingCostText.Text = "";
+                LblShippingCost.Text = "";
+            }                
+
             LblShowTotal.Text = showTotal.ToString("C");
             LblShopTotal.Text = shopTotal.ToString("C");
             var conShare = (showTotal + shopTotal)*(decimal) 0.1;
             LblConShare.Text = conShare.ToString("C");
-            LblTotalOwed.Text = (showTotal + shopTotal - conShare).ToString("C");
+            LblHangingFees.Text = feesDue.ToString("C");
+            LblTotalOwed.Text = (showTotal + shopTotal - conShare - feesDue - shippingCost).ToString("C");
         }
 
         private void FrmArtistCheckout_Load(object sender, EventArgs e)

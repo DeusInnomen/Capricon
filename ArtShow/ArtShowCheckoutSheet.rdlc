@@ -121,6 +121,10 @@
           <DataField>ShippingCost</DataField>
           <rd:TypeName>System.Nullable`1[[System.Decimal, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
         </Field>
+        <Field Name="ShippingDetails">
+          <DataField>ShippingDetails</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
         <Field Name="ShippingPrepaid">
           <DataField>ShippingPrepaid</DataField>
           <rd:TypeName>System.Nullable`1[[System.Decimal, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
@@ -2366,7 +2370,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Return Postage:</Value>
+                                  <Value>=IIF(Fields!ShippingCost.Value - Fields!ShippingPrepaid.Value &gt;= 0, "Shipping Cost:", "Shipping Refund:")</Value>
                                   <Style>
                                     <FontFamily>Verdana</FontFamily>
                                   </Style>
@@ -2414,7 +2418,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!ShippingCost.Value</Value>
+                                  <Value>=IIF(Not(IsNothing(Fields!ShippingCost.Value)) And Not(IsNothing(Fields!ShippingPrepaid.Value)), Fields!ShippingCost.Value - Fields!ShippingPrepaid.Value, 0)</Value>
                                   <Style>
                                     <FontFamily>Verdana</FontFamily>
                                     <Format>'$'0.00;('$'0.00)</Format>
@@ -2791,6 +2795,7 @@
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
@@ -4298,6 +4303,98 @@
                     </TablixCell>
                   </TablixCells>
                 </TablixRow>
+                <TablixRow>
+                  <Height>0.25in</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox99">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value />
+                                  <Style>
+                                    <FontFamily>Verdana</FontFamily>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox99</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>DimGray</Color>
+                              <Style>None</Style>
+                            </Border>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                        <ColSpan>8</ColSpan>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell />
+                    <TablixCell />
+                    <TablixCell />
+                    <TablixCell />
+                    <TablixCell />
+                    <TablixCell />
+                    <TablixCell />
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>0.25in</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox122">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>="Shipping Details: " + IIF(Fields!ShippingDetails.Value &lt;&gt; "", Fields!ShippingDetails.Value, "None")</Value>
+                                  <Style>
+                                    <FontFamily>Verdana</FontFamily>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox122</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>DimGray</Color>
+                              <Style>None</Style>
+                            </Border>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                        <ColSpan>8</ColSpan>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell />
+                    <TablixCell />
+                    <TablixCell />
+                    <TablixCell />
+                    <TablixCell />
+                    <TablixCell />
+                    <TablixCell />
+                  </TablixCells>
+                </TablixRow>
               </TablixRows>
             </TablixBody>
             <TablixColumnHierarchy>
@@ -4348,11 +4445,6 @@
                     <TablixMember />
                     <TablixMember />
                     <TablixMember />
-                    <TablixMember>
-                      <Visibility>
-                        <Hidden>=IsNothing(Fields!ShippingCost.Value)</Hidden>
-                      </Visibility>
-                    </TablixMember>
                     <TablixMember />
                     <TablixMember />
                     <TablixMember>
@@ -4428,7 +4520,7 @@
               </SortExpression>
             </SortExpressions>
             <Left>0.02778in</Left>
-            <Height>4.20834in</Height>
+            <Height>4.45834in</Height>
             <Width>8.88255in</Width>
             <Style>
               <Border>
@@ -4437,7 +4529,7 @@
             </Style>
           </Tablix>
         </ReportItems>
-        <Height>4.20834in</Height>
+        <Height>4.70834in</Height>
         <Style />
       </Body>
       <Width>9in</Width>
@@ -4478,7 +4570,6 @@
                   </Paragraphs>
                   <rd:DefaultName>Textbox17</rd:DefaultName>
                   <Top>0.02083in</Top>
-                  <Left>0in</Left>
                   <Height>0.25in</Height>
                   <Width>1.75692in</Width>
                   <Style>

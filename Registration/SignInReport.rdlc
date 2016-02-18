@@ -17,7 +17,7 @@
           </TablixColumns>
           <TablixRows>
             <TablixRow>
-              <Height>0.44792in</Height>
+              <Height>0.5625in</Height>
               <TablixCells>
                 <TablixCell>
                   <CellContents>
@@ -28,9 +28,9 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!FirstName.Value + " " + Fields!LastName.Value + VbCrLf + Fields!BadgeName.Value + " (#" + Convert.ToString(Fields!BadgeNumber.Value) + ")"</Value>
+                              <Value>=Fields!FirstName.Value + " " + Fields!LastName.Value + VbCrLf + Fields!BadgeName.Value + " (#" + Convert.ToString(Fields!BadgeNumber.Value) + ")" + VbCrLf + Fields!Email.Value + VbCrLf</Value>
                               <Style>
-                                <FontSize>8pt</FontSize>
+                                <FontSize>12pt</FontSize>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -49,6 +49,7 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
+                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
                 <TablixCell>
@@ -60,9 +61,9 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!Address1.Value + " " + Fields!Address2.Value + VbCrLf + Fields!City.Value + ", " + Fields!State.Value + " " + Fields!ZipCode.Value + " " + Fields!Country.Value + VbCrLf + Fields!Email.Value</Value>
+                              <Value>=Fields!Address1.Value + " " + Fields!Address2.Value + VbCrLf + VbCrLf + Fields!City.Value + ", " + Fields!State.Value + " " + Fields!ZipCode.Value + " " + Fields!Country.Value + VbCrLf</Value>
                               <Style>
-                                <FontSize>8pt</FontSize>
+                                <FontSize>12pt</FontSize>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -129,6 +130,7 @@
                           <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
+                        <VerticalAlign>Bottom</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -161,7 +163,7 @@
             <Value>=Fields!LastName.Value</Value>
           </SortExpression>
         </SortExpressions>
-        <Height>0.44792in</Height>
+        <Height>0.5625in</Height>
         <Width>7.5in</Width>
         <Style>
           <Border>

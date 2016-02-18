@@ -31,7 +31,7 @@ namespace ArtShow
             Purchaser = purchaser;
             StripeFirstTry = true;
 
-            var data = Encoding.ASCII.GetBytes("action=GetPrintShopList&Year=" + Program.Year.ToString());
+            var data = Encoding.ASCII.GetBytes("action=GetPrintShopList&year=" + Program.Year.ToString());
             var request = WebRequest.Create(Program.URL + "/functions/artQuery.php");
             request.ContentLength = data.Length;
             request.ContentType = "application/x-www-form-urlencoded";
@@ -210,7 +210,7 @@ namespace ArtShow
             }
 
             var items = (from ListViewItem item in LstCart.Items select (PrintShopItem)item.Tag).ToList();
-            var payload = "action=RecordPrintShopSales&Year=" + Program.Year.ToString() + "&total=" + total;
+            var payload = "action=RecordPrintShopSales&year=" + Program.Year.ToString() + "&total=" + total;
             if (Purchaser.PeopleID != null)
                 payload += "&purchaser=" + Purchaser.PeopleID;
             else
