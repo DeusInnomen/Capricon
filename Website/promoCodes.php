@@ -6,9 +6,9 @@
 	elseif(!DoesUserBelongHere("Treasurer"))
 		header('Location: /index.php');
 	
-	$thisYear = date("n") >= 3 ? date("Y") + 1: date("Y");
+	$year = isset($_GET['year']) ? $_GET['year'] : (date("n") >= 3 ? date("Y") + 1: date("Y"));
 	$codes = array();
-	$result = $db->query("SELECT CodeID, Code, Discount, Expiration, UsesLeft, COUNT(pb.PromoCodeID) AS Uses FROM PromoCodes pc LEFT OUTER JOIN PurchasedBadges pb ON pc.CodeID = pb.PromoCodeID WHERE pc.Year = $thisYear AND (Expiration IS NULL OR DATE_ADD(Expiration, INTERVAL 3 MONTH) > NOW()) GROUP BY CodeID, Code, Discount, Expiration, UsesLeft ORDER BY Expiration DESC, Code ASC");
+	$result = $db->query("SELECT CodeID, Code, Discount, Expiration, UsesLeft, COUNT(pb.PromoCodeID) AS Uses FROM PromoCodes pc LEFT OUTER JOIN PurchasedBadges pb ON pc.CodeID = pb.PromoCodeID WHERE pc.Year = $year AND (Expiration IS NULL OR DATE_ADD(Expiration, INTERVAL 3 MONTH) > NOW()) GROUP BY CodeID, Code, Discount, Expiration, UsesLeft ORDER BY Expiration DESC, Code ASC");
 	if($result->num_rows > 0)
 	{
 		while($row = $result->fetch_array())
@@ -223,7 +223,7 @@
 				<p>With Selected:<br />
 					<input type="submit" onclick="setExpire(); return false;" value="Set Expiration:" disabled>
 					<input type="text" id="oldExpireDate" name="oldExpireDate" style="width: 75px;" disabled />
-					<input type="checkbox" id="oldNeverExpire" name="oldNeverExpire" checked disabled />No Expiration</label><br />
+					<input type="checkbox" id="oldNeverExpire" name="oldNeverExpire" checked disabled />No Expiration<br />
 					<input type="submit" onclick="setUses(); return false;" value="Set Uses Left:" disabled>							
 					<input type="number" id="oldMaxUses" name="oldMaxUses" style="width: 50px;" min="1" value="5" disabled />
 					<label><input type="checkbox" id="oldUnlimitedUses" name="oldUnlimitedUses" checked disabled />Unlimited Uses</label><br />
@@ -233,7 +233,6 @@
 				</form>
 				<div class="noticeSection" id="codeActionNotice"><?php echo $message; ?></div>
 <?php } else { ?>
-				</table>
 				<p style="font-size: 0.9em;">There are no promotional codes that are active or recently expired at this time.</p>
 <? } ?>
 				<p style="font-size: 0.9em;">Promotional Codes that have been expired for longer than 3 months will no longer be viewable.</p>
