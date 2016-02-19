@@ -7,9 +7,9 @@
 	$showLinks = DoesUserBelongHere("RegLead");
 	$step = 20;
 
-	$thisYear = date("n") >= 3 ? date("Y") + 1: date("Y");
+    $year = isset($_POST['year']) ? $_POST['year'] : (date("n") >= 3 ? date("Y") + 1: date("Y"));
     $sql  = "SELECT SQL_CALC_FOUND_ROWS pb.BadgeID, pb.BadgeNumber, CASE WHEN pb.PeopleID IS NULL THEN CONCAT(ot.FirstName, ' ', ot.LastName) ELSE CONCAT(p.FirstName, ' ', p.LastName) END AS Name, pb.BadgeName, pb.Created AS Purchased, CASE WHEN pb.PeopleID IS NULL THEN ot.LastName ELSE p.LastName END AS LastName, CASE WHEN pb.PeopleID IS NULL THEN ot.FirstName ELSE p.FirstName END AS FirstName, pb.PaymentSource, pb.PaymentReference, pc.Code, pb.Status FROM PurchasedBadges pb LEFT OUTER JOIN People p ON p.PeopleID = pb.PeopleID LEFT OUTER JOIN OneTimeRegistrations ot ON ot.OneTimeID = pb.OneTimeID LEFT OUTER JOIN PromoCodes pc ON pc.CodeID = pb.PromoCodeID ";
-    $where = "WHERE pb.Year = $thisYear ";
+    $where = "WHERE pb.Year = $year ";
 	
 	$order = $_POST["sort"];
 	$start = isset($_POST["start"]) ? $_POST["start"] : 0;

@@ -5,6 +5,7 @@
 		header('Location: /login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
 	elseif(!DoesUserBelongHere("RegStaff"))
 		header('Location: /index.php');
+	$year = isset($_GET['year']) ? $_GET['year'] : (date("n") >= 3 ? date("Y") + 1: date("Y"));
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
@@ -30,7 +31,7 @@
 			$("#badgename").val("");
 		}
 		$(document).ready(function() {
-			$.post("getRegistrations.php", { lastname: "", badgename: "", sort: "Purchased" }, function(result) {
+		    $.post("getRegistrations.php", { lastname: "", badgename: "", sort: "Purchased", year: "<?php echo $year; ?>" }, function(result) {
 				$("#regList").html(result);
 			});
 			$(document).keypress(function(e){
@@ -45,7 +46,7 @@
 				var badgename = $("#badgename").val();
 				var sort = $("#sort").val();
 				if($("#sortDesc").is(':checked')) sort += " DESC";
-				$.post("getRegistrations.php", { lastname: lastname, badgename: badgename, sort: sort }, function(result) {
+				$.post("getRegistrations.php", { lastname: lastname, badgename: badgename, sort: sort, year: "<?php echo $year; ?>" }, function(result) {
 					$("#regList").html(result);
 				});
 				return false;
@@ -57,7 +58,7 @@
 			var badgename = $("#badgename").val();
 			var sort = $("#sort").val();
 			if($("#sortDesc").is(':checked')) sort += " DESC";
-			$.post("getRegistrations.php", { lastname: lastname, badgename: badgename, sort: sort, start: start }, function(result) {
+			$.post("getRegistrations.php", { lastname: lastname, badgename: badgename, sort: sort, start: start, year: "<?php echo $year; ?>" }, function(result) {
 				$("#regList").html(result);
 			});
         }
