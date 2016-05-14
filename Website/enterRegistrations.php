@@ -269,6 +269,7 @@
 					<label>Main Attendee's Badge Name: <input type="text" name="mainBadge" id="mainBadge" style="width: 125px;"></label>
 					<label>Listed Badge Price: $<input type="number" name="badgePrice" id="badgePrice" style="width: 50px;" onchange="toggleRegFormData();" 
 						step="1.0" value="<?php echo $badgePrice; ?>"></label><br>
+    				<div class="headertitle">Additional Attendees</div>
 					<label>Attendee #1 First Name: <input type="text" name="addlFName1" id="addlFName1" style="width: 100px;" onkeyup="toggleRegFormData();"></label> 
 					<label>Last Name: <input type="text" name="addlLName1" id="addlLName1" style="width: 100px;"></label> 
 					<label>Badge Name: <input type="text" name="addlBadge1" id="addlBadge1" style="width: 125px;"></label>
