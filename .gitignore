@@ -213,3 +213,6 @@ ModelManifest.xml
 
 # Website Settings File
 dsn.inc
+
+# Publishing Files
+*.phppub

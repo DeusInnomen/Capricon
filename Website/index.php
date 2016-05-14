@@ -95,6 +95,7 @@
 										echo '<li><a href="viewPendingRegistrations.php">View Pending Registrations</a></li>' . "\r\n";
 										echo '<li><a href="issueCompBadges.php">Issue Complimentary Badges</a></li>' . "\r\n";
 										echo '<li><a href="staffBadges.php">Issue Staff Badges</a></li>' . "\r\n";
+                                        echo '<li><a href="promoCodesUsed.php">View Promo Codes Used</a></li>' . "\r\n";
 									}
 									if(DoesUserBelongHere("Treasurer"))
 										echo '<li><a href="treasurerStats.php">Treasurer Statistics</a></li>' . "\r\n";
