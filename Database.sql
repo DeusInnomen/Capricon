@@ -1,13 +1,20 @@
 -- phpMyAdmin SQL Dump
--- version 3.3.10.4
+-- version 4.6.0
 -- http://www.phpmyadmin.net
 --
 -- Host: mysql.phandemonium.org
--- Generation Time: Feb 15, 2016 at 11:37 AM
--- Server version: 5.6.25
--- PHP Version: 5.6.10
+-- Generation Time: May 19, 2016 at 09:13 AM
+-- Server version: 5.6.25-log
+-- PHP Version: 7.0.6
 
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Database: `capricon_registration`
@@ -32,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `ArtistDetails` (
   `Notes` varchar(500) NOT NULL DEFAULT '',
   PRIMARY KEY (`ArtistID`),
   KEY `fk_ArtistDetails_PeopleID` (`PeopleID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=152 ;
+) ENGINE=InnoDB AUTO_INCREMENT=153 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -64,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `ArtistPresence` (
   `FeesWaivedReason` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`ArtistAttendingID`),
   KEY `fk_ArtistPresence_ArtistID` (`ArtistID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=226 ;
+) ENGINE=InnoDB AUTO_INCREMENT=227 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -78,7 +85,7 @@ CREATE TABLE IF NOT EXISTS `ArtSales` (
   `ArtID` int(8) NOT NULL,
   `Price` decimal(5,2) NOT NULL,
   PRIMARY KEY (`ArtSalesID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=371 ;
+) ENGINE=InnoDB AUTO_INCREMENT=371 DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -111,7 +118,7 @@ CREATE TABLE IF NOT EXISTS `ArtSubmissions` (
   `Claimed` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`ArtID`),
   KEY `fk_ArtSubmissions_ArtistAttendingID` (`ArtistAttendingID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3657 ;
+) ENGINE=InnoDB AUTO_INCREMENT=3657 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -129,7 +136,7 @@ CREATE TABLE IF NOT EXISTS `AvailableBadges` (
   `AvailableOnline` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`AvailableBadgeID`),
   KEY `fk_AvailableBadges_BadgeTypeID` (`BadgeTypeID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=41 ;
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -141,7 +148,7 @@ CREATE TABLE IF NOT EXISTS `BadgeCategory` (
   `CategoryID` int(11) NOT NULL AUTO_INCREMENT,
   `CategoryName` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`CategoryID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -155,7 +162,7 @@ CREATE TABLE IF NOT EXISTS `BadgeTypes` (
   `Description` varchar(50) NOT NULL,
   `CategoryID` int(11) NOT NULL,
   PRIMARY KEY (`BadgeTypeID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=12 ;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -206,7 +213,7 @@ CREATE TABLE IF NOT EXISTS `GiftCertificates` (
   PRIMARY KEY (`CertificateID`),
   KEY `fk_GiftCertificates_PurchaserID` (`PurchaserID`),
   KEY `fk_GiftCertificates_RecipientID` (`Recipient`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=18 ;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -230,7 +237,7 @@ CREATE TABLE IF NOT EXISTS `OneTimeRegistrations` (
   `Phone2Type` enum('Home','Mobile','Work','Other') DEFAULT NULL,
   `LastChanged` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`OneTimeID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=340 ;
+) ENGINE=InnoDB AUTO_INCREMENT=340 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -251,7 +258,7 @@ CREATE TABLE IF NOT EXISTS `PanelIdeas` (
   `Created` datetime NOT NULL,
   PRIMARY KEY (`PanelIdeaID`),
   KEY `fk_PanelIdeas_PeopleID` (`PeopleID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=91 ;
+) ENGINE=InnoDB AUTO_INCREMENT=93 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -313,7 +320,7 @@ CREATE TABLE IF NOT EXISTS `People` (
   `LastChanged` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`PeopleID`),
   KEY `fk_People_ParentID` (`ParentID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1989 ;
+) ENGINE=InnoDB AUTO_INCREMENT=1999 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -356,7 +363,7 @@ CREATE TABLE IF NOT EXISTS `Permissions` (
   PRIMARY KEY (`PermissonID`),
   KEY `fk_Permissions_PeopleID` (`PeopleID`),
   KEY `fk_Permissions_Permission` (`Permission`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=574 ;
+) ENGINE=InnoDB AUTO_INCREMENT=576 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -406,7 +413,7 @@ CREATE TABLE IF NOT EXISTS `ProgramSurvey` (
   `Created` datetime NOT NULL,
   PRIMARY KEY (`SurveyID`),
   KEY `fk_ProgramSurvey_PeopleID` (`PeopleID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=236 ;
+) ENGINE=InnoDB AUTO_INCREMENT=238 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -422,7 +429,7 @@ CREATE TABLE IF NOT EXISTS `PromoCodes` (
   `Expiration` date DEFAULT NULL,
   `UsesLeft` int(3) NOT NULL DEFAULT '-1',
   PRIMARY KEY (`CodeID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=61 ;
+) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -456,7 +463,7 @@ CREATE TABLE IF NOT EXISTS `PurchasedBadges` (
   KEY `fk_PurchasedBadges_BadgeTypeID` (`BadgeTypeID`),
   KEY `fk_PurchasedBadges_PromoCodeID` (`PromoCodeID`),
   KEY `fk_PurchasedBadges_CertificateID` (`CertificateID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3231 ;
+) ENGINE=InnoDB AUTO_INCREMENT=3255 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -483,7 +490,7 @@ CREATE TABLE IF NOT EXISTS `PurchaseHistory` (
   PRIMARY KEY (`RecordID`),
   KEY `fk_PurchaseHistory_PeopleID` (`PeopleID`),
   KEY `fk_PurchaseHistory_PurchaserID` (`PurchaserID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3981 ;
+) ENGINE=InnoDB AUTO_INCREMENT=4005 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -507,7 +514,7 @@ CREATE TABLE IF NOT EXISTS `ShoppingCart` (
   KEY `fk_ShoppingCart_PurchaserID` (`PurchaserID`),
   KEY `fk_ShoppingCart_PromoCodeID` (`PromoCodeID`),
   KEY `fk_ShoppingCart_CertificateID` (`CertificateID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=12 ;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -519,7 +526,7 @@ CREATE TABLE IF NOT EXISTS `SurveyExpertise` (
   `ExpertiseID` int(8) NOT NULL AUTO_INCREMENT,
   `Expertise` varchar(50) NOT NULL,
   PRIMARY KEY (`ExpertiseID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -531,7 +538,7 @@ CREATE TABLE IF NOT EXISTS `SurveyInterests` (
   `InterestID` int(8) NOT NULL AUTO_INCREMENT,
   `Interest` varchar(50) NOT NULL,
   PRIMARY KEY (`InterestID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=39 ;
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=latin1;
 
 --
 -- Constraints for dumped tables
@@ -629,3 +636,7 @@ ALTER TABLE `ShoppingCart`
   ADD CONSTRAINT `fk_ShoppingCart_PeopleID` FOREIGN KEY (`PeopleID`) REFERENCES `People` (`PeopleID`) ON DELETE SET NULL,
   ADD CONSTRAINT `fk_ShoppingCart_PromoCodeID` FOREIGN KEY (`PromoCodeID`) REFERENCES `PromoCodes` (`CodeID`) ON DELETE SET NULL,
   ADD CONSTRAINT `fk_ShoppingCart_PurchaserID` FOREIGN KEY (`PurchaserID`) REFERENCES `People` (`PeopleID`) ON DELETE SET NULL;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
