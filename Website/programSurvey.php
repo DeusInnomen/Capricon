@@ -8,7 +8,7 @@
 		$canCopy = false;
 		//$year = date("n") >= 3 ? date("Y") + 1: date("Y");
 		$year = date("Y") + 1;
-		$result = $db->query("SELECT Website, Biography, DayJob, Expertise, PreferredContact FROM ProgramSurvey WHERE " . 
+		$result = $db->query("SELECT Website, Biography, DayJob, Expertise, PreferredContact, Ethnicity, Gender, Age, Orientation FROM ProgramSurvey WHERE " . 
 		"Year = $year AND PeopleID = " . $_SESSION["PeopleID"]);
 		
 		if($result->num_rows > 0)
@@ -31,6 +31,11 @@
 			$info["Biography"] = "";
 			$info["DayJob"] = "";
 			$info["Expertise"] = "";
+            $info["Accessibility"] = "";
+            $info["Ethnicity"] = "";
+            $info["Gender"] = "";
+            $info["Age"] = "NoAnswer";
+            $info["Orientation"] = "";
 		}
 		
 		$result = $db->query("SELECT ExpertiseID, Expertise FROM SurveyExpertise ORDER BY ExpertiseID");
@@ -53,6 +58,7 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$("select#preferredContact option").each(function() { this.selected = (this.value == "<?php echo $info["PreferredContact"]; ?>"); });
+			$("select#age option").each(function() { this.selected = (this.value == "<?php echo $info["Age"]; ?>"); });
 			$(":submit").click(function () {
 				if(this.name != "doTransfer")
 					$("#continue").val(this.name == "saveContinue" ? "continue" : "");
@@ -78,7 +84,7 @@
 					if(result.success)
 					{
 						if(result.doRedirect)
-							window.location = "/programSurveySchedule.php";
+							window.location = "/programSurveyInterests.php";
 						else
 						{
 							$("#accountSaveMessage").addClass("goodMessage");
@@ -94,9 +100,9 @@
 					$("#biography").prop("readonly", false);
 				}, 'json');
 				return false;
-			});			
+			});
 		});
-		
+
 		function transferSurvey()
 		{
 			$.post("doProgramSurveyFunctions.php", { task: "Transfer" }, function(result) {
@@ -137,6 +143,8 @@
 					<p style="font-style: italic;">We use KonOpas to provide a portable version of the Programming Guide that's friendly to mobile devices and computers alike. The biography you list here will be listed in KonOpas linked to your name so that people may learn more about you.</p>
 					<label for="dayjob" class="fieldLabelShort" >Day Job: </label><br />
 					<input type="text" name="dayjob" id="dayjob" maxlength="100" style="width: 98%;" value="<?php echo $info["DayJob"]; ?>" /><br />
+                    <label for="accessibility" class="fieldLabelShort">Do you have any accessibility issues that we should know about?</label><br />
+                    <textarea id="accessibility" name="accessibility" maxlength="200" rows="2" style="width: 98%;"><?php echo htmlspecialchars($info["Accessibility"]); ?></textarea><br />
 					<label class="fieldLabelShort" >Areas of Expertise: </label><br /> 
 					<div id="expertiseTable">
 					<table>
@@ -155,7 +163,21 @@
 						if($col == 3)
 							$col = 0;
 					}
-					?></table></div><br>
+                    ?></table></div><br>
+                    <p>Capricon is committed to diverse panelist representation on our program items. To help us do that, please consider filling in the following OPTIONAL items of demographic information. All answers will be kept strictly confidential.</p>
+					<label for="ethnicity" class="fieldLabelShort" >Race/Ethnicity: </label><br />
+					<input type="text" name="ethnicity" id="ethnicity" maxlength="100" style="width: 98%;" value="<?php echo $info["Ethnicity"]; ?>" /><br />
+                    <label for="gender" class="fieldLabelShort">Gender: </label><br />
+                    <input type="text" name="gender" id="gender" maxlength="100" style="width: 98%;" value="<?php echo $info["Gender"]; ?>" /><br />
+                    <label for="age" class="fieldLabelShort">Age Range: </label>
+                    <select id="age" name="age" style="width: 30%">
+                        <option value="NoAnswer">No Answer</option>
+                        <option value="Under18">Under 18 Years</option>
+                        <option value="YoungAdult">18 to 24 Years</option>
+                        <option value="Adult">25 Years and Over</option>
+                    </select><br />
+                    <label for="orientation" class="fieldLabelShort">Sexual Orientation: </label><br />
+                    <input type="text" name="orientation" id="orientation" maxlength="100" style="width: 98%;" value="<?php echo $info["Orientation"]; ?>" /><br /><br />
 					<input type="submit" name="saveOnly" value="Save Information" /> 
 					<input style="float: right;" type="submit" name="saveContinue" value="Save Information and Continue" /><br />
 					<input type="hidden" name="task" id="task" value="Page1" />
