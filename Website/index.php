@@ -30,7 +30,7 @@
 			<div class="menubar">
 				<h3>Capricon Registration<br />Main Menu</h3>
 				<ul>
-					<?php	if(isset($_SESSION["PeopleID"]))
+                    <?php	if(isset($_SESSION["PeopleID"]))
 							{
 								echo '<div class="headertitle">Your Profile</div>' . "\r\n";
 								echo '<li><a href="manageAccount.php">Manage Your Account</a></li>' . "\r\n";
@@ -72,6 +72,11 @@
 									echo '<hr><div class="headertitle">Catan Tournament</div>' . "\r\n";
 									echo '<li><a href="viewCatanSignups.php">View Tournament Signups</a></li>' . "\r\n";
 								}
+								if(DoesUserBelongHere("Marketing"))
+								{
+									echo '<hr><div class="headertitle">Marketing</div>' . "\r\n";
+									echo '<li><a href="getMailingAddressList.php">Download Mailing Address List (CSV)</a></li>' . "\r\n";
+								}
 								if(DoesUserBelongHere("RegLead") || DoesUserBelongHere("Ops"))
 								{
 									echo '<hr><div class="headertitle">Administrative Functions</div>' . "\r\n";
@@ -90,7 +95,7 @@
 									echo '<li><a href="registrationStatsGraph.php">Registration Statistics Graph</a></li>' . "\r\n";
 									echo '<li><a href="getCurrentRegCSV.php">Download Registration List (CSV)</a></li>' . "\r\n";
 									if(DoesUserBelongHere("RegLead"))
-									{										
+									{
 										echo '<li><a href="badgeRates.php">View Available Badges and Rates</a></li>' . "\r\n";
 										echo '<li><a href="viewPendingRegistrations.php">View Pending Registrations</a></li>' . "\r\n";
 										echo '<li><a href="issueCompBadges.php">Issue Complimentary Badges</a></li>' . "\r\n";
