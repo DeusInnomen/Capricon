@@ -30,6 +30,7 @@
     <Compile Include="functions\authQuery.php" />
     <Compile Include="functions\salesQuery.php" />
     <Compile Include="functions\userQuery.php" />
+    <Compile Include="getMailingAddressList.php" />
     <Compile Include="includes\dsn.php">
       <Publishable>False</Publishable>
     </Compile>
