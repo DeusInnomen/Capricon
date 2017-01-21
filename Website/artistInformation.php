@@ -88,7 +88,7 @@
 					<label for="legalName" class="fieldLabelShort" >Legal Name (Used for Payment Checks): </label><br />
 					<input type="text" name="legalName" id="legalName" placeholder="Required" style="width: 98%;" value="<?php echo $info["LegalName"]; ?>" /><br />
 					<label for="isPro"><input type="checkbox" name="isPro" id="isPro" <?php echo ($info["IsPro"] ? "checked" : ""); ?> />I am a Professional Artist</label></br />
-					<label for="isEAP"><input type="checkbox" name="isEAP" id="isEAP" <?php echo ($info["IsEAP"] ? "checked" : ""); ?> />I wish to register with the Emerging Artist Program</label> -- <a href="http://capricon.org/capricon35/art-show/eap/" target="_blank">More Info</a></br />
+					<label for="isEAP"><input type="checkbox" name="isEAP" id="isEAP" <?php echo ($info["IsEAP"] ? "checked" : ""); ?> />I wish to register with the Emerging Artist Program</label> -- <a href="http://capricon.org/capricon37/wp-content/uploads/2016/11/Cap37EAPflyer.pdf" target="_blank">More Info</a></br />
 					<label for="canPhoto"><input type="checkbox" name="canPhoto" id="canPhoto" <?php echo ($info["CanPhoto"] ? "checked" : ""); ?> >The convention has permission to photograph my artwork.</label><br /><br />
 					<label for="website" class="fieldLabelShort">Website: </label><br />
 					<input type="url" name="website" id="website" style="width: 98%;" value="<?php echo $info["Website"]; ?>" /><br />
