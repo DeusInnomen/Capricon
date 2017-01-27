@@ -1,55 +1,55 @@
 <?php
-	session_start();
-	include_once('includes/functions.php');
-	DoCleanup();
-	if(!isset($_SESSION["PeopleID"]))
-		header('Location: /login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
-	elseif(!DoesUserBelongHere("RegLead"))
-		header('Location: /index.php');
-	elseif(!isset($_GET["id"]))
-		header('Location: /viewRegistrations.php');
-	else
-	{
-		$message = isset($_POST["message"]) ? $_POST["message"] : "";
-		$id = $_GET["id"];
-		
-		$result = $db->query("SELECT pb.PeopleID, pb.OneTimeID, pb.BadgeID, pb.BadgeNumber, CASE WHEN pb.PeopleID IS NULL THEN CONCAT(ot.FirstName, ' ', ot.LastName) ELSE CONCAT(p.FirstName, ' ', p.LastName) END AS Name, pb.BadgeName, pb.Created AS Purchased, CASE WHEN pb.PeopleID IS NULL THEN ot.LastName ELSE p.LastName END AS LastName, CASE WHEN pb.PeopleID IS NULL THEN ot.FirstName ELSE p.FirstName END AS FirstName, pb.Department, pb.PaymentSource, pb.PaymentReference, pc.Code, pb.BadgeTypeID, pb.AmountPaid, pb.Status FROM PurchasedBadges pb LEFT OUTER JOIN People p ON p.PeopleID = pb.PeopleID LEFT OUTER JOIN OneTimeRegistrations ot ON ot.OneTimeID = pb.OneTimeID LEFT OUTER JOIN PromoCodes pc ON pc.CodeID = pb.PromoCodeID WHERE pb.BadgeID = $id UNION SELECT pb.PeopleID, pb.OneTimeID, pb.BadgeID, pb.BadgeNumber, CASE WHEN pb.PeopleID IS NULL THEN CONCAT(ot.FirstName, ' ', ot.LastName) ELSE CONCAT(p.FirstName, ' ', p.LastName) END AS Name, pb.BadgeName, pb.Created AS Purchased, CASE WHEN pb.PeopleID IS NULL THEN ot.LastName ELSE p.LastName END AS LastName, CASE WHEN pb.PeopleID IS NULL THEN ot.FirstName ELSE p.FirstName END AS FirstName, pb.Department, pb.PaymentSource, pb.PaymentReference, pc.Code, pb.BadgeTypeID, pb.AmountPaid, pb.Status FROM PurchasedBadges pb LEFT OUTER JOIN People p ON p.PeopleID = pb.PeopleID LEFT OUTER JOIN OneTimeRegistrations ot ON ot.OneTimeID = pb.OneTimeID LEFT OUTER JOIN PromoCodes pc ON pc.CodeID = pb.PromoCodeID JOIN PurchasedBadges pb2 ON pb2.PaymentReference = pb.PaymentReference WHERE pb2.BadgeID = $id and pb2.PaymentSource IN ('Stripe', 'PayPal', 'Cash', 'Check')");
-		
-		if($result->num_rows > 0)
-		{
-			$badge = $result->fetch_array();
-			$others = array();
-			while($row = $result->fetch_array())
-				$others[] = $row;
-			$result->close();				
-		}
-		else
-		{
-			$badge = null;
-			$message = "Could not find badge ID #$id!";			
-		}
-		
-		if($badge["PaymentSource"] == "PayPal")
-		{
-			$date1 = new DateTime($badge["Purchased"]);
-			$date2 = new DateTime();
-			$diff = $date2->diff($date1)->days;	
-			if($diff > 60)
-			{
-				$disableRefund = true;
-				$disableMessage = "PayPal purchases older than 60 days cannot be refunded automatically. Contact the Treasurer for assistance.";
-			}
-			else
-				$disableRefund = false;
-		}
-		elseif($badge["PaymentSource"] == "Stripe")
-			$disableRefund = false;
-		else
-		{
-			$disableRefund = true;
-			$disableMessage = "Only badges paid for via Stripe or PayPal can be automatically refunded.";
-		}
-	}
+session_start();
+include_once('includes/functions.php');
+DoCleanup();
+if(!isset($_SESSION["PeopleID"]))
+    header('Location: /login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
+elseif(!DoesUserBelongHere("RegLead"))
+    header('Location: /index.php');
+elseif(!isset($_GET["id"]))
+    header('Location: /viewRegistrations.php');
+else
+{
+    $message = isset($_POST["message"]) ? $_POST["message"] : "";
+    $id = $_GET["id"];
+    
+    $result = $db->query("SELECT pb.PeopleID, pb.OneTimeID, pb.BadgeID, pb.BadgeNumber, CASE WHEN pb.PeopleID IS NULL THEN CONCAT(ot.FirstName, ' ', ot.LastName) ELSE CONCAT(p.FirstName, ' ', p.LastName) END AS Name, pb.BadgeName, pb.Created AS Purchased, CASE WHEN pb.PeopleID IS NULL THEN ot.LastName ELSE p.LastName END AS LastName, CASE WHEN pb.PeopleID IS NULL THEN ot.FirstName ELSE p.FirstName END AS FirstName, pb.Department, pb.PaymentSource, pb.PaymentReference, pc.Code, pb.BadgeTypeID, pb.AmountPaid, pb.Status FROM PurchasedBadges pb LEFT OUTER JOIN People p ON p.PeopleID = pb.PeopleID LEFT OUTER JOIN OneTimeRegistrations ot ON ot.OneTimeID = pb.OneTimeID LEFT OUTER JOIN PromoCodes pc ON pc.CodeID = pb.PromoCodeID WHERE pb.BadgeID = $id UNION SELECT pb.PeopleID, pb.OneTimeID, pb.BadgeID, pb.BadgeNumber, CASE WHEN pb.PeopleID IS NULL THEN CONCAT(ot.FirstName, ' ', ot.LastName) ELSE CONCAT(p.FirstName, ' ', p.LastName) END AS Name, pb.BadgeName, pb.Created AS Purchased, CASE WHEN pb.PeopleID IS NULL THEN ot.LastName ELSE p.LastName END AS LastName, CASE WHEN pb.PeopleID IS NULL THEN ot.FirstName ELSE p.FirstName END AS FirstName, pb.Department, pb.PaymentSource, pb.PaymentReference, pc.Code, pb.BadgeTypeID, pb.AmountPaid, pb.Status FROM PurchasedBadges pb LEFT OUTER JOIN People p ON p.PeopleID = pb.PeopleID LEFT OUTER JOIN OneTimeRegistrations ot ON ot.OneTimeID = pb.OneTimeID LEFT OUTER JOIN PromoCodes pc ON pc.CodeID = pb.PromoCodeID JOIN PurchasedBadges pb2 ON pb2.PaymentReference = pb.PaymentReference WHERE pb2.BadgeID = $id and pb2.PaymentSource IN ('Stripe', 'PayPal', 'Cash', 'Check')");
+    
+    if($result->num_rows > 0)
+    {
+        $badge = $result->fetch_array();
+        $others = array();
+        while($row = $result->fetch_array())
+            $others[] = $row;
+        $result->close();				
+    }
+    else
+    {
+        $badge = null;
+        $message = "Could not find badge ID #$id!";			
+    }
+    
+    if($badge["PaymentSource"] == "PayPal")
+    {
+        $date1 = new DateTime($badge["Purchased"]);
+        $date2 = new DateTime();
+        $diff = $date2->diff($date1)->days;	
+        if($diff > 60)
+        {
+            $disableRefund = true;
+            $disableMessage = "PayPal purchases older than 60 days cannot be refunded automatically. Contact the Treasurer for assistance.";
+        }
+        else
+            $disableRefund = false;
+    }
+    elseif($badge["PaymentSource"] == "Stripe")
+        $disableRefund = false;
+    else
+    {
+        $disableRefund = true;
+        $disableMessage = "Only badges paid for via Stripe or PayPal can be automatically refunded.";
+    }
+}
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
@@ -229,59 +229,62 @@
 		<div class="centerboxwide">
 			<h1>Edit Badge Details</h1>
 <?php
-	if(isset($badge))
-	{ ?>
+if(isset($badge))
+{ ?>
 			<div class="standardTable">
 				<form id="badgeEditForm" method="post">
 				<table>
 				<tr><th>Name</th><th>Badge Name</th><th>Badge #</th><th>Purchased</th><th>Paid With</th><th>Reference #</th><th>Promo Code</th><?php if(DoesUserBelongHere("Treasurer")) echo "<th>AmountPaid</th>"; ?><th>Status</th></tr>
 				<?php
-					$link1 = !empty($badge["PeopleID"]) ? "<a href=\"manageAccountAdmin.php?id=" . $badge["PeopleID"] . "\">" : "";
-					$link2 = !empty($badge["PeopleID"]) ? "</a>" : "";
-					echo "<tr><td>$link1" . $badge["Name"] . "$link2</td><td>" . $badge["BadgeName"] . "</td><td>" . $badge["BadgeNumber"] . "</td><td>" . date("m/d/Y", strtotime($badge["Purchased"])) . "</td><td>" . $badge["PaymentSource"] . "</td><td>" . $badge["PaymentReference"] . "</td><td>" . $badge["Code"] . "</td>" . (DoesUserBelongHere("Treasurer") ? "<td>" . $badge["AmountPaid"] . "</td>" : "") . "<td>" . $badge["Status"] . "</td></tr>\r\n"; ?>
+    $link1 = !empty($badge["PeopleID"]) ? "<a href=\"manageAccountAdmin.php?id=" . $badge["PeopleID"] . "\">" : "";
+    $link2 = !empty($badge["PeopleID"]) ? "</a>" : "";
+    echo "<tr><td>$link1" . $badge["Name"] . "$link2</td><td>" . $badge["BadgeName"] . "</td><td>" . $badge["BadgeNumber"] . "</td><td>" . date("m/d/Y", strtotime($badge["Purchased"])) . "</td><td>" . $badge["PaymentSource"] . "</td><td>" . $badge["PaymentReference"] . "</td><td>" . $badge["Code"] . "</td>" . (DoesUserBelongHere("Treasurer") ? "<td>" . $badge["AmountPaid"] . "</td>" : "") . "<td>" . $badge["Status"] . "</td></tr>\r\n"; ?>
 				</table>
 				<?php
-					if(!empty($others))
-					{
-						echo "<div class=\"headertitle\">Other Badges in This Purchase</div>\r\n";
-						echo "<table>\r\n";
-						echo "<tr><th>Name</th><th>Badge Name</th><th>Badge #</th><th>Promo Code</th>" . (DoesUserBelongHere("Treasurer") ? "<th>AmountPaid</th>" : "") . "<th>Status</th></tr>\r\n";
-						foreach($others as $other)
-						{
-							$link = "<a href=\"editBadge.php?id=" . $other["BadgeID"] . "\">";
-							if(empty($other["BadgeName"])) $link .= "[Blank Badge]";							
-							echo "<tr><td>" . $other["Name"] . "</td><td>$link" . $other["BadgeName"] . "</a></td><td>" . $other["BadgeNumber"] . "</td><td>" . $other["Code"] . "</td>" . (DoesUserBelongHere("Treasurer") ? "<td>" . $other["AmountPaid"] . "</td>" : "") . "<td>" . $other["Status"] . "</td></tr>\r\n";
-						}
-						echo "</table>\r\n";
-					} ?>
+    if(!empty($others))
+    {
+        echo "<div class=\"headertitle\">Other Badges in This Purchase</div>\r\n";
+        echo "<table>\r\n";
+        echo "<tr><th>Name</th><th>Badge Name</th><th>Badge #</th><th>Promo Code</th>" . (DoesUserBelongHere("Treasurer") ? "<th>AmountPaid</th>" : "") . "<th>Status</th></tr>\r\n";
+        foreach($others as $other)
+        {
+            $link = "<a href=\"editBadge.php?id=" . $other["BadgeID"] . "\">";
+            if(empty($other["BadgeName"])) $link .= "[Blank Badge]";							
+            echo "<tr><td>" . $other["Name"] . "</td><td>$link" . $other["BadgeName"] . "</a></td><td>" . $other["BadgeNumber"] . "</td><td>" . $other["Code"] . "</td>" . (DoesUserBelongHere("Treasurer") ? "<td>" . $other["AmountPaid"] . "</td>" : "") . "<td>" . $other["Status"] . "</td></tr>\r\n";
+        }
+        echo "</table>\r\n";
+    } ?>
 				<p>Available Actions:</p>
 				<input type="submit" onclick="checkCode(); return false;" value="Apply Promo Code" <?php echo $badge["Code"] == "" ? "" : "disabled"; ?>>
 				<input type="text" id="promoCode" name="promoCode" style="width: 125px;" <?php echo $badge["Code"] == "" ? "" : "disabled"; ?>/><br><br>
 				<input type="submit" onclick="renameBadge(); return false;" value="Change Badge Name" <?php echo ($badge["Status"] != "Paid" ? "disabled" : ""); ?>>
 				<input type="text" id="badgeName" name="badgeName" style="width: 125px;" value="<?php echo isset($badge) ? str_replace('"', '&quot;', $badge["BadgeName"]) : ""; ?>"/><br><br>
 				<?php if(!empty($badge["Department"]))
-				{
-					echo "<input type=\"submit\" onclick=\"changeDepartment(); return false;\" value=\"Change Department\"> ";
-					echo "<input type=\"text\" id=\"department\" name=\"department\" style=\"width: 350px;\" value=\"" . $badge["Department"] . "\"/><br><br>\r\n";
-					echo "<input type=\"submit\" onclick=\"changeType(); return false;\" value=\"Change Badge Type\"> \r\n";
-					echo "<label for=\"badgeConcom\" class=\"fieldLabelShort\"><input type=\"radio\" id=\"badgeConcom\" name=\"badgeType\" value=\"3\"" . ($badge["BadgeTypeID"] == 3 ? " checked" : "") . ">Concom and Board</label>\r\n";
-					echo "<label for=\"badgeGOH\" class=\"fieldLabelShort\"><input type=\"radio\" id=\"badgeGOH\" name=\"badgeType\" value=\"5\"" . ($badge["BadgeTypeID"] == 5 ? " checked" : "") . ">Guest of Honor</label>\r\n";
-					echo "<label for=\"badgeStaff\" class=\"fieldLabelShort\"><input type=\"radio\" id=\"badgeStaff\" name=\"badgeType\" value=\"4\"" . ($badge["BadgeTypeID"] == 4 ? " checked" : "") . ">Staff</label>\r\n";
-					echo "<label for=\"badgeComp\" class=\"fieldLabelShort\"><input type=\"radio\" id=\"badgeComp\" name=\"badgeType\" value=\"1\"" . ($badge["BadgeTypeID"] == 1 ? " checked" : "") . ">Comp Badge</label><br><br>\r\n";
-				} ?>
+                      {
+                          echo "<input type=\"submit\" onclick=\"changeDepartment(); return false;\" value=\"Change Department\"> ";
+                          echo "<input type=\"text\" id=\"department\" name=\"department\" style=\"width: 350px;\" value=\"" . $badge["Department"] . "\"/><br><br>\r\n";
+                          echo "<input type=\"submit\" onclick=\"changeType(); return false;\" value=\"Change Badge Type\"> \r\n";
+                          echo "<label for=\"badgeConcom\" class=\"fieldLabelShort\"><input type=\"radio\" id=\"badgeConcom\" name=\"badgeType\" value=\"3\"" . ($badge["BadgeTypeID"] == 3 ? " checked" : "") . ">Concom and Board</label>\r\n";
+                          echo "<label for=\"badgeGOH\" class=\"fieldLabelShort\"><input type=\"radio\" id=\"badgeGOH\" name=\"badgeType\" value=\"5\"" . ($badge["BadgeTypeID"] == 5 ? " checked" : "") . ">Guest of Honor</label>\r\n";
+                          echo "<label for=\"badgeStaff\" class=\"fieldLabelShort\"><input type=\"radio\" id=\"badgeStaff\" name=\"badgeType\" value=\"4\"" . ($badge["BadgeTypeID"] == 4 ? " checked" : "") . ">Staff</label>\r\n";
+                          echo "<label for=\"badgeComp\" class=\"fieldLabelShort\"><input type=\"radio\" id=\"badgeComp\" name=\"badgeType\" value=\"1\"" . ($badge["BadgeTypeID"] == 1 ? " checked" : "") . ">Comp Badge</label><br><br>\r\n";
+                      } ?>
 				<input type="submit" onclick="deleteBadge(); return false;" value="Delete Badge" <?php echo (($badge["Status"] != "Paid" || $badge["AmountPaid"] == 0) ? "" : "disabled"); ?>>
 				<?php if(DoesUserBelongHere("Treasurer")) {
-					echo '<input type="submit" onclick="deleteBadgeSuperAdmin(); return false;" value="Purge Badge From Database"><br><br>' . "\r\n";
-				}
-				if(DoesUserBelongHere("Treasurer"))
-				{
-					if($disableRefund)
-						echo '<input type="submit" onclick="return false;" value="Refund Badge" class="masterTooltip" title="' . $disableMessage . '" readonly><br><br>';
-					else
-						echo '<input type="submit" onclick="refundBadge(); return false;" value="Refund Badge">' . ($badge["PaymentSource"] == "PayPal" ? " Note: This badge can only be refunded in the next " . (60 - $diff) . " day" . ((60 - $diff) == 1 ? "" : "s") . " via PayPal." : "") . '<br><br>';
-				} ?>
-				<?php echo ($badge["PaymentSource"] == "PayPal" ? '<p style="font-weight: bold;">CONTACT CHRIS BEFORE REFUNDING PAYPAL! Untested code!</p>' : ""); ?>
-				<input type="submit" onclick="rolloverBadge(); return false;" value="Rollover Badge to <?php echo date("n") >= 3 ? date("Y") + 2: date("Y") + 1; ?>" <?php echo (($badge["Status"] == "Rolled Over" || $badge["AmountPaid"] == 0) ? "disabled" : ""); ?>><br><br>
+                          echo '<input type="submit" onclick="deleteBadgeSuperAdmin(); return false;" value="Purge Badge From Database"><br><br>' . "\r\n";
+                      }
+                      if(DoesUserBelongHere("Treasurer"))
+                      {
+                          echo 'Refunds should only be done in extreme cases.<br>';
+                          if($disableRefund)
+                              echo '<input type="submit" onclick="return false;" value="Refund Badge" class="masterTooltip" title="' . $disableMessage . '" readonly><br><br>';
+                          else
+                              echo '<input type="submit" onclick="refundBadge(); return false;" value="Refund Badge">' . ($badge["PaymentSource"] == "PayPal" ? " Note: This badge can only be refunded in the next " . (60 - $diff) . " day" . ((60 - $diff) == 1 ? "" : "s") . " via PayPal." : "") . '<br><br>';
+                      } ?>
+				<?php echo ($badge["PaymentSource"] == "PayPal" ? '<p style="font-weight: bold;">CONTACT CHRIS (IT) BEFORE REFUNDING PAYPAL! Untested code!</p>' : ""); ?>
+				<?php /*  <input type="submit" onclick="rolloverBadge(); return false;" value="Rollover Badge to <?php echo date("n") >= 3 ? date("Y") + 2: date("Y") + 1; ?>" <?php echo (($badge["Status"] == "Rolled Over" || $badge["AmountPaid"] == 0) ? "disabled" : ""); ?>> */ ?>
+				<p>The rollover option has been removed per the Board. Phandemonium does not do rollovers.</p>
+				<br>
 				</form>
 				<div id="actionResult"></div>
 				<div class="headertitle">Transfer Badge</div>
