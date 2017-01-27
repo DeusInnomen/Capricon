@@ -693,8 +693,8 @@ namespace ArtShow
 
         private Bitmap DrawPrintShopLabel(PrintShopItem item, PrintPageEventArgs e)
         {
-            var fontTextBold = new Font("Lucida Sans", 14, FontStyle.Bold);
-            var fontText = new Font("Lucida Sans", 12);
+            var fontTextBold = new Font("Lucida Sans", 12, FontStyle.Bold);
+            var fontText = new Font("Lucida Sans", 10);
             var leftCentered = new StringFormat { LineAlignment = StringAlignment.Center, Alignment = StringAlignment.Near };
             var rightCentered = new StringFormat { LineAlignment = StringAlignment.Center, Alignment = StringAlignment.Far };
 
