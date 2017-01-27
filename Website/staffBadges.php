@@ -1,34 +1,34 @@
 <?php
-	session_start();
-	include_once('includes/functions.php');
-	if(!isset($_SESSION["PeopleID"]))
-		header('Location: /login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
-	elseif(!DoesUserBelongHere("RegLead"))
-		header('Location: /index.php');
-		
-	$year = date("n") >= 3 ? date("Y") + 1: date("Y");
-	$order = isset($_GET["OrderByDepartment"]) ? "Department, LastName" : "BadgeNumber";
-    $sql  = "SELECT pb.BadgeID, pb.BadgeNumber, CASE WHEN pb.PeopleID IS NULL THEN CONCAT(ot.FirstName, ' ', ot.LastName) ELSE CONCAT(p.FirstName, ' ', p.LastName) END AS Name, pb.BadgeName, CASE WHEN pb.PeopleID IS NULL THEN ot.FirstName ELSE p.FirstName END AS FirstName, CASE WHEN pb.PeopleID IS NULL THEN ot.LastName ELSE p.LastName END AS LastName, pb.Department, CASE WHEN pb.BadgeTypeID = 1 THEN 'Comp Badge' ELSE bt.Description END AS BadgeType FROM PurchasedBadges pb JOIN BadgeTypes bt ON pb.BadgeTypeID = bt.BadgeTypeID LEFT OUTER JOIN People p ON p.PeopleID = pb.PeopleID LEFT OUTER JOIN OneTimeRegistrations ot ON ot.OneTimeID = pb.OneTimeID WHERE pb.Year = $year AND pb.Department IS NOT NULL AND (pb.BadgeTypeID IN (3, 4, 5) OR (pb.BadgeTypeID = 1 AND BadgeNumber < 150)) AND pb.Status = 'Paid' ORDER BY $order";
-	
-	$badges = array();
-	$result = $db->query($sql);
-	if($result->num_rows > 0)
-	{
-		while($row = $result->fetch_array())
-			$badges[] = $row;
-		$result->close();
-	}
-	
-	$sql = "SELECT BadgeTypeID FROM PurchasedBadges WHERE Year = $year AND BadgeNumber < 150 ORDER BY BadgeNumber DESC LIMIT 1";
-	$result = $db->query($sql);
-	if($result->num_rows > 0)
-	{
-		$row = $result->fetch_array();
-		$lastBadgeTypeID = $row["BadgeTypeID"];
-		$result->close();
-	}
-	else
-		$lastBadgeTypeID = 4;
+session_start();
+include_once('includes/functions.php');
+if(!isset($_SESSION["PeopleID"]))
+    header('Location: /login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
+elseif(!DoesUserBelongHere("RegLead"))
+    header('Location: /index.php');
+
+$year = isset($_GET["year"]) ? $_GET["year"] : (date("n") >= 3 ? date("Y") + 1: date("Y"));
+$order = isset($_GET["OrderByDepartment"]) ? "Department, LastName" : "BadgeNumber";
+$sql  = "SELECT pb.BadgeID, pb.BadgeNumber, CASE WHEN pb.PeopleID IS NULL THEN CONCAT(ot.FirstName, ' ', ot.LastName) ELSE CONCAT(p.FirstName, ' ', p.LastName) END AS Name, pb.BadgeName, CASE WHEN pb.PeopleID IS NULL THEN ot.FirstName ELSE p.FirstName END AS FirstName, CASE WHEN pb.PeopleID IS NULL THEN ot.LastName ELSE p.LastName END AS LastName, pb.Department, CASE WHEN pb.BadgeTypeID = 1 THEN 'Comp Badge' ELSE bt.Description END AS BadgeType FROM PurchasedBadges pb JOIN BadgeTypes bt ON pb.BadgeTypeID = bt.BadgeTypeID LEFT OUTER JOIN People p ON p.PeopleID = pb.PeopleID LEFT OUTER JOIN OneTimeRegistrations ot ON ot.OneTimeID = pb.OneTimeID WHERE pb.Year = $year AND pb.Department IS NOT NULL AND (pb.BadgeTypeID IN (3, 4, 5) OR (pb.BadgeTypeID = 1 AND BadgeNumber < 150)) AND pb.Status = 'Paid' ORDER BY $order";
+
+$badges = array();
+$result = $db->query($sql);
+if($result->num_rows > 0)
+{
+    while($row = $result->fetch_array())
+        $badges[] = $row;
+    $result->close();
+}
+
+$sql = "SELECT BadgeTypeID FROM PurchasedBadges WHERE Year = $year AND BadgeNumber < 150 ORDER BY BadgeNumber DESC LIMIT 1";
+$result = $db->query($sql);
+if($result->num_rows > 0)
+{
+    $row = $result->fetch_array();
+    $lastBadgeTypeID = $row["BadgeTypeID"];
+    $result->close();
+}
+else
+    $lastBadgeTypeID = 4;
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
@@ -49,7 +49,7 @@
 		#currentBadges {
 			clear: both;
 			width: 100%;
-			max-height: 415px;
+			max-height: 5000px;
 			overflow: auto;
 		}
 	</style>
@@ -171,13 +171,13 @@
 			<div class="headertitle">Tools</div>
 			<p><a href="#" onClick="$('#moreInfo').dialog('open');">More Information</a>&nbsp;&nbsp;--&nbsp;&nbsp;<a href="staffBadges.php<?php echo isset($_GET["OrderByDepartment"]) ? "" : "?OrderByDepartment=1"; ?>">Show By <?php echo isset($_GET["OrderByDepartment"]) ? "Badge Number" : "Department"; ?></a>&nbsp;&nbsp;--&nbsp;&nbsp;<a href="getStaffBadgeCSV.php">Download Full List</a>&nbsp;&nbsp;--&nbsp;&nbsp;<a href="getStaffBadgeCSV.php?engravedOnly=1">Download Engraving List</a></p>
 			<div class="headertitle">Issue Staff Badges</div>
-			<p>To issue a badge, select the type of badge then search for the Recipient below.</p>
+			<p>To issue a badge, select the type of badge then search for the Recipient below. NOTE: This page issues badges in the 1-150 badge number range. Do not use this page for regular attendee comp badges.</p>
 			<form id="badgeTypeForm" method="post">
 				<span style="font-weight: bold;">Badge Type: </span>
 				<label for="badgeConcom" class="fieldLabelShort"><input type="radio" id="badgeConcom" name="badgeTypeID" value="3"<?php echo ($lastBadgeTypeID == 3 ? " checked" : ""); ?>>Concom and Board</label>
 				<label for="badgeGOH" class="fieldLabelShort"><input type="radio" id="badgeGOH" name="badgeTypeID" value="5"<?php echo ($lastBadgeTypeID == 5 ? " checked" : ""); ?>>Guest of Honor</label>
 				<label for="badgeStaff" class="fieldLabelShort"><input type="radio" id="badgeStaff" name="badgeTypeID" value="4"<?php echo ($lastBadgeTypeID == 4 ? " checked" : ""); ?>>Staff</label>
-				<label for="badgeComp" class="fieldLabelShort"><input type="radio" id="badgeComp" name="badgeTypeID" value="1"<?php echo ($lastBadgeTypeID == 1 ? " checked" : ""); ?>>Comp Badge</label><br><br>
+				<label for="badgeComp" class="fieldLabelShort"><input type="radio" id="badgeComp" name="badgeTypeID" value="1"<?php echo ($lastBadgeTypeID == 1 ? " checked" : ""); ?>>Special Comp Badge</label><br><br>
 			</form>
 			<form id="search_form" method="post">
 				<div style="width: 50%; float: left;">
@@ -201,18 +201,18 @@
 			<div class="headertitle">Current Staff Badges</div>
 			<div id="currentBadges" class="standardTable">
 			<?php
-				if(!empty($badges))
-				{
-					echo "<table id=\"currentBadgeData\">\r\n";
-					echo "<thead><tr><th>Name</th><th>Badge Name</th><th>Badge #</th><th>Department</th><th>Badge Type</th></tr></thead>\r\n";
-					echo "<tbody>\r\n";
-					foreach($badges as $badge)
-						echo "<tr><td>" . $badge["Name"] . "</td><td>" . $badge["BadgeName"] . "</td><td>" . $badge["BadgeNumber"] . "</td><td>" . $badge["Department"] . "</td><td>" . $badge["BadgeType"] . "</td></tr>\r\n";
-					echo "</tbody>\r\n";
-					echo "</table>\r\n";
-				}
-				else
-					echo "<p class=\"requiredField\">No staff badges have been issued for this convention year yet.</p>\r\n"; ?>
+            if(!empty($badges))
+            {
+                echo "<table id=\"currentBadgeData\">\r\n";
+                echo "<thead><tr><th>Name</th><th>Badge Name</th><th>Badge #</th><th>Department</th><th>Badge Type</th></tr></thead>\r\n";
+                echo "<tbody>\r\n";
+                foreach($badges as $badge)
+                    echo "<tr><td>" . $badge["Name"] . "</td><td>" . $badge["BadgeName"] . "</td><td>" . $badge["BadgeNumber"] . "</td><td>" . $badge["Department"] . "</td><td>" . $badge["BadgeType"] . "</td></tr>\r\n";
+                echo "</tbody>\r\n";
+                echo "</table>\r\n";
+            }
+            else
+                echo "<p class=\"requiredField\">No staff badges have been issued for this convention year yet.</p>\r\n"; ?>
 			</div>
 			<div class="clearfix"></div>
 			<div class="goback">

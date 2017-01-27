@@ -23,6 +23,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="artShowSales.php" />
+    <Compile Include="artShowSalesSummary.php" />
     <Compile Include="doManualRegistration.php" />
     <Compile Include="editArtItem.php" />
     <Compile Include="functions\.htaccess" />
