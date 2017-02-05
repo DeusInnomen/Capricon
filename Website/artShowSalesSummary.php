@@ -40,7 +40,7 @@ SELECT
 	CASE WHEN ph.PurchaserID IS NULL THEN pbo.BadgeNumber ELSE pbp.BadgeNumber END AS BadgeNumber,
 	ph.ItemTypeName,
 	ph.Details,
-	ph.Price AS PaidPrice,
+	ph.Total AS PaidPrice,
 	ph.Purchased,
 	ph.PaymentSource,
 	ph.PaymentReference,
@@ -70,7 +70,7 @@ $result->close();
 //get sales summary info for days prior to day1
 $query=<<<EOD
 SELECT
-	SUM(ph.Price) AS PaidPrice,
+	SUM(ph.Total) AS PaidPrice,
 	ph.ItemTypeName,
 	ph.PaymentSource
 FROM
@@ -104,7 +104,7 @@ SELECT
 	CASE WHEN ph.PurchaserID IS NULL THEN pbo.BadgeNumber ELSE pbp.BadgeNumber END AS BadgeNumber,
 	ph.ItemTypeName,
 	ph.Details,
-	ph.Price AS PaidPrice,
+	ph.Total AS PaidPrice,
 	ph.Purchased,
 	ph.PaymentSource,
 	ph.PaymentReference,
@@ -134,7 +134,7 @@ $result->close();
 //get sales summary info for day 1
 $query=<<<EOD
 SELECT
-	SUM(ph.Price) AS PaidPrice,
+	SUM(ph.Total) AS PaidPrice,
 	ph.ItemTypeName,
 	ph.PaymentSource
 FROM
@@ -168,7 +168,7 @@ SELECT
 	CASE WHEN ph.PurchaserID IS NULL THEN pbo.BadgeNumber ELSE pbp.BadgeNumber END AS BadgeNumber,
 	ph.ItemTypeName,
 	ph.Details,
-	ph.Price AS PaidPrice,
+	ph.Total AS PaidPrice,
 	ph.Purchased,
 	ph.PaymentSource,
 	ph.PaymentReference,
@@ -198,7 +198,7 @@ $result->close();
 //get sales summary info for day 2
 $query=<<<EOD
 SELECT
-	SUM(ph.Price) AS PaidPrice,
+	SUM(ph.Total) AS PaidPrice,
 	ph.ItemTypeName,
 	ph.PaymentSource
 FROM
@@ -232,7 +232,7 @@ SELECT
 	CASE WHEN ph.PurchaserID IS NULL THEN pbo.BadgeNumber ELSE pbp.BadgeNumber END AS BadgeNumber,
 	ph.ItemTypeName,
 	ph.Details,
-	ph.Price AS PaidPrice,
+	ph.Total AS PaidPrice,
 	ph.Purchased,
 	ph.PaymentSource,
 	ph.PaymentReference,
@@ -262,7 +262,7 @@ $result->close();
 //get sales summary info for day 3
 $query=<<<EOD
 SELECT
-	SUM(ph.Price) AS PaidPrice,
+	SUM(ph.Total) AS PaidPrice,
 	ph.ItemTypeName,
 	ph.PaymentSource
 FROM
@@ -296,7 +296,7 @@ SELECT
 	CASE WHEN ph.PurchaserID IS NULL THEN pbo.BadgeNumber ELSE pbp.BadgeNumber END AS BadgeNumber,
 	ph.ItemTypeName,
 	ph.Details,
-	ph.Price AS PaidPrice,
+	ph.Total AS PaidPrice,
 	ph.Purchased,
 	ph.PaymentSource,
 	ph.PaymentReference,
@@ -326,7 +326,7 @@ $result->close();
 //get sales summary info for day 4
 $query=<<<EOD
 SELECT
-	SUM(ph.Price) AS PaidPrice,
+	SUM(ph.Total) AS PaidPrice,
 	ph.ItemTypeName,
 	ph.PaymentSource
 FROM
@@ -360,7 +360,7 @@ SELECT
 	CASE WHEN ph.PurchaserID IS NULL THEN pbo.BadgeNumber ELSE pbp.BadgeNumber END AS BadgeNumber,
 	ph.ItemTypeName,
 	ph.Details,
-	ph.Price AS PaidPrice,
+	ph.Total AS PaidPrice,
 	ph.Purchased,
 	ph.PaymentSource,
 	ph.PaymentReference,
@@ -390,7 +390,7 @@ $result->close();
 //get sales summary info for days after day4
 $query=<<<EOD
 SELECT
-	SUM(ph.Price) AS PaidPrice,
+	SUM(ph.Total) AS PaidPrice,
 	ph.ItemTypeName,
 	ph.PaymentSource
 FROM
