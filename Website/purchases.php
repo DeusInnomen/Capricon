@@ -6,7 +6,7 @@
 	else
 	{		
 		$orders = array();
-		$result = $db->query("SELECT ph.ItemTypeName AS Item, ph.PeopleID, CONCAT(p.FirstName, ' ', p.LastName) AS Name, CASE WHEN ph.ItemTypeName = 'Badge' THEN CONCAT(ph.Year, ' ', bt.Description) ELSE ph.Details END AS Details, ph.Total, ph.Purchased FROM PurchaseHistory ph LEFT OUTER JOIN AvailableBadges ab ON ab.AvailableBadgeID = ph.ItemTypeID LEFT OUTER JOIN BadgeTypes bt ON bt.BadgeTypeID = ab.BadgeTypeID INNER JOIN People p ON p.PeopleID = ph.PeopleID WHERE (ph.PeopleID = " . $_SESSION["PeopleID"] . " OR ph.PurchaserID = " . $_SESSION["PeopleID"] . ") ORDER BY ph.Purchased DESC");
+		$result = $db->query("SELECT ph.ItemTypeName AS Item, ph.PeopleID, CONCAT(p.FirstName, ' ', p.LastName) AS Name, CASE WHEN ph.ItemTypeName = 'Badge' THEN CONCAT(ph.Year, ' ', bt.Description) ELSE ph.Details END AS Details, ph.Price, ph.Purchased FROM PurchaseHistory ph LEFT OUTER JOIN AvailableBadges ab ON ab.AvailableBadgeID = ph.ItemTypeID LEFT OUTER JOIN BadgeTypes bt ON bt.BadgeTypeID = ab.BadgeTypeID INNER JOIN People p ON p.PeopleID = ph.PeopleID WHERE (ph.PeopleID = " . $_SESSION["PeopleID"] . " OR ph.PurchaserID = " . $_SESSION["PeopleID"] . ") ORDER BY ph.Purchased DESC");
 		while($row = $result->fetch_array())
 			$orders[] = $row;
 		$result->close();
@@ -48,7 +48,7 @@
 							}
 							$purchased = date("F d, Y", strtotime($data["Purchased"]));
 							echo "<tr class='$class'><td>" . $data["Item"] . "</td><td>" . $data["Details"] . "</td><td>$who</td><td>" .
-								sprintf("$%01.2f", $data["Total"]) . "</td><td>$purchased</td></tr>\r\n";
+								sprintf("$%01.2f", $data["Price"]) . "</td><td>$purchased</td></tr>\r\n";
 						}
 						echo "</table>\r\n";
 					}
