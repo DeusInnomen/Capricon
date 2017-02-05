@@ -199,7 +199,8 @@
 					$recipientName = $row["Name"];
 					$result->close();
 
-					$sql = "INSERT INTO PurchaseHistory (PurchaserID, PurchaserOneTimeID, ItemTypeName, ItemTypeID, Details, PeopleID, OneTimeID, Price, Year, Purchased, PaymentSource, PaymentReference) VALUES ($purchaser, $onetime, 'Badge', $badgeTypeID, '$badgeName', $recipientPeopleID, $recipientOneTimeID, $price, $year, NOW(), '$source', '$ref')";
+					$sql = "INSERT INTO PurchaseHistory (PurchaserID, PurchaserOneTimeID, ItemTypeName, ItemTypeID, Details, PeopleID, OneTimeID, Price, Total, Year, Purchased, PaymentSource, PaymentReference) " . 
+                        "VALUES ($purchaser, $onetime, 'Badge', $badgeTypeID, '$badgeName', $recipientPeopleID, $recipientOneTimeID, $price, $price, $year, NOW(), '$source', '$ref')";
 					if($db->query($sql) === false)
 					{
 						$response["Result"] = "Failure";
@@ -243,7 +244,8 @@
 					$badgeTypeID = $item["TypeID"];
 					$description = $item["Description"];
 					
-					$sql = "INSERT INTO PurchaseHistory (PurchaserID, PurchaserOneTimeID, ItemTypeName, ItemTypeID, PeopleID, OneTimeID, Price, Year, Purchased, PaymentSource, PaymentReference) VALUES ($purchaser, $onetime, 'Catan', $badgeTypeID, $recipientPeopleID, $recipientOneTimeID, $price, $year, NOW(), '$source', '$ref')";
+					$sql = "INSERT INTO PurchaseHistory (PurchaserID, PurchaserOneTimeID, ItemTypeName, ItemTypeID, PeopleID, OneTimeID, Price, Total, Year, Purchased, PaymentSource, PaymentReference) " . 
+                        "VALUES ($purchaser, $onetime, 'Catan', $badgeTypeID, $recipientPeopleID, $recipientOneTimeID, $price, $price, $year, NOW(), '$source', '$ref')";
 					if($db->query($sql) === false)
 					{
 						$response["Result"] = "Failure";
@@ -262,7 +264,8 @@
 					$totalSpent += $price;
 					$originalTotal += $price;
 					
-					$sql = "INSERT INTO PurchaseHistory (PurchaserID, PurchaserOneTimeID, ItemTypeName, PeopleID, OneTimeID, Details, Price, Year, Purchased, PaymentSource, PaymentReference) VALUES ($purchaser, $onetime, 'Miscellaneous Charge', $purchaser, $onetime, '$details', $price, $year, NOW(), '$source', '$ref')";
+					$sql = "INSERT INTO PurchaseHistory (PurchaserID, PurchaserOneTimeID, ItemTypeName, PeopleID, OneTimeID, Details, Price, Total, Year, Purchased, PaymentSource, PaymentReference) " . 
+                        "VALUES ($purchaser, $onetime, 'Miscellaneous Charge', $purchaser, $onetime, '$details', $price, $total, $year, NOW(), '$source', '$ref')";
 					if($db->query($sql) === false)
 					{
 						$response["Result"] = "Failure";
