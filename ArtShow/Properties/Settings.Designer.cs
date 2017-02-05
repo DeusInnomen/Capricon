@@ -40,5 +40,14 @@ namespace ArtShow.Properties {
                 return ((string)(this["ServicesURL"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10.0")]
+        public decimal TaxRate {
+            get {
+                return ((decimal)(this["TaxRate"]));
+            }
+        }
     }
 }
