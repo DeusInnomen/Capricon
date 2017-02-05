@@ -9,8 +9,8 @@
 
 	$year = date("n") >= 3 ? date("Y") + 1: date("Y");
 	$capriconYear = $year - 1980;
-
-	$result = $db->query("SELECT ap.ArtistAttendingID FROM ArtistPresence ap INNER JOIN ArtistDetails ad ON ad.ArtistID = ap.ArtistID " .
+	
+	$result = $db->query("SELECT ap.ArtistAttendingID FROM ArtistPresence ap INNER JOIN ArtistDetails ad ON ad.ArtistID = ap.ArtistID " . 
 		"WHERE ap.Year = $year AND ad.PeopleID = " . $_SESSION["PeopleID"]);
 	if($result->num_rows > 0)
 	{
@@ -19,12 +19,12 @@
 		$result->close();
 	}
 	if(isset($_GET["ID"])) $id = $_GET["ID"];
-
+	
 	$showPieces = array();
 	$printShopPieces = array();
-
-	$result = $db->query("SELECT ArtID, ShowNumber, Title, Notes, IsOriginal, OriginalMedia, PrintNumber, PrintMaxNumber, " .
-		"MinimumBid, QuickSalePrice, FeesPaid FROM ArtSubmissions WHERE ArtistAttendingID = $id " .
+	
+	$result = $db->query("SELECT ArtID, ShowNumber, Title, Notes, IsOriginal, OriginalMedia, PrintNumber, PrintMaxNumber, " . 
+		"MinimumBid, QuickSalePrice, FeesPaid FROM ArtSubmissions WHERE ArtistAttendingID = $id " . 
 		"AND IsPrintShop = 0");
 	if($result->num_rows > 0)
 	{
@@ -35,8 +35,8 @@
 		}
 		$result->close();
 	}
-
-	$result = $db->query("SELECT ArtID, ShowNumber, Title, Notes, OriginalMedia, QuantitySent, QuickSalePrice " .
+	
+	$result = $db->query("SELECT ArtID, ShowNumber, Title, Notes, OriginalMedia, QuantitySent, QuickSalePrice " . 
 		"FROM ArtSubmissions WHERE ArtistAttendingID = $id AND IsPrintShop = 1");
 	if($result->num_rows > 0)
 	{
@@ -44,7 +44,7 @@
 			$printShopPieces[] = $row;
 		$result->close();
 	}
-
+	
 	$pdf = new FPDF('P', 'mm', 'Letter');
 	$pdf->AddPage();
 	$pdf->SetFont('Arial', '', 32);
@@ -79,9 +79,7 @@
 			$title = $piece["Title"];
 			$media = $piece["OriginalMedia"];
 			$tHeight = ceil(strlen($title) / 38) * 6;
-            if($tHeight == 0) $tHeight = 6;
 			$mHeight = ceil(strlen($media) / 16) * 6;
-            if($mHeight == 0) $mHeight = 6;
 			$height = $tHeight > $mHeight ? $tHeight : $mHeight;
 
 			$x = $pdf->GetX();
@@ -113,7 +111,7 @@
 		$pdf->SetFont('Arial', '', 16);
 		$pdf->Cell(0, 12, 'You have no pieces listed in this year\'s Capricon Art Show.', 1, 1, 'C');
 	}
-
+	
 	$pdf->SetY(-22);
 	$pdf->SetFont('Arial', '', 10);
 	$pdf->Cell(0, 0, 'Page 1 of 2', 0, 0, 'L');
@@ -127,7 +125,7 @@
 	$pdf->Ln(5);
 	$pdf->SetFont('Arial', '', 12);
 	$pdf->Cell(0, 6, 'The following is a summary of the artwork you are showing this year. If you have any questions, please', 0, 1);
-	$pdf->Cell(0, 6, 'contact artshow@capricon.org for help!', 0, 1);
+	$pdf->Cell(0, 6, 'contact artshow@capricon.org for help!', 0, 1);		
 	$pdf->Ln(5);
 	$pdf->SetFont('Arial', '', 20);
 	$pdf->Cell(0, 12, 'Print Shop Pieces', 0, 1, 'C');
@@ -152,9 +150,7 @@
 			$title = $piece["Title"];
 			$media = $piece["OriginalMedia"];
 			$tHeight = ceil(strlen($title) / 38) * 6;
-            if($tHeight == 0) $tHeight = 6;
 			$mHeight = ceil(strlen($media) / 16) * 6;
-            if($mHeight == 0) $mHeight = 6;
 			$height = $tHeight > $mHeight ? $tHeight : $mHeight;
 
 			$x = $pdf->GetX();
@@ -176,7 +172,7 @@
 			}
 			$fill = !$fill;
 		}
-		$pdf->Cell(195, 0, "", "T");
+		$pdf->Cell(195, 0, "", "T");	
 	}
 	else
 	{
@@ -189,5 +185,5 @@
 	$pdf->SetFont('Arial', '', 10);
 	$pdf->Cell(0, 0, 'Page 2 of 2', 0, 0, 'L');
 	$pdf->Cell(0, 0, 'Current as of ' . date("F j, Y, g:i a"), 0, 0, 'R');
-	$pdf->Output();
+	$pdf->Output();	
 ?>

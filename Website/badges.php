@@ -7,7 +7,7 @@
 	{
 		$id = $_SESSION["PeopleID"];
 		$orders = array();
-		$sql = "SELECT ph.Year, ph.PeopleID, CONCAT(p.FirstName, ' ', p.LastName) AS Name, CASE WHEN pb.Department IS NOT NULL THEN CONCAT (bt.Description, ': ', pb.Department) ELSE bt.Description END AS Description, CONCAT ('Badge Name: ', pb.BadgeName) AS Details, ph.Total, ph.Purchased FROM PurchaseHistory ph INNER JOIN PurchasedBadges pb ON ph.Year = pb.Year AND ph.PeopleID = pb.PeopleID INNER JOIN BadgeTypes bt ON bt.BadgeTypeID = ph.ItemTypeID INNER JOIN People p ON p.PeopleID = ph.PeopleID WHERE (ph.PeopleID = $id OR ph.PurchaserID = $id) AND ph.ItemTypeName = 'Badge' ORDER BY ph.Purchased DESC";		
+		$sql = "SELECT ph.Year, ph.PeopleID, CONCAT(p.FirstName, ' ', p.LastName) AS Name, CASE WHEN pb.Department IS NOT NULL THEN CONCAT (bt.Description, ': ', pb.Department) ELSE bt.Description END AS Description, CONCAT ('Badge Name: ', pb.BadgeName) AS Details, ph.Price, ph.Purchased FROM PurchaseHistory ph INNER JOIN PurchasedBadges pb ON ph.Year = pb.Year AND ph.PeopleID = pb.PeopleID INNER JOIN BadgeTypes bt ON bt.BadgeTypeID = ph.ItemTypeID INNER JOIN People p ON p.PeopleID = ph.PeopleID WHERE (ph.PeopleID = $id OR ph.PurchaserID = $id) AND ph.ItemTypeName = 'Badge' ORDER BY ph.Purchased DESC";		
 		$result = $db->query($sql);
 		if($result->num_rows > 0)
 		{
@@ -213,7 +213,7 @@
 							}
 							$created = date("F d, Y", strtotime($data["Purchased"]));
 							echo "<tr class='$class'><td>" . $data["Year"] . "</td><td>" . $data["Description"] . "</td><td>" . 
-								$data["Details"] . "</td><td>$who</td><td>" . sprintf("$%01.2f", $data["Total"]) . 
+								$data["Details"] . "</td><td>$who</td><td>" . sprintf("$%01.2f", $data["Price"]) . 
 								"</td><td>$created</td></tr>\r\n";
 						}
 						echo "</table>\r\n";

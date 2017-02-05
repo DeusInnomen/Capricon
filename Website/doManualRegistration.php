@@ -181,8 +181,7 @@
 		$certID = $badges["codeType"] == "cert" ? $badges["codeID"] : "NULL";
 		$originalTotal = $price;
 
-		$sql = "INSERT INTO PurchaseHistory (PurchaserID, PurchaserOneTimeID, ItemTypeName, ItemTypeID, Details, PeopleID, OneTimeID, Price, Total, Year, PaymentSource, PaymentReference, Purchased) " . 
-            "VALUES ($peopleID, $oneTimePurchaserID, 'Badge', 1, '$badgeName', $peopleID, $oneTimePurchaserID, $price, $price, $year, '$source', '$ref', NOW())";
+		$sql = "INSERT INTO PurchaseHistory (PurchaserID, PurchaserOneTimeID, ItemTypeName, ItemTypeID, Details, PeopleID, OneTimeID, Price, Year, PaymentSource, PaymentReference, Purchased) VALUES ($peopleID, $oneTimePurchaserID, 'Badge', 1, '$badgeName', $peopleID, $oneTimePurchaserID, $price, $year, '$source', '$ref', NOW())";
 		$db->query($sql);
         $recordID = $db->insert_id;
 
@@ -216,8 +215,7 @@
 			$db->query($sql);
 			$addlOneTimeID = $db->insert_id;
 
-			$sql = "INSERT INTO PurchaseHistory (PurchaserID, PurchaserOneTimeID, ItemTypeName, ItemTypeID, Details, PeopleID, OneTimeID, Price, Total, Year, PaymentSource, PaymentReference, Purchased) " . 
-                "VALUES ($peopleID, $oneTimePurchaserID, 'Badge', $badgeType, '$recipientBadge', NULL, $addlOneTimeID, $price, $price, $year, '$source', '$ref', NOW())";
+			$sql = "INSERT INTO PurchaseHistory (PurchaserID, PurchaserOneTimeID, ItemTypeName, ItemTypeID, Details, PeopleID, OneTimeID, Price, Year, PaymentSource, PaymentReference, Purchased) VALUES ($peopleID, $oneTimePurchaserID, 'Badge', $badgeType, '$recipientBadge', NULL, $addlOneTimeID, $price, $year, '$source', '$ref', NOW())";
 			$db->query($sql);
             $recordID = $db->insert_id;
 
@@ -251,8 +249,7 @@
 			$db->query($sql);
 			$addlOneTimeID = $db->insert_id;
 
-			$sql = "INSERT INTO PurchaseHistory (PurchaserID, PurchaserOneTimeID, ItemTypeName, ItemTypeID, Details, PeopleID, OneTimeID, Price, Total, Year, PaymentSource, PaymentReference, Purchased) " . 
-                "VALUES ($peopleID, $oneTimePurchaserID, 'Badge', $badgeType, '$recipientBadge', NULL, $addlOneTimeID, $price, $price, $year, '$source', '$ref', NOW())";
+			$sql = "INSERT INTO PurchaseHistory (PurchaserID, PurchaserOneTimeID, ItemTypeName, ItemTypeID, Details, PeopleID, OneTimeID, Price, Year, PaymentSource, PaymentReference, Purchased) VALUES ($peopleID, $oneTimePurchaserID, 'Badge', $badgeType, '$recipientBadge', NULL, $addlOneTimeID, $price, $year, '$source', '$ref', NOW())";
 			$db->query($sql);
             $recordID = $db->insert_id;
 
@@ -286,8 +283,7 @@
 			$db->query($sql);
 			$addlOneTimeID = $db->insert_id;
 
-			$sql = "INSERT INTO PurchaseHistory (PurchaserID, PurchaserOneTimeID, ItemTypeName, ItemTypeID, Details, PeopleID, OneTimeID, Price, Total, Year, PaymentSource, PaymentReference, Purchased) " . 
-                "VALUES ($peopleID, $oneTimePurchaserID, 'Badge', $badgeType, '$recipientBadge', NULL, $addlOneTimeID, $price, $price, $year, '$source', '$ref', NOW())";
+			$sql = "INSERT INTO PurchaseHistory (PurchaserID, PurchaserOneTimeID, ItemTypeName, ItemTypeID, Details, PeopleID, OneTimeID, Price, Year, PaymentSource, PaymentReference, Purchased) VALUES ($peopleID, $oneTimePurchaserID, 'Badge', $badgeType, '$recipientBadge', NULL, $addlOneTimeID, $price, $year, '$source', '$ref', NOW())";
 			$db->query($sql);
             $recordID = $db->insert_id;
 
@@ -321,8 +317,7 @@
 			$db->query($sql);
 			$addlOneTimeID = $db->insert_id;
 
-			$sql = "INSERT INTO PurchaseHistory (PurchaserID, PurchaserOneTimeID, ItemTypeName, ItemTypeID, Details, PeopleID, OneTimeID, Price, Total, Year, PaymentSource, PaymentReference, Purchased) " . 
-                "VALUES ($peopleID, $oneTimePurchaserID, 'Badge', $badgeType, '$recipientBadge', NULL, $addlOneTimeID, $price, $price, $year, '$source', '$ref', NOW())";
+			$sql = "INSERT INTO PurchaseHistory (PurchaserID, PurchaserOneTimeID, ItemTypeName, ItemTypeID, Details, PeopleID, OneTimeID, Price, Year, PaymentSource, PaymentReference, Purchased) VALUES ($peopleID, $oneTimePurchaserID, 'Badge', $badgeType, '$recipientBadge', NULL, $addlOneTimeID, $price, $year, '$source', '$ref', NOW())";
 			$db->query($sql);
             $recordID = $db->insert_id;
 
@@ -356,8 +351,7 @@
 			$db->query($sql);
 			$addlOneTimeID = $db->insert_id;
 
-			$sql = "INSERT INTO PurchaseHistory (PurchaserID, PurchaserOneTimeID, ItemTypeName, ItemTypeID, Details, PeopleID, OneTimeID, Price, Total, Year, PaymentSource, PaymentReference, Purchased) " . 
-                "VALUES ($peopleID, $oneTimePurchaserID, 'Badge', $badgeType, '$recipientBadge', NULL, $addlOneTimeID, $price, $total, $year, '$source', '$ref', NOW())";
+			$sql = "INSERT INTO PurchaseHistory (PurchaserID, PurchaserOneTimeID, ItemTypeName, ItemTypeID, Details, PeopleID, OneTimeID, Price, Year, PaymentSource, PaymentReference, Purchased) VALUES ($peopleID, $oneTimePurchaserID, 'Badge', $badgeType, '$recipientBadge', NULL, $addlOneTimeID, $price, $year, '$source', '$ref', NOW())";
 			$db->query($sql);
             $recordID = $db->insert_id;
 

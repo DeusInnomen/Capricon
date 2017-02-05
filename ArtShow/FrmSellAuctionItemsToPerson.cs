@@ -15,8 +15,6 @@ namespace ArtShow
     public partial class FrmSellAuctionItemsToPerson : Form
     {
         private List<ArtShowItem> Items { get; set; }
-        private decimal TotalPrice { get; set; }
-        private decimal TotalTax { get; set; }
         private decimal TotalDue { get; set; }
         private PersonPickup Person { get; set; }
         private MagneticStripeScan Card { get; set; }
@@ -31,7 +29,6 @@ namespace ArtShow
             Person = person;
             StripeFirstTry = true;
             Text = "Items Won by " + Person.Name;
-            LblTaxes.Text = "Taxes @ " + decimal.Round(Program.TaxRate * 100, 1) + "%";
 
             var payload = "action=GetItemsForPickup&id=" + Person.BadgeID + "&year=" + Program.Year.ToString();
             var data = Encoding.ASCII.GetBytes(payload);
@@ -47,9 +44,7 @@ namespace ArtShow
             var results = new StreamReader(response.GetResponseStream()).ReadToEnd();
             Items = JsonConvert.DeserializeObject<List<ArtShowItem>>(results);
 
-            TotalPrice = 0;
             TotalDue = 0;
-            TotalTax = 0;
             foreach (var showItem in Items)
             {
                 var item = new ListViewItem {Text = showItem.LocationCode};
@@ -59,14 +54,9 @@ namespace ArtShow
                 item.SubItems.Add(((decimal) showItem.FinalSalePrice).ToString("C"));
                 item.Tag = showItem;
                 LstItems.Items.Add(item);
-                TotalPrice += (decimal)showItem.FinalSalePrice;
+                TotalDue += (decimal)showItem.FinalSalePrice;
             }
-            TotalTax = TotalPrice * Program.TaxRate;
-            TotalTax = decimal.Round(TotalTax, 2);
-            TotalDue = TotalPrice + TotalTax;
-            LblAmountDue.Text = TotalPrice.ToString("C");
-            LblAmountTax.Text = TotalTax.ToString("C");
-            LblAmountTotal.Text = TotalDue.ToString("C");
+            LblAmountDue.Text = TotalDue.ToString("C");
         }
 
         private void BtnCancel_Click(object sender, EventArgs e)
@@ -129,7 +119,7 @@ namespace ArtShow
                     source = "Waived";
             }
 
-            var payload = "action=SellAuctionItems&year=" + Program.Year.ToString() + "&price=" + TotalPrice + "&tax=" + TotalTax + "&total=" + TotalDue + "&id=" + 
+            var payload = "action=SellAuctionItems&year=" + Program.Year.ToString() + "&total=" + TotalDue + "&id=" + 
                 Person.BadgeID + "&pieces=" + Items.Count + "&source=" + source + "&reference=" + reference;
 
             var data = Encoding.ASCII.GetBytes(payload);

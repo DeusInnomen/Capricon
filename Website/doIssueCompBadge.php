@@ -37,8 +37,7 @@
 	$badgeNumber = $row["Next"];
 	$result->close();
 
-	$sql = "INSERT INTO PurchaseHistory (PurchaserID, PurchaserOneTimeID, ItemTypeName, ItemTypeID, Details, PeopleID, OneTimeID, Price, Total, Year, Purchased, PaymentSource, PaymentReference) " . 
-        "VALUES ($purchaserID, $oneTimePurchaserID, 'Badge', 1, '$badgename', $peopleID, $oneTimeID, 0.00, 0.00, $year, NOW(), 'Comp', 'NoCharge')";
+	$sql = "INSERT INTO PurchaseHistory (PurchaserID, PurchaserOneTimeID, ItemTypeName, ItemTypeID, Details, PeopleID, OneTimeID, Price, Year, Purchased, PaymentSource, PaymentReference) VALUES ($purchaserID, $oneTimePurchaserID, 'Badge', 1, '$badgename', $peopleID, $oneTimeID, 0.00, $year, NOW(), 'Comp', 'NoCharge')";
 	$db->query($sql);
     $recordID = $db->insert_id;
 	$sql = "INSERT INTO PurchasedBadges (Year, PeopleID, OneTimeID, PurchaserID, OneTimePurchaserID, BadgeNumber, BadgeTypeID, BadgeName, Department, Status, OriginalPrice, AmountPaid, PaymentSource, PaymentReference, PromoCodeID, CertificateID, RecordID, Created) VALUES ($year, $peopleID, $oneTimeID, $purchaserID, $oneTimePurchaserID, $badgeNumber, 1, '$badgename', '$department', 'Paid', 0.00, 0.00, 'Comp', 'NoCharge', NULL, NULL, $recordID, NOW())";

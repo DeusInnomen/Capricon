@@ -57,12 +57,8 @@
             this.colTitle = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colArtist = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colPrice = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.SortImages = new System.Windows.Forms.ImageList(this.components);
             this.BtnPrintSummary = new System.Windows.Forms.Button();
-            this.LblAmountTax = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.LblAmountTotal = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
+            this.SortImages = new System.Windows.Forms.ImageList(this.components);
             this.TabPaymentMethods.SuspendLayout();
             this.TabCredit.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PicCards)).BeginInit();
@@ -73,18 +69,18 @@
             // label2
             // 
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(547, 13);
+            this.label2.Location = new System.Drawing.Point(562, 13);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(144, 22);
+            this.label2.Size = new System.Drawing.Size(129, 22);
             this.label2.TabIndex = 61;
-            this.label2.Text = "Total Price:";
+            this.label2.Text = "Total Due:";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // BtnCancel
             // 
             this.BtnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.BtnCancel.Font = new System.Drawing.Font("Lucida Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnCancel.Location = new System.Drawing.Point(647, 336);
+            this.BtnCancel.Location = new System.Drawing.Point(647, 265);
             this.BtnCancel.Name = "BtnCancel";
             this.BtnCancel.Size = new System.Drawing.Size(98, 27);
             this.BtnCancel.TabIndex = 60;
@@ -97,7 +93,7 @@
             this.BtnPurchase.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.BtnPurchase.Enabled = false;
             this.BtnPurchase.Font = new System.Drawing.Font("Lucida Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnPurchase.Location = new System.Drawing.Point(751, 336);
+            this.BtnPurchase.Location = new System.Drawing.Point(751, 265);
             this.BtnPurchase.Name = "BtnPurchase";
             this.BtnPurchase.Size = new System.Drawing.Size(101, 27);
             this.BtnPurchase.TabIndex = 59;
@@ -108,7 +104,7 @@
             // label1
             // 
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(531, 105);
+            this.label1.Location = new System.Drawing.Point(532, 34);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(313, 22);
             this.label1.TabIndex = 58;
@@ -121,7 +117,7 @@
             this.TabPaymentMethods.Controls.Add(this.TabCheck);
             this.TabPaymentMethods.Controls.Add(this.TabCash);
             this.TabPaymentMethods.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TabPaymentMethods.Location = new System.Drawing.Point(531, 130);
+            this.TabPaymentMethods.Location = new System.Drawing.Point(531, 59);
             this.TabPaymentMethods.Name = "TabPaymentMethods";
             this.TabPaymentMethods.SelectedIndex = 0;
             this.TabPaymentMethods.Size = new System.Drawing.Size(321, 200);
@@ -140,7 +136,7 @@
             this.TabCredit.Controls.Add(this.PicCards);
             this.TabCredit.Location = new System.Drawing.Point(4, 29);
             this.TabCredit.Name = "TabCredit";
-            this.TabCredit.Padding = new System.Windows.Forms.Padding(3);
+            this.TabCredit.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
             this.TabCredit.Size = new System.Drawing.Size(313, 167);
             this.TabCredit.TabIndex = 0;
             this.TabCredit.Text = "Credit Card";
@@ -235,7 +231,7 @@
             this.TabCheck.Controls.Add(this.label4);
             this.TabCheck.Location = new System.Drawing.Point(4, 29);
             this.TabCheck.Name = "TabCheck";
-            this.TabCheck.Padding = new System.Windows.Forms.Padding(3);
+            this.TabCheck.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
             this.TabCheck.Size = new System.Drawing.Size(313, 167);
             this.TabCheck.TabIndex = 1;
             this.TabCheck.Text = "Check";
@@ -321,7 +317,7 @@
             this.LstItems.HideSelection = false;
             this.LstItems.Location = new System.Drawing.Point(12, 12);
             this.LstItems.Name = "LstItems";
-            this.LstItems.Size = new System.Drawing.Size(513, 349);
+            this.LstItems.Size = new System.Drawing.Size(513, 280);
             this.LstItems.SmallImageList = this.SortImages;
             this.LstItems.TabIndex = 63;
             this.LstItems.UseCompatibleStateImageBehavior = false;
@@ -353,18 +349,11 @@
             this.colPrice.Text = "Final Price";
             this.colPrice.Width = 101;
             // 
-            // SortImages
-            // 
-            this.SortImages.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("SortImages.ImageStream")));
-            this.SortImages.TransparentColor = System.Drawing.Color.Transparent;
-            this.SortImages.Images.SetKeyName(0, "Down.png");
-            this.SortImages.Images.SetKeyName(1, "Up.png");
-            // 
             // BtnPrintSummary
             // 
             this.BtnPrintSummary.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.BtnPrintSummary.Font = new System.Drawing.Font("Lucida Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnPrintSummary.Location = new System.Drawing.Point(533, 336);
+            this.BtnPrintSummary.Location = new System.Drawing.Point(533, 265);
             this.BtnPrintSummary.Name = "BtnPrintSummary";
             this.BtnPrintSummary.Size = new System.Drawing.Size(108, 27);
             this.BtnPrintSummary.TabIndex = 64;
@@ -372,57 +361,18 @@
             this.BtnPrintSummary.UseVisualStyleBackColor = true;
             this.BtnPrintSummary.Click += new System.EventHandler(this.BtnPrintSummary_Click);
             // 
-            // LblAmountTax
+            // SortImages
             // 
-            this.LblAmountTax.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LblAmountTax.ForeColor = System.Drawing.Color.Green;
-            this.LblAmountTax.Location = new System.Drawing.Point(697, 44);
-            this.LblAmountTax.Name = "LblAmountTax";
-            this.LblAmountTax.Size = new System.Drawing.Size(129, 22);
-            this.LblAmountTax.TabIndex = 66;
-            this.LblAmountTax.Text = "$0.00";
-            this.LblAmountTax.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label9
-            // 
-            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(543, 44);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(148, 22);
-            this.label9.TabIndex = 65;
-            this.label9.Text = "Taxes:";
-            this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // LblAmountTotal
-            // 
-            this.LblAmountTotal.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LblAmountTotal.ForeColor = System.Drawing.Color.Green;
-            this.LblAmountTotal.Location = new System.Drawing.Point(697, 73);
-            this.LblAmountTotal.Name = "LblAmountTotal";
-            this.LblAmountTotal.Size = new System.Drawing.Size(129, 22);
-            this.LblAmountTotal.TabIndex = 68;
-            this.LblAmountTotal.Text = "$0.00";
-            this.LblAmountTotal.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label12
-            // 
-            this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label12.Location = new System.Drawing.Point(543, 73);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(148, 22);
-            this.label12.TabIndex = 67;
-            this.label12.Text = "Total Amount Due:";
-            this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.SortImages.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("SortImages.ImageStream")));
+            this.SortImages.TransparentColor = System.Drawing.Color.Transparent;
+            this.SortImages.Images.SetKeyName(0, "Down.png");
+            this.SortImages.Images.SetKeyName(1, "Up.png");
             // 
             // FrmSellAuctionItemsToPerson
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(864, 373);
-            this.Controls.Add(this.LblAmountTotal);
-            this.Controls.Add(this.label12);
-            this.Controls.Add(this.LblAmountTax);
-            this.Controls.Add(this.label9);
+            this.ClientSize = new System.Drawing.Size(864, 302);
             this.Controls.Add(this.BtnPrintSummary);
             this.Controls.Add(this.LstItems);
             this.Controls.Add(this.LblAmountDue);
@@ -481,9 +431,5 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox txtCVC;
         private System.Windows.Forms.ImageList SortImages;
-        private System.Windows.Forms.Label LblAmountTax;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label LblAmountTotal;
-        private System.Windows.Forms.Label label12;
     }
 }
