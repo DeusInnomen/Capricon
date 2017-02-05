@@ -34,7 +34,7 @@ $row = $result->fetch_array();
 $allBadgesPH = $row["Badges"];
 $result->close();
 
-$sql = "SELECT count(RecordID) AS Count, sum(Total) AS Revenue, ItemTypeName FROM PurchaseHistory WHERE Year = $year GROUP BY ItemTypeName";
+$sql = "SELECT count(RecordID) AS Count, sum(Price) AS Revenue, ItemTypeName FROM PurchaseHistory WHERE Year = $year GROUP BY ItemTypeName";
 $allItemsSold = array();
 $result = $db->query($sql);
 if($result->num_rows > 0)
@@ -44,7 +44,7 @@ if($result->num_rows > 0)
     $result->close();
 }
 
-$sql = "SELECT count(RecordID) AS Count, sum(Total) AS Revenue, ItemTypeName, Details FROM PurchaseHistory WHERE Year = $year AND ItemTypeName = 'Miscellaneous Charge' GROUP BY ItemTypeName, Details";
+$sql = "SELECT count(RecordID) AS Count, sum(Price) AS Revenue, ItemTypeName, Details FROM PurchaseHistory WHERE Year = $year AND ItemTypeName = 'Miscellaneous Charge' GROUP BY ItemTypeName, Details";
 $miscItemsSold = array();
 $result = $db->query($sql);
 if($result->num_rows > 0)
@@ -54,7 +54,7 @@ if($result->num_rows > 0)
     $result->close();
 }
 
-$sql="SELECT count(RecordID) AS Count, sum(Total) AS Revenue, ItemTypeName, PaymentSource FROM PurchaseHistory WHERE Year = $year GROUP BY ItemTypeName, PaymentSource ORDER BY ItemTypeName, PaymentSource";
+$sql="SELECT count(RecordID) AS Count, sum(Price) AS Revenue, ItemTypeName, PaymentSource FROM PurchaseHistory WHERE Year = $year GROUP BY ItemTypeName, PaymentSource ORDER BY ItemTypeName, PaymentSource";
 $allItemsSoldbySource = array();
 $result = $db->query($sql);
 if($result->num_rows > 0)
@@ -64,7 +64,7 @@ if($result->num_rows > 0)
     $result->close();
 }
 
-$sql="SELECT count(RecordID) AS Count, sum(Total) AS Revenue, ItemTypeName, PaymentSource FROM PurchaseHistory WHERE Year = $year GROUP BY ItemTypeName, PaymentSource ORDER BY ItemTypeName, PaymentSource";
+$sql="SELECT count(RecordID) AS Count, sum(Price) AS Revenue, ItemTypeName, PaymentSource FROM PurchaseHistory WHERE Year = $year GROUP BY ItemTypeName, PaymentSource ORDER BY ItemTypeName, PaymentSource";
 $allItemsSoldbySource = array();
 $result = $db->query($sql);
 if($result->num_rows > 0)
@@ -74,7 +74,7 @@ if($result->num_rows > 0)
     $result->close();
 }
 
-$sql = "SELECT count(RecordID) AS Count, sum(Total) AS Revenue, ItemTypeName, Details, PaymentSource FROM PurchaseHistory WHERE Year = $year AND ItemTypeName = 'Miscellaneous Charge' GROUP BY ItemTypeName, Details, PaymentSource ORDER BY ItemTypeName, Details, PaymentSource";
+$sql = "SELECT count(RecordID) AS Count, sum(Price) AS Revenue, ItemTypeName, Details, PaymentSource FROM PurchaseHistory WHERE Year = $year AND ItemTypeName = 'Miscellaneous Charge' GROUP BY ItemTypeName, Details, PaymentSource ORDER BY ItemTypeName, Details, PaymentSource";
 $miscItemsSoldbySource = array();
 $result = $db->query($sql);
 if($result->num_rows > 0)
@@ -84,7 +84,7 @@ if($result->num_rows > 0)
     $result->close();
 }
 
-$sql = "SELECT CAST(Purchased AS DATE) AS Day, ItemTypeName, COUNT(RecordID) AS Count, PaymentSource, SUM(Total) AS Revenue FROM PurchaseHistory WHERE Year = $year GROUP BY CAST(Purchased AS DATE), ItemTypeName, PaymentSource ORDER BY CAST(Purchased AS DATE), ItemTypeName, PaymentSource";
+$sql = "SELECT CAST(Purchased AS DATE) AS Day, ItemTypeName, COUNT(RecordID) AS Count, PaymentSource, SUM(Price) AS Revenue FROM PurchaseHistory WHERE Year = $year GROUP BY CAST(Purchased AS DATE), ItemTypeName, PaymentSource ORDER BY CAST(Purchased AS DATE), ItemTypeName, PaymentSource";
 $itemsByDayByTypeByPayment = array();
 $result = $db->query($sql);
 if($result->num_rows > 0)
@@ -94,7 +94,7 @@ if($result->num_rows > 0)
     $result->close();
 }
 
-$sql = "SELECT CAST(Purchased AS DATE) AS Day, ItemTypeName, COUNT(RecordID) AS Count, PaymentSource, SUM(Total) AS Revenue, Details FROM PurchaseHistory WHERE Year = $year AND ItemTypeName = 'Miscellaneous Charge' GROUP BY CAST(Purchased AS DATE), ItemTypeName, Details, PaymentSource ORDER BY CAST(Purchased AS DATE), ItemTypeName, Details, PaymentSource";
+$sql = "SELECT CAST(Purchased AS DATE) AS Day, ItemTypeName, COUNT(RecordID) AS Count, PaymentSource, SUM(Price) AS Revenue, Details FROM PurchaseHistory WHERE Year = $year AND ItemTypeName = 'Miscellaneous Charge' GROUP BY CAST(Purchased AS DATE), ItemTypeName, Details, PaymentSource ORDER BY CAST(Purchased AS DATE), ItemTypeName, Details, PaymentSource";
 $miscItemsByDayByTypeByPayment = array();
 $result = $db->query($sql);
 if($result->num_rows > 0)
@@ -103,7 +103,7 @@ if($result->num_rows > 0)
         $miscItemsByDayByTypeByPayment[] = $row;
     $result->close();
 }
-// TODO: Update the next three queries to find the current year's charities, where People.IsCharity = True
+
 $sql = "SELECT sum(`FinalSalePrice`) AS Revenue FROM `ArtSubmissions` WHERE `ArtistAttendingID`=130 AND `Category`='Sold'";
 $charityAuction = array();
 $result = $db->query($sql);

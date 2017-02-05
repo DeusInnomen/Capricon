@@ -106,7 +106,7 @@
 				$year = $row["Year"];
 				
 				$db->query("DELETE FROM PurchasedBadges WHERE BadgeID = $id");
-				$db->query("UPDATE PurchaseHistory SET AmountRefunded = Total, RefundReason = 'Deleted' WHERE PurchaserID " .
+				$db->query("UPDATE PurchaseHistory SET AmountRefunded = Price, RefundReason = 'Deleted' WHERE PurchaserID " .
 					(!empty($purchaserID) ? "= $purchaserID" : ' IS NULL') . " AND PurchaserOneTimeID " .
 					(!empty($purchaserOneTimeID) ? "= $purchaserOneTimeID" : ' IS NULL') . " AND PeopleID " . 
 					(!empty($peopleID) ? "= $peopleID" : ' IS NULL') . " AND OneTimeID " .
@@ -228,8 +228,7 @@
 			}
 			
 			$db->query("UPDATE PurchasedBadges SET Status = 'Refunded' WHERE BadgeID = $id");
-			$db->query("INSERT INTO PurchaseHistory (PurchaserID, PurchaserOneTimeID, ItemTypeName, ItemTypeID, Details, PeopleID, OneTimeID, Price, Total, Year, Purchased, PaymentSource, PaymentReference) " . 
-                "VALUES ($purchaser, $purchaserOneTime, 'Badge', $badgeTypeID, 'Refund for: $badgeName', $person, $oneTime, -$amount, -$amount, $year, NOW(), '$source', '$ref')");
+			$db->query("INSERT INTO PurchaseHistory (PurchaserID, PurchaserOneTimeID, ItemTypeName, ItemTypeID, Details, PeopleID, OneTimeID, Price, Year, Purchased, PaymentSource, PaymentReference) VALUES ($purchaser, $purchaserOneTime, 'Badge', $badgeTypeID, 'Refund for: $badgeName', $person, $oneTime, -$amount, $year, NOW(), '$source', '$ref')");
 			if(!is_null($peopleID))
 			{		
 				$result = $db->query("SELECT CONCAT(FirstName, ' ', LastName) AS Name, Email FROM People WHERE PeopleID = $peopleID");
