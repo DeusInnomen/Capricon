@@ -69,6 +69,10 @@
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.btnClearFilter = new System.Windows.Forms.Button();
+            this.LblAmountTotal = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.LblAmountTax = new System.Windows.Forms.Label();
+            this.LblTaxes = new System.Windows.Forms.Label();
             this.TabPaymentMethods.SuspendLayout();
             this.TabCredit.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PicCards)).BeginInit();
@@ -81,7 +85,7 @@
             this.BtnClearCart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.BtnClearCart.Enabled = false;
             this.BtnClearCart.Font = new System.Drawing.Font("Lucida Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnClearCart.Location = new System.Drawing.Point(148, 604);
+            this.BtnClearCart.Location = new System.Drawing.Point(148, 683);
             this.BtnClearCart.Name = "BtnClearCart";
             this.BtnClearCart.Size = new System.Drawing.Size(139, 28);
             this.BtnClearCart.TabIndex = 13;
@@ -94,7 +98,7 @@
             this.BtnRemoveItem.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.BtnRemoveItem.Enabled = false;
             this.BtnRemoveItem.Font = new System.Drawing.Font("Lucida Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnRemoveItem.Location = new System.Drawing.Point(3, 604);
+            this.BtnRemoveItem.Location = new System.Drawing.Point(3, 683);
             this.BtnRemoveItem.Name = "BtnRemoveItem";
             this.BtnRemoveItem.Size = new System.Drawing.Size(139, 28);
             this.BtnRemoveItem.TabIndex = 12;
@@ -123,9 +127,9 @@
             this.LstCart.GridLines = true;
             this.LstCart.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.LstCart.HideSelection = false;
-            this.LstCart.Location = new System.Drawing.Point(3, 345);
+            this.LstCart.Location = new System.Drawing.Point(3, 347);
             this.LstCart.Name = "LstCart";
-            this.LstCart.Size = new System.Drawing.Size(486, 253);
+            this.LstCart.Size = new System.Drawing.Size(486, 330);
             this.LstCart.SmallImageList = this.SortImages;
             this.LstCart.TabIndex = 6;
             this.LstCart.UseCompatibleStateImageBehavior = false;
@@ -160,9 +164,9 @@
             // 
             this.LblAmountDue.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LblAmountDue.ForeColor = System.Drawing.Color.Green;
-            this.LblAmountDue.Location = new System.Drawing.Point(661, 345);
+            this.LblAmountDue.Location = new System.Drawing.Point(661, 352);
             this.LblAmountDue.Name = "LblAmountDue";
-            this.LblAmountDue.Size = new System.Drawing.Size(129, 23);
+            this.LblAmountDue.Size = new System.Drawing.Size(145, 23);
             this.LblAmountDue.TabIndex = 8;
             this.LblAmountDue.Text = "$0.00";
             this.LblAmountDue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -170,18 +174,18 @@
             // label2
             // 
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(526, 345);
+            this.label2.Location = new System.Drawing.Point(511, 352);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(129, 23);
+            this.label2.Size = new System.Drawing.Size(144, 23);
             this.label2.TabIndex = 7;
-            this.label2.Text = "Total Due:";
+            this.label2.Text = "Total Price:";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // BtnCancel
             // 
             this.BtnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.BtnCancel.Font = new System.Drawing.Font("Lucida Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnCancel.Location = new System.Drawing.Point(550, 610);
+            this.BtnCancel.Location = new System.Drawing.Point(550, 689);
             this.BtnCancel.Name = "BtnCancel";
             this.BtnCancel.Size = new System.Drawing.Size(130, 28);
             this.BtnCancel.TabIndex = 14;
@@ -194,7 +198,7 @@
             this.BtnPurchase.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.BtnPurchase.Enabled = false;
             this.BtnPurchase.Font = new System.Drawing.Font("Lucida Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnPurchase.Location = new System.Drawing.Point(686, 610);
+            this.BtnPurchase.Location = new System.Drawing.Point(686, 689);
             this.BtnPurchase.Name = "BtnPurchase";
             this.BtnPurchase.Size = new System.Drawing.Size(130, 28);
             this.BtnPurchase.TabIndex = 0;
@@ -254,7 +258,7 @@
             // label1
             // 
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(496, 367);
+            this.label1.Location = new System.Drawing.Point(495, 446);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(313, 23);
             this.label1.TabIndex = 10;
@@ -267,7 +271,7 @@
             this.TabPaymentMethods.Controls.Add(this.TabCheck);
             this.TabPaymentMethods.Controls.Add(this.TabCash);
             this.TabPaymentMethods.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TabPaymentMethods.Location = new System.Drawing.Point(495, 393);
+            this.TabPaymentMethods.Location = new System.Drawing.Point(495, 472);
             this.TabPaymentMethods.Name = "TabPaymentMethods";
             this.TabPaymentMethods.SelectedIndex = 0;
             this.TabPaymentMethods.Size = new System.Drawing.Size(321, 205);
@@ -446,7 +450,7 @@
             // 
             this.BtnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.BtnAdd.Font = new System.Drawing.Font("Lucida Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnAdd.Location = new System.Drawing.Point(682, 314);
+            this.BtnAdd.Location = new System.Drawing.Point(686, 314);
             this.BtnAdd.Name = "BtnAdd";
             this.BtnAdd.Size = new System.Drawing.Size(130, 28);
             this.BtnAdd.TabIndex = 5;
@@ -478,7 +482,7 @@
             // 
             this.btnClearFilter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnClearFilter.Font = new System.Drawing.Font("Lucida Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnClearFilter.Location = new System.Drawing.Point(317, 314);
+            this.btnClearFilter.Location = new System.Drawing.Point(311, 313);
             this.btnClearFilter.Name = "btnClearFilter";
             this.btnClearFilter.Size = new System.Drawing.Size(83, 28);
             this.btnClearFilter.TabIndex = 2;
@@ -486,11 +490,57 @@
             this.btnClearFilter.UseVisualStyleBackColor = true;
             this.btnClearFilter.Click += new System.EventHandler(this.btnClearFilter_Click);
             // 
+            // LblAmountTotal
+            // 
+            this.LblAmountTotal.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LblAmountTotal.ForeColor = System.Drawing.Color.Green;
+            this.LblAmountTotal.Location = new System.Drawing.Point(661, 411);
+            this.LblAmountTotal.Name = "LblAmountTotal";
+            this.LblAmountTotal.Size = new System.Drawing.Size(145, 22);
+            this.LblAmountTotal.TabIndex = 72;
+            this.LblAmountTotal.Text = "$0.00";
+            this.LblAmountTotal.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label12
+            // 
+            this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label12.Location = new System.Drawing.Point(507, 411);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(148, 22);
+            this.label12.TabIndex = 71;
+            this.label12.Text = "Total Amount Due:";
+            this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // LblAmountTax
+            // 
+            this.LblAmountTax.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LblAmountTax.ForeColor = System.Drawing.Color.Green;
+            this.LblAmountTax.Location = new System.Drawing.Point(661, 381);
+            this.LblAmountTax.Name = "LblAmountTax";
+            this.LblAmountTax.Size = new System.Drawing.Size(145, 22);
+            this.LblAmountTax.TabIndex = 70;
+            this.LblAmountTax.Text = "$0.00";
+            this.LblAmountTax.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // LblTaxes
+            // 
+            this.LblTaxes.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LblTaxes.Location = new System.Drawing.Point(511, 381);
+            this.LblTaxes.Name = "LblTaxes";
+            this.LblTaxes.Size = new System.Drawing.Size(144, 22);
+            this.LblTaxes.TabIndex = 69;
+            this.LblTaxes.Text = "Taxes:";
+            this.LblTaxes.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // FrmSellItems
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(819, 641);
+            this.ClientSize = new System.Drawing.Size(819, 720);
+            this.Controls.Add(this.LblAmountTotal);
+            this.Controls.Add(this.label12);
+            this.Controls.Add(this.LblAmountTax);
+            this.Controls.Add(this.LblTaxes);
             this.Controls.Add(this.btnClearFilter);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.txtSearch);
@@ -566,5 +616,9 @@
         private System.Windows.Forms.TextBox txtSearch;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Button btnClearFilter;
+        private System.Windows.Forms.Label LblAmountTotal;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label LblAmountTax;
+        private System.Windows.Forms.Label LblTaxes;
     }
 }
