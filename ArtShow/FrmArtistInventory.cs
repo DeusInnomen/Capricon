@@ -21,7 +21,9 @@ namespace ArtShow
         private List<ArtShowItem> ShowItems { get; set; }
         private List<PrintShopItem> ShopItems { get; set; } 
 
-        private List<ArtShowItem> _tagsToPrint = new List<ArtShowItem>();
+        private List<ArtShowItem> _AuctionTagsToPrint = new List<ArtShowItem>();
+        private List<PrintShopItem> _PrintShopTagsToPrint = new List<PrintShopItem>();
+        private int _currentTagPrintNumber;
 
         private int ArtShowSortColumn = 0;
         private bool ArtShowSortAscend = true;
@@ -265,7 +267,7 @@ namespace ArtShow
         {
             if (lstArtShow.SelectedItems.Count == 0) return;
             var document = new PrintDocument();
-            document.PrintPage += DocumentOnPrintPage;
+            document.PrintPage += AuctionDocumentOnPrintPage;
             var dialog = new PrintDialog
                 {
                     Document = document,
@@ -276,7 +278,7 @@ namespace ArtShow
                 };
             if (dialog.ShowDialog() == DialogResult.OK)
             {
-                _tagsToPrint.AddRange(
+                _AuctionTagsToPrint.AddRange(
                     (from ListViewItem item in lstArtShow.SelectedItems select (ArtShowItem) item.Tag).ToList());
                 document.Print();
             }
@@ -285,7 +287,7 @@ namespace ArtShow
         private void BtnPrintAllTags_Click(object sender, EventArgs e)
         {
             var document = new PrintDocument();
-            document.PrintPage += DocumentOnPrintPage;
+            document.PrintPage += AuctionDocumentOnPrintPage;
             var dialog = new PrintDialog
             {
                 Document = document,
@@ -296,29 +298,32 @@ namespace ArtShow
             };
             if (dialog.ShowDialog() == DialogResult.OK)
             {
-                _tagsToPrint.AddRange(
+                _AuctionTagsToPrint.AddRange(
                     (from ListViewItem item in lstArtShow.Items select (ArtShowItem)item.Tag).ToList());
                 document.Print();
             }
         }
 
-        private void DocumentOnPrintPage(object sender, PrintPageEventArgs e)
+        private void AuctionDocumentOnPrintPage(object sender, PrintPageEventArgs e)
         {
-            var leftMargin = (e.PageBounds.Width - e.MarginBounds.Width) / 4;
-            var topMargin = (e.PageBounds.Height - e.MarginBounds.Height) / 4;
+            var widthInch = e.PageBounds.Width / 8.5;
+            var heightInch = e.PageBounds.Height / 11;
+            var leftMargin = widthInch * 0.25;
+            var topMargin = heightInch * 0.2;
             var tagNumber = 1;
             while (tagNumber <= 4)
             {
-                var tag = CompressTag(DrawTag(_tagsToPrint[0], e));
+                var tag = CompressTag(DrawTag(_AuctionTagsToPrint[0], e));
                 e.Graphics.DrawImage(tag,
-                    e.MarginBounds.Left - leftMargin + (tagNumber % 2 == 0 ? leftMargin + e.MarginBounds.Width / 2 : 0),
-                    e.MarginBounds.Top - topMargin + (tagNumber < 3 ? 0 : e.MarginBounds.Height / 2 + topMargin),
-                    e.MarginBounds.Width / 2, e.MarginBounds.Height / 2);
-                _tagsToPrint.RemoveAt(0);
-                if (_tagsToPrint.Count == 0) break;
+                    (float)(tagNumber % 2 == 0 ? ((widthInch * 4.25) + leftMargin) : leftMargin),
+                    (float)(tagNumber < 3 ? topMargin : heightInch * 5.5 + topMargin),
+                    (float)(widthInch * 3.25),
+                    (float)(heightInch * 5));
+                _AuctionTagsToPrint.RemoveAt(0);
+                if (_AuctionTagsToPrint.Count == 0) break;
                 tagNumber++;
             }
-            if (_tagsToPrint.Count > 0) e.HasMorePages = true;
+            if (_AuctionTagsToPrint.Count > 0) e.HasMorePages = true;
         }
 
         private Image CompressTag(Bitmap tag)
@@ -338,12 +343,13 @@ namespace ArtShow
             var fontFootnote = new Font("Lucida Sans", 12);
             var fontFootnoteBold = new Font("Lucida Sans", 12, FontStyle.Bold);
             var centered = new StringFormat { LineAlignment = StringAlignment.Center, Alignment = StringAlignment.Center };
+            var leftButCentered = new StringFormat { LineAlignment = StringAlignment.Center, Alignment = StringAlignment.Near };
 
             var settings = new PrinterSettings();
             var resX = settings.DefaultPageSettings.PrinterResolution.X;
             var resY = settings.DefaultPageSettings.PrinterResolution.Y;
-            var imageWidth = (e.PageBounds.Width/2)*(resX/96);
-            var imageHeight = (e.PageBounds.Height/2)*(resY/96);
+            var imageWidth = Convert.ToInt32(((float)e.PageBounds.Width / 200) * resX);
+            var imageHeight = Convert.ToInt32((((float)e.PageBounds.Height + 375) / 200) * resY);
 
             var image = new Bitmap(imageWidth, imageHeight);
             image.SetResolution(resX, resY);
@@ -409,37 +415,32 @@ namespace ArtShow
             gfx.DrawLine(thickLine, row3, currentY, row3, currentY + rowHeight * 2);
             gfx.DrawLine(thickLine, image.Width - 1, currentY, image.Width - 1, currentY + rowHeight * 2);
             gfx.DrawLine(thickLine, 0, currentY + (rowHeight * 2), image.Width - 1, currentY + (rowHeight * 2));
-            gfx.DrawString("Name", fontTable, Brushes.Black,
-                new RectangleF(row1 + 1, currentY + 1, row2 - row1, currentY + (rowHeight * 2) - 1));
-            gfx.DrawString("Badge #", fontTable, Brushes.Black,
-                new RectangleF(row2 + 1, currentY + 1, row3 - row2, currentY + (rowHeight * 2) - 1));
-            gfx.DrawString("Bid Amount", fontTable, Brushes.Black,
-                new RectangleF(row3 + 1, currentY + 1, image.Width - row3, currentY + (rowHeight * 2) - 1));
+            gfx.DrawString("Name", fontTable, Brushes.Black, new RectangleF(row1 + 2, currentY + 1, row2 - row1, (rowHeight * 2) - 1), leftButCentered);
+            gfx.DrawString("Badge #", fontTable, Brushes.Black, new RectangleF(row2, currentY + 1, row3 - row2, (rowHeight * 2) - 1), centered);
+            gfx.DrawString("Bid Amount", fontTable, Brushes.Black, new RectangleF(row3, currentY + 1, image.Width - row3, (rowHeight * 2) - 1), centered);
             currentY += (rowHeight * 2) + 1;
 
             for (int rowNumber = 1; rowNumber <= 5; rowNumber++)
             {
                 gfx.DrawLine(thickLine, 0, currentY, image.Width - 1, currentY);
-                gfx.DrawLine(thickLine, 0, currentY, 0, (float) (currentY + rowHeight*1.5));
-                gfx.DrawLine(thickLine, row1, currentY, row1, (float)(currentY + rowHeight * 1.5));
-                gfx.DrawLine(thickLine, row2, currentY, row2, (float)(currentY + rowHeight * 1.5));
-                gfx.DrawLine(thickLine, row3, currentY, row3, (float)(currentY + rowHeight * 1.5));
-                gfx.DrawLine(thickLine, image.Width - 1, currentY, image.Width - 1, (float)(currentY + rowHeight * 1.5));
-                gfx.DrawLine(thickLine, 0, (float) (currentY + rowHeight*1.5), image.Width - 1, (float)(currentY + rowHeight * 1.5));
-                gfx.DrawString(rowNumber.ToString(), fontTable, Brushes.Black,
-                    new RectangleF(1, currentY + 1, row1 - 1, rowHeight - 1), centered);
-                currentY += (float)(rowHeight * 1.5) + 1;
+                gfx.DrawLine(thickLine, 0, currentY, 0, (float) (currentY + rowHeight*2));
+                gfx.DrawLine(thickLine, row1, currentY, row1, (float)(currentY + rowHeight * 2));
+                gfx.DrawLine(thickLine, row2, currentY, row2, (float)(currentY + rowHeight * 2));
+                gfx.DrawLine(thickLine, row3, currentY, row3, (float)(currentY + rowHeight * 2));
+                gfx.DrawLine(thickLine, image.Width - 1, currentY, image.Width - 1, (float)(currentY + rowHeight * 2));
+                gfx.DrawLine(thickLine, 0, (float) (currentY + rowHeight*2), image.Width - 1, (float)(currentY + rowHeight * 2));
+                gfx.DrawString(rowNumber.ToString(), fontTable, Brushes.Black, new RectangleF(1, currentY + 1, row1 - 1, rowHeight * 2 - 1), centered);
+                currentY += (float)(rowHeight * 2) + 1;
             }
 
             gfx.DrawLine(thickLine, 0, currentY, image.Width - 1, currentY);
-            gfx.DrawLine(thickLine, 0, currentY, 0, currentY + rowHeight);
-            gfx.DrawLine(thickLine, row2, currentY, row2, currentY + rowHeight);
-            gfx.DrawLine(thickLine, row3, currentY, row3, currentY + rowHeight);
-            gfx.DrawLine(thickLine, image.Width - 1, currentY, image.Width - 1, currentY + rowHeight);
-            gfx.DrawLine(thickLine, 0, currentY + rowHeight, image.Width - 1, currentY + rowHeight);
-            gfx.DrawString("Auction", fontTable, Brushes.Black,
-                new RectangleF(1, currentY + 1, row2 - 1, rowHeight - 1), centered);
-            currentY += rowHeight + 1;
+            gfx.DrawLine(thickLine, 0, currentY, 0, currentY + rowHeight * 2);
+            gfx.DrawLine(thickLine, row2, currentY, row2, currentY + rowHeight * 2);
+            gfx.DrawLine(thickLine, row3, currentY, row3, currentY + rowHeight * 2);
+            gfx.DrawLine(thickLine, image.Width - 1, currentY, image.Width - 1, currentY + rowHeight * 2);
+            gfx.DrawLine(thickLine, 0, currentY + rowHeight * 2, image.Width - 1, currentY + rowHeight * 2);
+            gfx.DrawString("Auction", fontTable, Brushes.Black, new RectangleF(1, currentY + 1, row2 - 1, rowHeight * 2 - 1), centered);
+            currentY += (float)(rowHeight * 2) + 1;
 
             text = "Do not ";
             gfx.DrawString(text, fontFootnoteBold, Brushes.Black, new RectangleF(0, currentY, image.Width, fontText.GetHeight(gfx)));
@@ -455,7 +456,7 @@ namespace ArtShow
 
             gfx.Dispose();
 
-            var resized = new Bitmap(image, image.Width/(resX/96), image.Height/(resY/96));
+            var resized = new Bitmap(image, image.Width / 4, image.Height / 4);
             return resized;
         }
 
@@ -611,6 +612,151 @@ namespace ArtShow
             lstPrintShop.ListViewItemSorter = new ListViewItemComparer(e.Column, PrintShopSortAscend);
             lstPrintShop.Sort();
             lstPrintShop.EndUpdate();
+        }
+
+        private void FrmArtistInventory_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void BtnPrintShopLabels_Click(object sender, EventArgs e)
+        {
+            _currentTagPrintNumber = 0;
+            var document = new PrintDocument();
+            document.PrintPage += PrintShopDocumentOnPrintPage;
+            var dialog = new PrintDialog
+            {
+                Document = document,
+                AllowSomePages = true,
+                AllowCurrentPage = false,
+                AllowSelection = true,
+                AllowPrintToFile = true
+            };
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                _PrintShopTagsToPrint.AddRange(
+                    (from ListViewItem item in lstPrintShop.SelectedItems select (PrintShopItem)item.Tag).ToList());
+                document.Print();
+            }
+        }
+
+        private void BtnPrintShopAllLabels_Click(object sender, EventArgs e)
+        {
+            _currentTagPrintNumber = 0;
+            var document = new PrintDocument();
+            document.PrintPage += PrintShopDocumentOnPrintPage;
+            var dialog = new PrintDialog
+            {
+                Document = document,
+                AllowSomePages = true,
+                AllowCurrentPage = false,
+                AllowSelection = true,
+                AllowPrintToFile = true
+            };
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                _PrintShopTagsToPrint.AddRange(
+                    (from ListViewItem item in lstPrintShop.Items select (PrintShopItem)item.Tag).ToList());
+                document.Print();
+            }
+        }
+
+        private void PrintShopDocumentOnPrintPage(object sender, PrintPageEventArgs e)
+        {
+            var widthInch = e.PageBounds.Width / 8.5;
+            var heightInch = e.PageBounds.Height / 11;
+            var leftMargin = widthInch * 0.25;
+            var topMargin = heightInch * 0.5;
+            var tagNumber = 1;
+            var row = 1;
+            while (tagNumber <= 30)
+            {
+                var column = tagNumber % 3 == 0 ? 3 : tagNumber % 3;
+                var tag = CompressTag(DrawPrintShopLabel(_PrintShopTagsToPrint[0], e));
+                e.Graphics.DrawImage(tag,
+                    (float)((leftMargin * (column - 1)) + ((column - 1) * 2.5 * widthInch)),
+                    (float)(topMargin + ((row - 1) * heightInch)),
+                    (float)(2.5 * widthInch),
+                    heightInch);
+                _currentTagPrintNumber++;
+                if (_PrintShopTagsToPrint[0].QuantitySent == _currentTagPrintNumber)
+                {
+                    _PrintShopTagsToPrint.RemoveAt(0);
+                    _currentTagPrintNumber = 0;
+                }
+                if (_PrintShopTagsToPrint.Count == 0) break;
+                if (tagNumber % 3 == 0) row++;
+                tagNumber++;
+            }
+            if (_PrintShopTagsToPrint.Count > 0) e.HasMorePages = true;
+        }
+
+        private Bitmap DrawPrintShopLabel(PrintShopItem item, PrintPageEventArgs e)
+        {
+            var fontTextBold = new Font("Lucida Sans", 12, FontStyle.Bold);
+            var fontText = new Font("Lucida Sans", 10);
+            var leftCentered = new StringFormat { LineAlignment = StringAlignment.Center, Alignment = StringAlignment.Near };
+            var rightCentered = new StringFormat { LineAlignment = StringAlignment.Center, Alignment = StringAlignment.Far };
+
+            var settings = new PrinterSettings();
+            var resX = settings.DefaultPageSettings.PrinterResolution.X;
+            var resY = settings.DefaultPageSettings.PrinterResolution.Y;
+            var imageWidth = (int)(resX * 2.5);
+            var imageHeight = resY;
+
+            var image = new Bitmap(imageWidth, imageHeight);
+            image.SetResolution(resX, resY);
+            var gfx = Graphics.FromImage(image);
+            var currentY = 0F;
+
+            var text = item.Title;
+            var textLines = WrapText(text, image.Width, fontTextBold);
+            foreach (string line in textLines)
+            {
+                gfx.DrawString(line, fontTextBold, Brushes.Black, new RectangleF(0, currentY, image.Width, fontTextBold.GetHeight(gfx)), leftCentered);
+                currentY += (float)(fontTextBold.GetHeight(gfx) * 1.05);
+            }
+            if (textLines.Count == 1)
+                currentY += (float)(fontTextBold.GetHeight(gfx) * 1.05);
+            text = Artist.DisplayName;
+            gfx.DrawString(text, fontText, Brushes.Black, new RectangleF(0, currentY, image.Width, fontText.GetHeight(gfx)), leftCentered);
+            text = item.Price.ToString("C");
+            gfx.DrawString(text, fontText, Brushes.Black, new RectangleF(0, currentY, image.Width, fontText.GetHeight(gfx)), rightCentered);
+
+            gfx.Dispose();
+
+            var resized = new Bitmap(image, image.Width / 6, image.Height / 6);
+            return resized;
+        }
+
+        private List<string> WrapText(string text, double pixels, Font font)
+        {
+            string[] originalLines = text.Split(new string[] { " " }, StringSplitOptions.None);
+
+            List<string> wrappedLines = new List<string>();
+
+            StringBuilder actualLine = new StringBuilder();
+            double actualWidth = 0;
+
+            foreach (var item in originalLines)
+            {
+                int w = TextRenderer.MeasureText(item + " ", font).Width * 5; // 5x to deal with resolution.
+                actualWidth += w;
+
+                if (actualWidth > pixels)
+                {
+                    wrappedLines.Add(actualLine.ToString());
+                    actualLine.Clear();
+                    actualWidth = w;
+                }
+
+                actualLine.Append(item + " ");
+            }
+
+            if (actualLine.Length > 0)
+                wrappedLines.Add(actualLine.ToString());
+
+            return wrappedLines;
         }
     }
 }

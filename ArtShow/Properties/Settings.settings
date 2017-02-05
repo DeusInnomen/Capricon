@@ -8,5 +8,8 @@
     <Setting Name="ServicesURL" Type="System.String" Scope="Application">
       <Value Profile="(Default)">FILL IN</Value>
     </Setting>
+    <Setting Name="TaxRate" Type="System.Decimal" Scope="Application">
+      <Value Profile="(Default)">10.0</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

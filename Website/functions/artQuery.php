@@ -6,29 +6,29 @@
 	include_once("$path/includes/functions.php");
 
 	// Add authentication handler here.
-	
+
 	if(empty($_POST["action"])) exit();
-	
+
 	$action = $db->real_escape_string($_POST["action"]);
-	
+
 	if($action == "GetArtists")
 	{
 		$sql = "SELECT DISTINCT p.PeopleID, a.ArtistID, p.FirstName, p.LastName, p.Email, p.Phone1, p.Phone1Type, p.IsCharity, a.DisplayName FROM People p INNER JOIN Permissions m ON p.PeopleID = m.PeopleID AND m.Permission = 'Artist' LEFT OUTER JOIN ArtistDetails a ON p.PeopleID = a.PeopleID ";
-			
+
 		if(!empty($_POST["id"]))
 		{
 			$year = !empty($_POST["year"]) ? $db->real_escape_string($_POST["year"]) : (date("n") >= 4 ? date("Y") + 1: date("Y"));
-			$sql .= "INNER JOIN ArtistPresence ap ON ap.ArtistID = a.ArtistID WHERE ap.Year = $year AND ArtistNumber = " . 
+			$sql .= "INNER JOIN ArtistPresence ap ON ap.ArtistID = a.ArtistID WHERE ap.Year = $year AND ArtistNumber = " .
 				$db->real_escape_string($_POST["id"]);
 		}
 		else
 		{
 			if(!empty($_POST["whereField"]) && !empty($_POST["whereTerm"]))
                 $sql .= "WHERE " . $db->real_escape_string($_POST["whereField"]) . " " . (!empty($_POST["whereSimilar"]) ? "LIKE" : "=") . " '". (!empty($_POST["whereSimilar"]) ? "%" : "") . $db->real_escape_string($_POST["whereTerm"]) . (!empty($_POST["whereSimilar"]) ? "%" : "") . "'";
-		}		
+		}
 		$sql .= " ORDER BY " . (!empty($_POST["order"]) ? $db->real_escape_string($_POST["order"]) : "LastName");
 		$result = $db->query($sql);
-		
+
 		$people = array();
 		if($result->num_rows > 0)
 			while($row = $result->fetch_array(MYSQLI_ASSOC))
@@ -39,14 +39,14 @@
 	}
 	elseif($action == "GetArtist")
 	{
-		$id = $db->real_escape_string($_POST["PeopleID"]);		
+		$id = $db->real_escape_string($_POST["PeopleID"]);
 		if($id == null)
 		{
 			header("Content-type: application/json");
 			echo json_encode(array("error" => "An invalid request was sent."));
 			exit();
 		}
-		
+
 		$artistInfo = array();
 		$result = $db->query("SELECT DISTINCT ad.ArtistID, ad.PeopleID, ad.DisplayName, ad.LegalName, ad.IsPro, ad.IsEAP, ad.Website, ad.ArtType, ad.Notes, p.IsCharity FROM ArtistDetails ad INNER JOIN People p ON p.PeopleID = ad.peopleID WHERE ad.PeopleID = $id");
 		if($result->num_rows > 0)
@@ -63,7 +63,7 @@
 			{
 				$row = $result->fetch_array(MYSQLI_ASSOC);
 				$result->close();
-				
+
 				$result = $db->query("SELECT BadgeID FROM PurchasedBadges WHERE PeopleID = $id AND Year = $year");
 				if($result->num_rows > 0)
 				{
@@ -72,7 +72,7 @@
 				}
 				else
 					$row["HasBadge"] = 0;
-				
+
 				$artistInfo["presence"] = $row;
 			}
 			else
@@ -83,7 +83,7 @@
 			$artistInfo["details"] = null;
 			$artistInfo["presence"] = null;
 		}
-		
+
 		header("Content-type: application/json");
 		echo json_encode($artistInfo);
 	}
@@ -117,7 +117,7 @@
 			$artistID = $db->insert_id;
 			$response["artistID"] = $artistID;
 		}
-		
+
 		$presence = json_decode($_POST["presence"], true);
 		$isAttending = $db->real_escape_string($presence["IsAttending"]);
 		$agentName = !empty($presence["AgentName"]) ? "'" . $db->real_escape_string($presence["AgentName"]) . "'" : "NULL";
@@ -155,10 +155,10 @@
 			$response["artistAttendingID"] = $attendID;
 			$response["artistNumber"] = $number;
 		}
-		
-		$db->query("UPDATE ArtSubmissions SET LocationCode = '$location' WHERE ArtistAttendingID = $attendID AND " . 
+
+		$db->query("UPDATE ArtSubmissions SET LocationCode = '$location' WHERE ArtistAttendingID = $attendID AND " .
 			"IFNULL(LocationCode, '') = '' AND IsPrintShop = 0");
-		
+
 		$response["result"] = "Success";
 		header("Content-type: application/json");
 		echo json_encode($response);
@@ -192,21 +192,21 @@
 				$printShopPieces[] = $row;
 			$result->close();
 		}
-		
+
 		$response = array();
 		$response["result"] = "Success";
 		$response["showPieces"] = count($showPieces) > 0 ? $showPieces : null;
 		$response["printShopPieces"] = count($printShopPieces) > 0 ? $printShopPieces : null;
-		
+
 		header("Content-type: application/json");
-		echo json_encode($response);	
+		echo json_encode($response);
 	}
 	elseif($action == "NewShowItem" || $action == "UpdateShowItem")
 	{
 		$response = array();
 		$id = $db->real_escape_string($_POST["id"]);
 		$item = json_decode($_POST["item"], true);
-		
+
 		$title = $db->real_escape_string($item["Title"]);
 		$notes = $db->real_escape_string($item["Notes"]);
 		$isOriginal = $db->real_escape_string($item["IsOriginal"]);
@@ -218,17 +218,17 @@
 		$category = !empty($item["Category"]) ? "'" . $db->real_escape_string($item["Category"]) . "'" : "NULL";
 		$location = !empty($item["LocationCode"]) ? "'" . $db->real_escape_string($item["LocationCode"]) . "'" : "NULL";
 		$year = !empty($_POST["Year"]) ? $db->real_escape_string($_POST["Year"]) : (date("n") >= 4 ? date("Y") + 1: date("Y"));
-		
+
 		if($action == "NewShowItem")
 		{
-			$result = $db->query("SELECT IFNULL(MAX(s.ShowNumber), 0) + 1 AS ShowNumber FROM ArtSubmissions s INNER JOIN " . 
+			$result = $db->query("SELECT IFNULL(MAX(s.ShowNumber), 0) + 1 AS ShowNumber FROM ArtSubmissions s INNER JOIN " .
 				"ArtistPresence ap ON ap.ArtistAttendingID = s.ArtistAttendingID WHERE ap.Year = $year");
 			$row = $result->fetch_array();
 			$showNumber = $row["ShowNumber"];
 			$result->close();
 			if($db->query("INSERT INTO ArtSubmissions (ArtistAttendingID, ShowNumber, Title, Notes, IsPrintShop, IsOriginal, OriginalMedia, " .
-				"PrintNumber, PrintMaxNumber, MinimumBid, QuickSalePrice, FeesPaid, Category, LocationCode) VALUES ($id, $showNumber, " . 
-				"'$title', '$notes', 0, $isOriginal, '$media', $printNumber, $printMaxNumber, $minimumBid, $quickSale, 0, $category, " . 
+				"PrintNumber, PrintMaxNumber, MinimumBid, QuickSalePrice, FeesPaid, Category, LocationCode) VALUES ($id, $showNumber, " .
+				"'$title', '$notes', 0, $isOriginal, '$media', $printNumber, $printMaxNumber, $minimumBid, $quickSale, 0, $category, " .
 				"$location)"))
 			{
 				$response["Result"] = "Success";
@@ -249,7 +249,7 @@
 			$purchaser = "NULL";
 			if(!empty($item["PurchaserNumber"]))
 			{
-				$result = $db->query("SELECT BadgeID FROM PurchasedBadges WHERE BadgeNumber = " . $db->real_escape_string($item["PurchaserNumber"]) . 
+				$result = $db->query("SELECT BadgeID FROM PurchasedBadges WHERE BadgeNumber = " . $db->real_escape_string($item["PurchaserNumber"]) .
 					" AND Year = $year");
 				if($result->num_rows > 0)
 				{
@@ -273,14 +273,14 @@
 		}
 
 		header("Content-type: application/json");
-		echo json_encode($response);	
+		echo json_encode($response);
 	}
 	elseif($action == "NewShopItem" || $action == "UpdateShopItem")
 	{
 		$response = array();
 		$id = $db->real_escape_string($_POST["id"]);
 		$item = json_decode($_POST["item"], true);
-		
+
 		$title = $db->real_escape_string($item["Title"]);
 		$notes = $db->real_escape_string($item["Notes"]);
 		$media = $db->real_escape_string($item["OriginalMedia"]);
@@ -288,17 +288,17 @@
 		$salePrice = $db->real_escape_string($item["QuickSalePrice"]);
 		$category = !empty($item["Category"]) ? "'" . $db->real_escape_string($item["Category"]) . "'" : "NULL";
 		$location = !empty($item["LocationCode"]) ? "'" . $db->real_escape_string($item["LocationCode"]) . "'" : "NULL";
-		
+
 		if($action == "NewShopItem")
 		{
 			$year = !empty($_POST["Year"]) ? $db->real_escape_string($_POST["Year"]) : (date("n") >= 4 ? date("Y") + 1: date("Y"));
-			$result = $db->query("SELECT IFNULL(MAX(s.ShowNumber), 0) + 1 AS ShowNumber FROM ArtSubmissions s INNER JOIN " . 
+			$result = $db->query("SELECT IFNULL(MAX(s.ShowNumber), 0) + 1 AS ShowNumber FROM ArtSubmissions s INNER JOIN " .
 				"ArtistPresence ap ON ap.ArtistAttendingID = s.ArtistAttendingID WHERE ap.Year = $year");
 			$row = $result->fetch_array();
 			$showNumber = $row["ShowNumber"];
 			$result->close();
 			$sql = "INSERT INTO ArtSubmissions (ArtistAttendingID, ShowNumber, Title, Notes, IsPrintShop, OriginalMedia, QuickSalePrice, QuantitySent, QuantitySold, Category, LocationCode, CheckedIn) VALUES ($id, $showNumber, '$title', '$notes', 1, '$media', $salePrice, $quantitySent, 0, $category, $location, 0)";
-				
+
 			if($db->query($sql))
 			{
 				$response["Result"] = "Success";
@@ -329,13 +329,13 @@
 		}
 
 		header("Content-type: application/json");
-		echo json_encode($response);	
+		echo json_encode($response);
 	}
 	elseif($action == "PayHangingFees")
 	{
 		$attendingID = $db->real_escape_string($_POST["id"]);
 		$source = $db->real_escape_string($_POST["source"]);
-					
+
 		if($source != "Waived")
 		{
 			$ref = $db->real_escape_string($_POST["reference"]);
@@ -346,7 +346,8 @@
 			$peopleID = $row["PeopleID"];
 			$result->close();
 
-			$db->query("INSERT INTO PurchaseHistory (PurchaserID, PeopleID, ItemTypeName, ItemTypeID, Details, Price, Year, Purchased, PaymentSource, PaymentReference) VALUES ($peopleID, $peopleID, 'HangingFees', $attendingID, 'Hanging Fees', $price, $year, NOW(), '$source', '$ref')");
+			$db->query("INSERT INTO PurchaseHistory (PurchaserID, PeopleID, ItemTypeName, ItemTypeID, Details, Price, Total, Year, Purchased, PaymentSource, PaymentReference) " .
+                "VALUES ($peopleID, $peopleID, 'HangingFees', $attendingID, 'Hanging Fees', $price, $price, $year, NOW(), '$source', '$ref')");
 		}
         else
         {
@@ -354,14 +355,14 @@
             $db->query("UPDATE ArtistPresence SET FeesWaivedReason = '$reason' WHERE ArtistAttendingID = $attendingID");
         }
 		$db->query("UPDATE ArtSubmissions SET FeesPaid = 1 WHERE ArtistAttendingID = $attendingID AND IsPrintShop = 0");
-		
+
 		$response = array();
 		$response["Result"] = "Success";
 		header("Content-type: application/json");
-		echo json_encode($response);	
+		echo json_encode($response);
 	}
 	elseif($action == "GetPrintShopList")
-	{	
+	{
 		$year = !empty($_POST["Year"]) ? $db->real_escape_string($_POST["Year"]) : (date("n") >= 4 ? date("Y") + 1: date("Y"));
 		$printShopPieces = array();
 		$result = $db->query("SELECT ArtID, ar.ArtistAttendingID, ShowNumber, Title, ar.Notes, DisplayName AS ArtistName, OriginalMedia, QuantitySent, QuickSalePrice, ar.LocationCode, Category, QuantitySold, CheckedIn FROM ArtSubmissions ar JOIN ArtistPresence ap ON ar.ArtistAttendingID = ap.ArtistAttendingID JOIN ArtistDetails ad ON ap.ArtistID = ad.ArtistID WHERE Year = $year AND IsPrintShop = 1 AND CheckedIn = 1");
@@ -371,9 +372,9 @@
 				$printShopPieces[] = $row;
 			$result->close();
 		}
-		
+
 		header("Content-type: application/json");
-		echo json_encode($printShopPieces);			
+		echo json_encode($printShopPieces);
 	}
 	elseif($action == "RecordPrintShopSales")
 	{
@@ -383,12 +384,15 @@
 			$ref = $db->real_escape_string($_POST["reference"]);
 			$purchaser = !empty($_POST["purchaser"]) ? $db->real_escape_string($_POST["purchaser"]) : "NULL";
 			$onetime = !empty($_POST["onetime"]) ?  $db->real_escape_string($_POST["onetime"]) : "NULL";
-			$source = $db->real_escape_string($_POST["source"]);			
-			$total = $db->real_escape_string($_POST["total"]);
+			$source = $db->real_escape_string($_POST["source"]);
+			$price = $db->real_escape_string($_POST["price"]);
+            $tax = $db->real_escape_string($_POST["tax"]);
+            $total = $db->real_escape_string($_POST["total"]);
 			$year = !empty($_POST["Year"]) ? $db->real_escape_string($_POST["Year"]) : (date("n") >= 4 ? date("Y") + 1: date("Y"));
 			$items = json_decode($_POST["items"], true);
 
-			$sql = "INSERT INTO PurchaseHistory (PurchaserID, PeopleID, PurchaserOneTimeID, OneTimeID, ItemTypeName, Details, Price, Year, Purchased, PaymentSource, PaymentReference) VALUES ($purchaser, $purchaser, $onetime, $onetime, 'PrintShop', 'Print Shop Sales', $total, $year, NOW(), '$source', '$ref')";			
+			$sql = "INSERT INTO PurchaseHistory (PurchaserID, PeopleID, PurchaserOneTimeID, OneTimeID, ItemTypeName, Details, Price, Tax, Total, Year, Purchased, PaymentSource, PaymentReference) " .
+                "VALUES ($purchaser, $purchaser, $onetime, $onetime, 'PrintShop', 'Print Shop Sales', $price, $tax, $total, $year, NOW(), '$source', '$ref')";
 			if($db->query($sql) === false)
 			{
 				$response["Result"] = "Failure";
@@ -484,13 +488,15 @@
 	}
 	elseif($action == "SellAuctionItems")
 	{
+		$price = $db->real_escape_string($_POST["price"]);
+		$tax = $db->real_escape_string($_POST["tax"]);
 		$total = $db->real_escape_string($_POST["total"]);
 		$pieces = $db->real_escape_string($_POST["pieces"]);
 		$message = $pieces . " Piece" . ($pieces == 1 ? "" : "s") . " of Art";
 		$id = $db->real_escape_string($_POST["id"]);
 		$source = $db->real_escape_string($_POST["source"]);
 		$ref = $db->real_escape_string($_POST["reference"]);
-		
+
 		$sql = "SELECT pb.PeopleID, pb.OneTimeID,CASE WHEN pb.PeopleID IS NULL THEN o.FirstName ELSE p.FirstName END AS FirstName, CASE WHEN pb.PeopleID IS NULL THEN o.LastName ELSE p.LastName END AS LastName, p.Email FROM PurchasedBadges pb LEFT OUTER JOIN People p ON pb.PeopleID = p.PeopleID LEFT OUTER JOIN OneTimeRegistrations o ON pb.OneTimeID = o.OneTimeID WHERE pb.BadgeID = $id";
 		$result = $db->query($sql);
 		$row = $result->fetch_array();
@@ -500,12 +506,12 @@
 		$lname = $row["LastName"];
 		$email = !empty($row["Email"]) ? $row["Email"] : null;
 		$result->close();
-		
+
 		$ref = $db->real_escape_string($_POST["reference"]);
-		$price = $db->real_escape_string($_POST["fees"]);
 		$year = !empty($_POST["Year"]) ? $db->real_escape_string($_POST["Year"]) : (date("n") >= 4 ? date("Y") + 1: date("Y"));
 
-		$db->query("INSERT INTO PurchaseHistory (PeopleID, PurchaserID, OneTimeID, PurchaserOneTimeID, ItemTypeName, Details, Price, Year, Purchased, PaymentSource, PaymentReference) VALUES ($peopleID, $peopleID, $onetimeID, $onetimeID, 'Auction Sales', '$message', $total, $year, NOW(), '$source', '$ref')");
+		$db->query("INSERT INTO PurchaseHistory (PeopleID, PurchaserID, OneTimeID, PurchaserOneTimeID, ItemTypeName, Details, Price, Tax, Total, Year, Purchased, PaymentSource, PaymentReference) " .
+            "VALUES ($peopleID, $peopleID, $onetimeID, $onetimeID, 'Auction Sales', '$message', $price, $tax, $total, $year, NOW(), '$source', '$ref')");
         $recordID = $db->insert_id;
 
         $sql = "SELECT ArtID, FinalSalePrice FROM ArtSubmissions art JOIN ArtistPresence ap ON ap.ArtistAttendingID = art.ArtistAttendingID WHERE Year = $year AND PurchaserBadgeID = $id AND Claimed = 0";
@@ -550,9 +556,9 @@
 	{
 		$id = !empty($_POST["id"]) ? $db->real_escape_string($_POST["id"]) : null;
 		$mode = !empty($_POST["mode"]) ? $db->real_escape_string($_POST["mode"]) : 0;
-		
+
 		$sql = "UPDATE ArtSubmissions SET Claimed = 1 WHERE ArtistAttendingID = $id AND Claimed = 0";
-		if($mode == 0) $sql .= " AND PurchaserBadgeID IS NULL"; 
+		if($mode == 0) $sql .= " AND PurchaserBadgeID IS NULL";
 		$db->query($sql);
 		$response = array();
 		$response["Result"] = "Success";
@@ -562,7 +568,7 @@
 	elseif($action == "GetInventoryList")
 	{
 		$year = !empty($_POST["Year"]) ? $db->real_escape_string($_POST["Year"]) : (date("n") >= 4 ? date("Y") + 1: date("Y"));
-	
+
 		$sql = "SELECT ap.ArtistNumber, ad.DisplayName, p.LastName, p.Email, ap.LocationCode, IFNULL(art1.ArtShowPieces, 0) AS ArtShowPieces, IFNULL(art2.PrintShopPieces, 0) AS PrintShopPieces FROM ArtistPresence ap JOIN ArtistDetails ad ON ad.ArtistID = ap.ArtistID JOIN People p ON p.PeopleID = ad.PeopleID LEFT OUTER JOIN (SELECT ap.ArtistNumber, COUNT(art.ArtID) AS ArtShowPieces FROM ArtSubmissions art LEFT OUTER JOIN ArtistPresence ap ON ap.ArtistAttendingID = art.ArtistAttendingID WHERE ap.Year = $year AND art.IsPrintShop = 0 GROUP BY ap.ArtistNumber) AS art1 ON ap.ArtistNumber = art1.ArtistNumber LEFT OUTER JOIN (SELECT ap.ArtistNumber, SUM(art.QuantitySent - art.QuantitySold) AS PrintShopPieces FROM ArtSubmissions art LEFT OUTER JOIN ArtistPresence ap ON ap.ArtistAttendingID = art.ArtistAttendingID WHERE ap.Year = $year AND art.IsPrintShop = 1 GROUP BY ap.ArtistNumber) AS art2 ON ap.ArtistNumber = art2.ArtistNumber WHERE ap.Year = $year ORDER BY p.LastName";
 		$inventory = array();
 		$result = $db->query($sql);
@@ -577,7 +583,7 @@
 		$year = !empty($_POST["year"]) ? $db->real_escape_string($_POST["year"]) : (date("n") >= 3 ? date("Y") + 1: date("Y"));
 		$sql = "SELECT p.PeopleID, NULL AS OneTimeID, p.FirstName, p.LastName, p.Address1, p.Address2, p.City, p.State, p.ZipCode, p.Country, p.Phone1, p.Phone1Type, p.Phone2, p.Phone2Type, p.Email, p.Registered, pb.BadgeName, pb.BadgeNumber, p.Banned, p.ParentID, p.HeardFrom, p.LastChanged, CONCAT(par.FirstName, ' ', par.LastName) AS ParentName, par.Phone1 AS ParentContact FROM People p LEFT OUTER JOIN People par ON par.PeopleID = p.ParentID LEFT OUTER JOIN PurchasedBadges pb ON p.PeopleID = pb.PeopleID AND pb.Year = $year WHERE p.IsCharity = 0 UNION SELECT NULL AS PeopleID, o.OneTimeID, o.FirstName, o.LastName, o.Address1, o.Address2, o.City, o.State, o.ZipCode, o.Country, o.Phone1, o.Phone1Type, o.Phone2, o.Phone2Type, NULL AS Email, o.LastChanged AS Registered, pb.BadgeName, pb.BadgeNumber, 0 AS Banned, NULL AS ParentID, '' AS HeardFrom, o.LastChanged, NULL AS ParentName, NULL AS ParentContact FROM OneTimeRegistrations o LEFT OUTER JOIN PurchasedBadges pb ON o.OneTimeID = pb.OneTimeID AND pb.Year = $year ";
 
-		$result = $db->query($sql);		
+		$result = $db->query($sql);
 		$people = array();
 		if($result->num_rows > 0)
 			while($row = $result->fetch_array(MYSQLI_ASSOC))
