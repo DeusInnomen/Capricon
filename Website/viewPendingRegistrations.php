@@ -8,7 +8,9 @@
 	else
 	{
 		$badges = array();
-		$sql = "SELECT pb.BadgeID, ph.Year, ph.PeopleID, CONCAT(p.FirstName, ' ', p.LastName) AS Name, CASE WHEN pb.Department IS NOT NULL THEN CONCAT (bt.Description, ': ', pb.Department) ELSE bt.Description END AS Description, CONCAT ('Badge Name: ', pb.BadgeName) AS Details, ph.Price, ph.Purchased FROM PurchaseHistory ph INNER JOIN PurchasedBadges pb ON ph.Year = pb.Year AND ph.PeopleID = pb.PeopleID INNER JOIN BadgeTypes bt ON bt.BadgeTypeID = ph.ItemTypeID INNER JOIN People p ON p.PeopleID = ph.PeopleID WHERE ph.ItemTypeName = 'Badge' AND pb.Status = 'Pending' ORDER BY p.LastName DESC";		
+		$sql = "SELECT pb.BadgeID, ph.Year, ph.PeopleID, CONCAT(p.FirstName, ' ', p.LastName) AS Name, CASE WHEN pb.Department IS NOT NULL THEN CONCAT (bt.Description, ': ', pb.Department) ELSE bt.Description END AS Description, " . 
+            "CONCAT ('Badge Name: ', pb.BadgeName) AS Details, ph.Total, ph.Purchased FROM PurchaseHistory ph INNER JOIN PurchasedBadges pb ON ph.Year = pb.Year AND ph.PeopleID = pb.PeopleID INNER JOIN BadgeTypes bt ON " . 
+            "bt.BadgeTypeID = ph.ItemTypeID INNER JOIN People p ON p.PeopleID = ph.PeopleID WHERE ph.ItemTypeName = 'Badge' AND pb.Status = 'Pending' ORDER BY p.LastName DESC";		
 		$result = $db->query($sql);
 		if($result->num_rows > 0)
 		{
@@ -71,7 +73,8 @@
 						foreach($badges as $data)
 						{
 							$created = date("F d, Y", strtotime($data["Purchased"]));
-							echo "<tr><td style=\"text-align: center;\"><input type=\"radio\" id=\"badgeID\" name=\"badgeID\" value=\"" . $data["BadgeID"] . "\" /></td><td>" . $data["Year"] . "</td><td>" . $data["Name"] . "</td><td>" . $data["Description"] . "</td><td>" . $data["Details"] . "</td><td>" . sprintf("$%01.2f", $data["Price"]) . "</td><td>$created</td></tr>\r\n";
+							echo "<tr><td style=\"text-align: center;\"><input type=\"radio\" id=\"badgeID\" name=\"badgeID\" value=\"" . $data["BadgeID"] . "\" /></td><td>" . $data["Year"] . "</td><td>" . $data["Name"] . 
+                                "</td><td>" . $data["Description"] . "</td><td>" . $data["Details"] . "</td><td>" . sprintf("$%01.2f", $data["Total"]) . "</td><td>$created</td></tr>\r\n";
 						}
 						echo "</table><br>\r\n";
 						echo "<input type=\"submit\" id=\"approve\" name=\"approve\" value=\"Approve With Check #\" disabled>\r\n";

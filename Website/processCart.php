@@ -11,6 +11,8 @@
 		
 		$token = isset($_POST["stripeToken"]) ? $_POST["stripeToken"] : "";
 		$method = isset($_POST["method"]) ? $_POST["method"] : "";
+        $ref = "";
+        $message = "";
 		
 		// PayPal will call this page directly using these two GET values.
 		if(isset($_GET["token"]) && isset($_GET["PayerID"]))
@@ -161,7 +163,6 @@
 		$discounts = 0;
 		$originalTotal = 0;
 		
-		$messages = "";
 		$purchases = array();
 		foreach($items as $item)
 		{
@@ -196,8 +197,6 @@
 					$certs[$certID] -= $discount;					
 					$db->query("UPDATE GiftCertificates SET CurrentValue = CurrentValue - $discount, Redeemed = NOW() " . 
 						"WHERE CertificateID = $certID");
-					$message .= "<li>UPDATE GiftCertificates SET CurrentValue = CurrentValue - $discount, Redeemed = NOW() " . 
-						"WHERE CertificateID = $certID</li>";
 				}
 			}
 			$originalTotal += $originalPrice;
@@ -230,8 +229,8 @@
 					$badgeNameEscaped = $db->real_escape_string($badgeName);
 					$result->close();
 					
-					$sql = "INSERT INTO PurchaseHistory (PurchaserID, ItemTypeName, ItemTypeID, Details, PeopleID, Price, Year, Purchased, " .
-						"PaymentSource, PaymentReference) VALUES ($id, 'Badge', $badgeTypeID, '$badgeNameEscaped', $recipientID, $price, $year, NOW(), " . 
+					$sql = "INSERT INTO PurchaseHistory (PurchaserID, ItemTypeName, ItemTypeID, Details, PeopleID, Price, Total, Year, Purchased, " .
+						"PaymentSource, PaymentReference) VALUES ($id, 'Badge', $badgeTypeID, '$badgeNameEscaped', $recipientID, $price, $price, $year, NOW(), " . 
 						"'$source', '$ref')";
 					$db->query($sql);
                     $recordID = $db->insert_id;
@@ -281,8 +280,8 @@
 							"VALUES ('$certCode', $id, CURDATE(), $price, $price)");
 						$certID = $db->insert_id;
 						
-						$db->query("INSERT INTO PurchaseHistory (PurchaserID, ItemTypeName, Price, Purchased, PaymentSource, PaymentReference) " .
-							"VALUES ($id, 'GiftCertificate', $price, NOW(), '$source', '$ref')");
+						$db->query("INSERT INTO PurchaseHistory (PurchaserID, ItemTypeName, Price, Total, Purchased, PaymentSource, PaymentReference) " .
+							"VALUES ($id, 'GiftCertificate', $price, $price, NOW(), '$source', '$ref')");
 						
 						$message .= "<li>Gift Certificate for " . sprintf("$%01.2f", $price) . "; Certificate Code: $certCode</li>";
 						$purchases[] = "Gift Certificate for " . sprintf("$%01.2f", $price) . "; Certificate Code: $certCode";
@@ -333,8 +332,8 @@
 					$recipientName = $row["Name"];
 					$result->close();
 					
-					$db->query("INSERT INTO PurchaseHistory (PurchaserID, PeopleID, ItemTypeName, ItemTypeID, Price, Year, Purchased, " .
-							"PaymentSource, PaymentReference) VALUES ($id, $recipientID, 'Catan', $badgeTypeID, $price, $year, NOW()), " . 
+					$db->query("INSERT INTO PurchaseHistory (PurchaserID, PeopleID, ItemTypeName, ItemTypeID, Price, Total, Year, Purchased, " .
+							"PaymentSource, PaymentReference) VALUES ($id, $recipientID, 'Catan', $badgeTypeID, $price, $price, $year, NOW()), " . 
 							"'$source', '$ref'");
 
 					$message .= "<li>$description for '$recipientName'</li>";
@@ -347,13 +346,14 @@
 					$attendingID = $item["ItemTypeID"];
 					$db->query("UPDATE ArtSubmissions SET FeesPaid = 1 WHERE ArtistAttendingID = $attendingID AND IsPrintShop = 0");
 					
-					$result = $db->query("SELECT Year FROM ArtistPresence WHERE ArtistAttendingID = $attendingID");
+					$result = $db->query("SELECT ap.Year, ad.DisplayName FROM ArtistPresence ap JOIN ArtistDetails ad ON ap.ArtistID = ad.ArtistID WHERE ap.ArtistAttendingID = $attendingID");
 					$row = $result->fetch_array();
 					$year = $row["Year"];
+					$recipientName = $row["DisplayName"];
 					$result->close();
 					
-					$db->query("INSERT INTO PurchaseHistory (PurchaserID, PeopleID, ItemTypeName, ItemTypeID, Details, Price, Year, Purchased, " .
-							"PaymentSource, PaymentReference) VALUES ($id, $id, 'Hanging Fees', $attendingID, '$details', $price, $year, NOW(), " . 
+					$db->query("INSERT INTO PurchaseHistory (PurchaserID, PeopleID, ItemTypeName, ItemTypeID, Details, Price, Total, Year, Purchased, " .
+							"PaymentSource, PaymentReference) VALUES ($id, $id, 'Hanging Fees', $attendingID, '$details', $price, $price, $year, NOW(), " . 
 							"'$source', '$ref')");
 
 					$message .= "<li>Art Show Hanging Fees for $details for '$recipientName'</li>";
@@ -431,3 +431,4 @@
 		document.results.submit();
 	</script>
 </body>
+</html>
