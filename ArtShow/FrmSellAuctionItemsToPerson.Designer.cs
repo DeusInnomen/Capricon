@@ -60,7 +60,7 @@
             this.SortImages = new System.Windows.Forms.ImageList(this.components);
             this.BtnPrintSummary = new System.Windows.Forms.Button();
             this.LblAmountTax = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
+            this.LblTaxes = new System.Windows.Forms.Label();
             this.LblAmountTotal = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.TabPaymentMethods.SuspendLayout();
@@ -383,15 +383,15 @@
             this.LblAmountTax.Text = "$0.00";
             this.LblAmountTax.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // label9
+            // LblTaxes
             // 
-            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(543, 44);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(148, 22);
-            this.label9.TabIndex = 65;
-            this.label9.Text = "Taxes:";
-            this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.LblTaxes.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LblTaxes.Location = new System.Drawing.Point(543, 44);
+            this.LblTaxes.Name = "LblTaxes";
+            this.LblTaxes.Size = new System.Drawing.Size(148, 22);
+            this.LblTaxes.TabIndex = 65;
+            this.LblTaxes.Text = "Taxes:";
+            this.LblTaxes.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // LblAmountTotal
             // 
@@ -422,7 +422,7 @@
             this.Controls.Add(this.LblAmountTotal);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.LblAmountTax);
-            this.Controls.Add(this.label9);
+            this.Controls.Add(this.LblTaxes);
             this.Controls.Add(this.BtnPrintSummary);
             this.Controls.Add(this.LstItems);
             this.Controls.Add(this.LblAmountDue);
@@ -482,7 +482,7 @@
         private System.Windows.Forms.TextBox txtCVC;
         private System.Windows.Forms.ImageList SortImages;
         private System.Windows.Forms.Label LblAmountTax;
-        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label LblTaxes;
         private System.Windows.Forms.Label LblAmountTotal;
         private System.Windows.Forms.Label label12;
     }

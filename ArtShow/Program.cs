@@ -25,7 +25,7 @@ namespace ArtShow
         /// </summary>
         public static decimal TaxRate
         {
-            get { return 0.10m; }
+            get { return Properties.Settings.Default.TaxRate / 100; }
         }
 
         /// <summary>
