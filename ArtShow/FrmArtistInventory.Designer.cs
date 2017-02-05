@@ -71,6 +71,8 @@
             this.BtnDeleteShopItem = new System.Windows.Forms.Button();
             this.BtnShowBids = new System.Windows.Forms.Button();
             this.BtnCheckout = new System.Windows.Forms.Button();
+            this.BtnPrintShopAllLabels = new System.Windows.Forms.Button();
+            this.BtnPrintShopLabels = new System.Windows.Forms.Button();
             this.MnuArtShow.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -111,7 +113,7 @@
             this.lstArtShow.HideSelection = false;
             this.lstArtShow.Location = new System.Drawing.Point(12, 45);
             this.lstArtShow.Name = "lstArtShow";
-            this.lstArtShow.Size = new System.Drawing.Size(846, 142);
+            this.lstArtShow.Size = new System.Drawing.Size(894, 142);
             this.lstArtShow.SmallImageList = this.SortImages;
             this.lstArtShow.TabIndex = 18;
             this.lstArtShow.UseCompatibleStateImageBehavior = false;
@@ -181,7 +183,7 @@
             // BtnCheckInArtShow
             // 
             this.BtnCheckInArtShow.Font = new System.Drawing.Font("Lucida Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnCheckInArtShow.Location = new System.Drawing.Point(728, 193);
+            this.BtnCheckInArtShow.Location = new System.Drawing.Point(776, 193);
             this.BtnCheckInArtShow.Name = "BtnCheckInArtShow";
             this.BtnCheckInArtShow.Size = new System.Drawing.Size(130, 27);
             this.BtnCheckInArtShow.TabIndex = 41;
@@ -192,7 +194,7 @@
             // BtnHangingFees
             // 
             this.BtnHangingFees.Font = new System.Drawing.Font("Lucida Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnHangingFees.Location = new System.Drawing.Point(565, 193);
+            this.BtnHangingFees.Location = new System.Drawing.Point(613, 193);
             this.BtnHangingFees.Name = "BtnHangingFees";
             this.BtnHangingFees.Size = new System.Drawing.Size(157, 27);
             this.BtnHangingFees.TabIndex = 42;
@@ -239,7 +241,7 @@
             this.lstPrintShop.HideSelection = false;
             this.lstPrintShop.Location = new System.Drawing.Point(12, 297);
             this.lstPrintShop.Name = "lstPrintShop";
-            this.lstPrintShop.Size = new System.Drawing.Size(846, 158);
+            this.lstPrintShop.Size = new System.Drawing.Size(894, 158);
             this.lstPrintShop.SmallImageList = this.SortImages;
             this.lstPrintShop.TabIndex = 45;
             this.lstPrintShop.UseCompatibleStateImageBehavior = false;
@@ -294,7 +296,7 @@
             // BtnEditItemShop
             // 
             this.BtnEditItemShop.Font = new System.Drawing.Font("Lucida Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnEditItemShop.Location = new System.Drawing.Point(456, 461);
+            this.BtnEditItemShop.Location = new System.Drawing.Point(504, 461);
             this.BtnEditItemShop.Name = "BtnEditItemShop";
             this.BtnEditItemShop.Size = new System.Drawing.Size(130, 27);
             this.BtnEditItemShop.TabIndex = 48;
@@ -305,7 +307,7 @@
             // BtnAddItemShop
             // 
             this.BtnAddItemShop.Font = new System.Drawing.Font("Lucida Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnAddItemShop.Location = new System.Drawing.Point(592, 461);
+            this.BtnAddItemShop.Location = new System.Drawing.Point(640, 461);
             this.BtnAddItemShop.Name = "BtnAddItemShop";
             this.BtnAddItemShop.Size = new System.Drawing.Size(130, 27);
             this.BtnAddItemShop.TabIndex = 47;
@@ -316,7 +318,7 @@
             // BtnCheckInShop
             // 
             this.BtnCheckInShop.Font = new System.Drawing.Font("Lucida Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnCheckInShop.Location = new System.Drawing.Point(728, 461);
+            this.BtnCheckInShop.Location = new System.Drawing.Point(776, 461);
             this.BtnCheckInShop.Name = "BtnCheckInShop";
             this.BtnCheckInShop.Size = new System.Drawing.Size(130, 27);
             this.BtnCheckInShop.TabIndex = 46;
@@ -327,7 +329,7 @@
             // BtnClose
             // 
             this.BtnClose.Font = new System.Drawing.Font("Lucida Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnClose.Location = new System.Drawing.Point(728, 494);
+            this.BtnClose.Location = new System.Drawing.Point(776, 494);
             this.BtnClose.Name = "BtnClose";
             this.BtnClose.Size = new System.Drawing.Size(130, 27);
             this.BtnClose.TabIndex = 49;
@@ -369,7 +371,7 @@
             // BtnPrintShopControl
             // 
             this.BtnPrintShopControl.Font = new System.Drawing.Font("Lucida Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnPrintShopControl.Location = new System.Drawing.Point(292, 461);
+            this.BtnPrintShopControl.Location = new System.Drawing.Point(340, 461);
             this.BtnPrintShopControl.Name = "BtnPrintShopControl";
             this.BtnPrintShopControl.Size = new System.Drawing.Size(158, 27);
             this.BtnPrintShopControl.TabIndex = 75;
@@ -402,7 +404,7 @@
             // BtnDeleteShopItem
             // 
             this.BtnDeleteShopItem.Font = new System.Drawing.Font("Lucida Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnDeleteShopItem.Location = new System.Drawing.Point(456, 494);
+            this.BtnDeleteShopItem.Location = new System.Drawing.Point(504, 494);
             this.BtnDeleteShopItem.Name = "BtnDeleteShopItem";
             this.BtnDeleteShopItem.Size = new System.Drawing.Size(130, 27);
             this.BtnDeleteShopItem.TabIndex = 78;
@@ -432,11 +434,35 @@
             this.BtnCheckout.UseVisualStyleBackColor = true;
             this.BtnCheckout.Click += new System.EventHandler(this.BtnCheckout_Click);
             // 
+            // BtnPrintShopAllLabels
+            // 
+            this.BtnPrintShopAllLabels.Font = new System.Drawing.Font("Lucida Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BtnPrintShopAllLabels.Location = new System.Drawing.Point(176, 494);
+            this.BtnPrintShopAllLabels.Name = "BtnPrintShopAllLabels";
+            this.BtnPrintShopAllLabels.Size = new System.Drawing.Size(158, 27);
+            this.BtnPrintShopAllLabels.TabIndex = 84;
+            this.BtnPrintShopAllLabels.Text = "Print All Price Labels";
+            this.BtnPrintShopAllLabels.UseVisualStyleBackColor = true;
+            this.BtnPrintShopAllLabels.Click += new System.EventHandler(this.BtnPrintShopAllLabels_Click);
+            // 
+            // BtnPrintShopLabels
+            // 
+            this.BtnPrintShopLabels.Font = new System.Drawing.Font("Lucida Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BtnPrintShopLabels.Location = new System.Drawing.Point(176, 461);
+            this.BtnPrintShopLabels.Name = "BtnPrintShopLabels";
+            this.BtnPrintShopLabels.Size = new System.Drawing.Size(158, 27);
+            this.BtnPrintShopLabels.TabIndex = 83;
+            this.BtnPrintShopLabels.Text = "Print Price Labels";
+            this.BtnPrintShopLabels.UseVisualStyleBackColor = true;
+            this.BtnPrintShopLabels.Click += new System.EventHandler(this.BtnPrintShopLabels_Click);
+            // 
             // FrmArtistInventory
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(869, 527);
+            this.ClientSize = new System.Drawing.Size(917, 527);
+            this.Controls.Add(this.BtnPrintShopAllLabels);
+            this.Controls.Add(this.BtnPrintShopLabels);
             this.Controls.Add(this.BtnCheckout);
             this.Controls.Add(this.BtnShowBids);
             this.Controls.Add(this.BtnDeleteShopItem);
@@ -464,6 +490,7 @@
             this.Name = "FrmArtistInventory";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "-";
+            this.Load += new System.EventHandler(this.FrmArtistInventory_Load);
             this.MnuArtShow.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -512,5 +539,7 @@
         private System.Windows.Forms.Button BtnShowBids;
         private System.Windows.Forms.Button BtnCheckout;
         private System.Windows.Forms.ImageList SortImages;
+        private System.Windows.Forms.Button BtnPrintShopAllLabels;
+        private System.Windows.Forms.Button BtnPrintShopLabels;
     }
 }

@@ -76,7 +76,7 @@
 					if(result.success)
 					{
 						if(result.doRedirect)
-							window.location = "/programSurveyFinal.php";
+							window.location = "/index.php";
 						else
 						{
 							$("#accountSaveMessage").addClass("goodMessage");
@@ -138,8 +138,8 @@
 					<label for="overdonePrograms" class="fieldLabelShort" >Are there any program items / topics that you have done way too many times and don't wish to do anymore? Tell us about it / them.</label><br />
 					<textarea id="overdonePrograms" name="overdonePrograms" maxlength="500" rows="4" style="width: 98%;"><?php echo htmlspecialchars($info["OverdonePrograms"]); ?></textarea><br /><br>
 					<input type="submit" name="saveOnly" value="Save Information" /> 
-					<input style="float: right;" type="submit" name="saveContinue" value="Save Information and Continue" /><br />
-					<input type="hidden" name="task" id="task" value="Page3" />
+                    <input style="float: right;" type="submit" name="saveContinue" value="Save Information and Return to Menu" /><br />
+					<input type="hidden" name="task" id="task" value="Page2" />
 					<input type="hidden" name="interestValues" id="interestValues" value="" />
 					<input type="hidden" name="interestText" id="interestText" value="" />
 					<input type="hidden" name="continue" id="continue" value="">
