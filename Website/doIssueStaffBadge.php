@@ -35,7 +35,8 @@
 	$result->close();
 	$source = $badgeTypeID == 1 ? "Comp" : "Generated";
 
-    $sql = "INSERT INTO PurchaseHistory (PurchaserID, PurchaserOneTimeID, ItemTypeName, ItemTypeID, Details, PeopleID, OneTimeID, Price, Year, Purchased, PaymentSource, PaymentReference) VALUES ($peopleID, $oneTimeID, 'Badge', $badgeTypeID, '$badgename', $peopleID, $oneTimeID, 0.00, $year, NOW(), '$source', 'NoCharge')";
+    $sql = "INSERT INTO PurchaseHistory (PurchaserID, PurchaserOneTimeID, ItemTypeName, ItemTypeID, Details, PeopleID, OneTimeID, Price, Total, Year, Purchased, PaymentSource, PaymentReference) " . 
+        "VALUES ($peopleID, $oneTimeID, 'Badge', $badgeTypeID, '$badgename', $peopleID, $oneTimeID, 0.00, 0.00, $year, NOW(), '$source', 'NoCharge')";
     $db->query($sql);
     $recordID = $db->insert_id;
 

@@ -21,6 +21,14 @@ namespace ArtShow
         public static int Year { get; set; }
 
         /// <summary>
+        /// The tax rate that should be charged for the sale of goods at the convention.
+        /// </summary>
+        public static decimal TaxRate
+        {
+            get { return Properties.Settings.Default.TaxRate / 100; }
+        }
+
+        /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]

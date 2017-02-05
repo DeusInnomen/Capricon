@@ -23,6 +23,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="artShowSales.php" />
+    <Compile Include="artShowSalesSummary.php" />
     <Compile Include="doManualRegistration.php" />
     <Compile Include="editArtItem.php" />
     <Compile Include="functions\.htaccess" />
@@ -30,6 +31,7 @@
     <Compile Include="functions\authQuery.php" />
     <Compile Include="functions\salesQuery.php" />
     <Compile Include="functions\userQuery.php" />
+    <Compile Include="getMailingAddressList.php" />
     <Compile Include="includes\dsn.php">
       <Publishable>False</Publishable>
     </Compile>
