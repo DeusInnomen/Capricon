@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.IO;
@@ -19,6 +18,9 @@ namespace ArtShow
         private MagneticStripeScan Card { get; set; }
         private List<PrintShopItem> Items { get; set; }
         private bool StripeFirstTry { get; set; }
+        private decimal TotalPrice { get; set; }
+        private decimal TotalTax { get; set; }
+        private decimal TotalDue { get; set; }
 
         private int ItemsSortColumn = 0;
         private bool ItemsSortAscend = true;
@@ -30,6 +32,12 @@ namespace ArtShow
             InitializeComponent();
             Purchaser = purchaser;
             StripeFirstTry = true;
+
+            TotalPrice = 0;
+            TotalTax = 0;
+            TotalDue = 0;
+
+            LblTaxes.Text = "Taxes @ " + decimal.Round(Program.TaxRate * 100, 1) + "%";
 
             var data = Encoding.ASCII.GetBytes("action=GetPrintShopList&year=" + Program.Year.ToString());
             var request = WebRequest.Create(Program.URL + "/functions/artQuery.php");
@@ -129,12 +137,16 @@ namespace ArtShow
             BtnClearCart.Enabled = LstCart.Items.Count > 0;
         }
 
-        private decimal CalculateTotal()
+        private void CalculateTotal()
         {
-            decimal total = LstCart.Items.Cast<ListViewItem>().Sum(cartItem => ((PrintShopItem) cartItem.Tag).Price);
-            LblAmountDue.Text = total.ToString("C");
+            TotalPrice = LstCart.Items.Cast<ListViewItem>().Sum(cartItem => ((PrintShopItem) cartItem.Tag).Price);
+            TotalTax = TotalPrice * Program.TaxRate;
+            TotalTax = decimal.Round(TotalTax, 2);
+            TotalDue = TotalPrice + TotalTax;
+            LblAmountDue.Text = TotalPrice.ToString("C");
+            LblAmountTax.Text = TotalTax.ToString("C");
+            LblAmountTotal.Text = TotalDue.ToString("C");
             UpdatePurchaseButton();
-            return total;
         }
 
         private void BtnClearCart_Click(object sender, EventArgs e)
@@ -172,7 +184,6 @@ namespace ArtShow
             Cursor = Cursors.WaitCursor;
             string reference;
             string source;
-            var total = CalculateTotal();
             if (TabPaymentMethods.SelectedTab == TabCredit)
             {
                 source = "Stripe";
@@ -185,7 +196,7 @@ namespace ArtShow
                     CardMonth = Card.ExpireMonth,
                     CardYear = Card.ExpireYear,
                     CardCVC = txtCVC.Text,
-                    Amount = total
+                    Amount = TotalDue
                 };
 
                 dialog.ShowDialog();
@@ -210,7 +221,7 @@ namespace ArtShow
             }
 
             var items = (from ListViewItem item in LstCart.Items select (PrintShopItem)item.Tag).ToList();
-            var payload = "action=RecordPrintShopSales&year=" + Program.Year.ToString() + "&total=" + total;
+            var payload = "action=RecordPrintShopSales&year=" + Program.Year.ToString() + "&price=" + TotalPrice + "&tax=" + TotalTax + "&total=" + TotalDue;
             if (Purchaser.PeopleID != null)
                 payload += "&purchaser=" + Purchaser.PeopleID;
             else
@@ -250,7 +261,7 @@ namespace ArtShow
         {
             var buffer = new byte[digits / 2];
             Rand.NextBytes(buffer);
-            var result = String.Concat(buffer.Select(x => x.ToString("X2")).ToArray());
+            var result = string.Concat(buffer.Select(x => x.ToString("X2")).ToArray());
             if (digits % 2 == 0)
                 return result;
             return result + Rand.Next(16).ToString("X");
