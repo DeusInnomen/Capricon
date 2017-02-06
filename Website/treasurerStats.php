@@ -100,7 +100,7 @@ if($result->num_rows > 0)
     $result->close();
 }
 
-$sql = "SELECT CAST(Purchased AS DATE) AS Day, ItemTypeName, COUNT(RecordID) AS Count, PaymentSource, SUM(Total) AS Revenue, Details FROM PurchaseHistory AND RefundReason is NULL WHERE Year = $year AND ItemTypeName = 'Miscellaneous Charge' GROUP BY CAST(Purchased AS DATE), ItemTypeName, Details, PaymentSource ORDER BY CAST(Purchased AS DATE), ItemTypeName, Details, PaymentSource";
+$sql = "SELECT CAST(Purchased AS DATE) AS Day, ItemTypeName, COUNT(RecordID) AS Count, PaymentSource, SUM(Total) AS Revenue, Details FROM PurchaseHistory WHERE Year = $year AND ItemTypeName != 'Badge' AND RefundReason is NULL GROUP BY CAST(Purchased AS DATE), ItemTypeName, Details, PaymentSource ORDER BY CAST(Purchased AS DATE), ItemTypeName, Details, PaymentSource";
 $miscItemsByDayByTypeByPayment = array();
 $result = $db->query($sql);
 if($result->num_rows > 0)
@@ -110,7 +110,7 @@ if($result->num_rows > 0)
     $result->close();
 }
 
-$sql = "SELECT CAST(Purchased AS DATE) AS Day, ItemTypeName, Details, PaymentSource, Price, AmountRefunded, RefundReason FROM PurchaseHistory WHERE Year = $year AND RefundReason IS NOT NULL ORDER BY CAST(Purchased AS DATE), ItemTypeName, PaymentSource";
+$sql = "SELECT CAST(Purchased AS DATE) AS Day, ItemTypeName, Details, PaymentSource, Total, AmountRefunded, RefundReason FROM PurchaseHistory WHERE Year = $year AND RefundReason IS NOT NULL ORDER BY CAST(Purchased AS DATE), ItemTypeName, PaymentSource";
 $refundItemsByDayByTypeByPayment = array();
 $result = $db->query($sql);
 if($result->num_rows > 0)
@@ -120,7 +120,7 @@ if($result->num_rows > 0)
 	$result->close();
 }
 
-$sql = "SELECT CAST(Purchased AS DATE) AS Day, ItemTypeName, COUNT(RecordID) AS Count, PaymentSource, SUM(Price) AS Revenue, Details FROM PurchaseHistory AND RefundReason IS NOT NULL WHERE Year = $year AND ItemTypeName = 'Miscellaneous Charge' GROUP BY CAST(Purchased AS DATE), ItemTypeName, Details, PaymentSource ORDER BY CAST(Purchased AS DATE), ItemTypeName, Details, PaymentSource";
+$sql = "SELECT CAST(Purchased AS DATE) AS Day, ItemTypeName, COUNT(RecordID) AS Count, PaymentSource, SUM(Total) AS Revenue, Details FROM PurchaseHistory WHERE Year = $year AND ItemTypeName != 'Badge' AND RefundReason IS NOT NULL GROUP BY CAST(Purchased AS DATE), ItemTypeName, Details, PaymentSource ORDER BY CAST(Purchased AS DATE), ItemTypeName, Details, PaymentSource";
 $refundMiscItemsByDayByTypeByPayment = array();
 $result = $db->query($sql);
 if($result->num_rows > 0)
@@ -309,8 +309,8 @@ if($result->num_rows > 0)
 					$revenue = 0;
 					$refund = 0;
 					foreach($refundItemsByDayByTypeByPayment as $record) {
-						echo "<td>" . $record["Day"] . "</td><td>" . $record["ItemTypeName"] . "</td><td>" . $record["Details"] . "</td><td>" . $record["PaymentSource"] . "</td><td>" . $record["Price"] . "</td><td>" . $record["AmountRefunded"] . "</td><td>" . $record["RefundReason"] . "</td></tr>\r\n";
-						$revenue += $record["Price"];
+						echo "<td>" . $record["Day"] . "</td><td>" . $record["ItemTypeName"] . "</td><td>" . $record["Details"] . "</td><td>" . $record["PaymentSource"] . "</td><td>" . $record["Total"] . "</td><td>" . $record["AmountRefunded"] . "</td><td>" . $record["RefundReason"] . "</td></tr>\r\n";
+						$revenue += $record["Total"];
 						$refund += $record["AmountRefunded"];
 					}
 					echo "</table>\r\n";
