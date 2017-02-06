@@ -317,7 +317,7 @@ if($result->num_rows > 0)
 				<?php
 					echo "<p>Breakdown of Non-Paid Items by Payment Type (PurchaseHistory)</p>\r\n";
 					echo "<table>\r\n";
-					echo "<tr><th>Day</th><th>Item Name</th><th>Name</th><th>Payment Type</th><th>Price</th><th>Refund</th><th>Refund Reason</th></tr>\r\n";
+					echo "<tr><th>Day</th><th>Item Name</th><th>Name</th><th>Payment Type</th><th>Total</th><th>Refund</th><th>Refund Reason</th></tr>\r\n";
 					$revenue = 0;
 					$refund = 0;
 					foreach($refundItemsByDayByTypeByPaymentPH as $record) {
