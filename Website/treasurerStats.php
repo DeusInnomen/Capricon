@@ -22,7 +22,13 @@ $row = $result->fetch_array();
 $allBadges = $row["Badges"];
 $result->close();
 
-$sql = "SELECT COUNT(*) AS Badges FROM PurchasedBadges WHERE Year = $year AND Status != 'Paid'";
+$sql = "SELECT COUNT(*) AS Badges FROM PurchasedBadges WHERE Year = $year AND Status = 'Pending'";
+$result = $db->query($sql);
+$row = $result->fetch_array();
+$pendingBadges = $row["Badges"];
+$result->close();
+
+$sql = "SELECT COUNT(*) AS Badges FROM PurchasedBadges WHERE Year = $year AND Status NOT IN ('Paid', 'Pending')";
 $result = $db->query($sql);
 $row = $result->fetch_array();
 $skippedBadges = $row["Badges"];
@@ -203,6 +209,7 @@ if($result->num_rows > 0)
         <div class="centerboxwide">
             <h1>Treasurer Statistics</h1>
 			<p>Total Paid Badges from Purchased Badges for Capricon <?php echo $capriconYear; ?>: <b><?php echo $allBadges; ?></b><br />
+			Total Pending Badges from Purchased Badges for Capricon <?php echo $capriconYear; ?>: <b><?php echo $pendingBadges; ?></b><br />
 			Total Non-Paid Badges from Purchased Badges for Capricon <?php echo $capriconYear; ?>: <b><?php echo $skippedBadges; ?></b></p>
 			<p>Total Paid Badges from Purchase History for Capricon <?php echo $capriconYear; ?>: <b><?php echo $allBadgesPH; ?></b><br />
 			Total Non-Paid from Purchase History for Capricon <?php echo $capriconYear; ?>: <b><?php echo $skippedallBadgesPH; ?></b></p>
