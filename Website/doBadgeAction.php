@@ -72,15 +72,20 @@
 		{
 			$id = $db->real_escape_string($_POST["id"]);
 			
-			$result = $db->query("SELECT BadgeID FROM PurchasedBadges WHERE BadgeID = $id");
+			$result = $db->query("SELECT BadgeID, RecordID, AmountPaid FROM PurchasedBadges WHERE BadgeID = $id");
 			if($result->num_rows == 0)
 			{
 				echo "<span class=\"requiredField\">Invalid badge ID.</span>";
 				return;
 			}
+			$row = $result->fetch_array();
 			$result->close();
-						
-			$db->query("UPDATE PurchasedBadges SET Status = 'Deleted' WHERE BadgeID = $id");			
+			
+			$recordID = $row["RecordID"];
+			$total = $row["AmountPaid"];
+			
+			$db->query("UPDATE PurchasedBadges SET Status = 'Deleted' WHERE BadgeID = $id");
+			$db->query("UPDATE PurchaseHistory SET AmountRefunded = $total, RefundReason = 'Deleted' WHERE RecordID = $recordID");
 			echo "<span>Badge has been deleted.</span>";
 		}
 		else if($_POST["action"] == "SuperAdminDeleteBadge")
@@ -88,7 +93,7 @@
 			if(DoesUserBelongHere("SuperAdmin")) {
 				$id = $db->real_escape_string($_POST["id"]);
 				
-				$result = $db->query("SELECT BadgeID, BadgeNumber, PurchaserID, OneTimePurchaserID, PeopleID, OneTimeID, Year FROM PurchasedBadges WHERE BadgeID = $id");
+				$result = $db->query("SELECT BadgeID, RecordID, AmountPaid, BadgeNumber, PurchaserID, OneTimePurchaserID, PeopleID, OneTimeID, Year FROM PurchasedBadges WHERE BadgeID = $id");
 				if($result->num_rows == 0)
 				{
 					echo "<span class=\"requiredField\">Invalid badge ID.</span>";
@@ -98,6 +103,8 @@
 				$result->close();
 				
 				$badgeID = $row["BadgeID"];
+				$recordID = $row["RecordID"];
+				$total = $row["AmountPaid"];
 				$badgeNumber = $row["BadgeNumber"];
 				$purchaserID = $row["PurchaserID"];
 				$purchaserOneTimeID = $row["OneTimePurchaserID"];
@@ -105,13 +112,19 @@
 				$oneTimeID = $row["OneTimeID"];
 				$year = $row["Year"];
 				
+				$db->query("UPDATE PurchasedBadges SET Status = 'Deleted' WHERE BadgeID = $id");
+				$db->query("UPDATE PurchaseHistory SET AmountRefunded = $total, RefundReason = 'Deleted' WHERE RecordID = $recordID");
+			
+				/* If it's being purged, then it should be removed from both tables. For now, leave in both tables.
 				$db->query("DELETE FROM PurchasedBadges WHERE BadgeID = $id");
-				$db->query("UPDATE PurchaseHistory SET AmountRefunded = Total, RefundReason = 'Deleted' WHERE PurchaserID " .
+				$db->query("DELETE FROM PurchaseHistory WHERE RecordID = $recordID");
+				old --> $db->query("UPDATE PurchaseHistory SET AmountRefunded = Total, RefundReason = 'Deleted' WHERE PurchaserID " .
 					(!empty($purchaserID) ? "= $purchaserID" : ' IS NULL') . " AND PurchaserOneTimeID " .
 					(!empty($purchaserOneTimeID) ? "= $purchaserOneTimeID" : ' IS NULL') . " AND PeopleID " . 
 					(!empty($peopleID) ? "= $peopleID" : ' IS NULL') . " AND OneTimeID " .
 					(!empty($oneTimeID) ? "= $oneTimeID" : ' IS NULL') . " AND Year = $year");
-							
+				*/
+				
 				echo "<span>Badge has been purged from database.</span>";
 			}
 			else
@@ -124,7 +137,7 @@
 			
 			$result = $db->query("SELECT PaymentReference FROM PurchasedBadges WHERE BadgeID = $badgeID");
 			$row = $result->fetch_array();
-			$ref = $row["PaymentReference"];			
+			$ref = $row["PaymentReference"];
 			$result->close();
 			$newRef = $ref . "_#" . $checkNum;
 			
@@ -135,7 +148,7 @@
 			$peopleID = $row["PurchaserID"];
 			$result->close();
 			if(!is_null($peopleID))
-			{		
+			{
 				$result = $db->query("SELECT CONCAT(FirstName, ' ', LastName) AS Name, Email FROM People WHERE PeopleID = $peopleID");
 				$row = $result->fetch_array();
 				$email = $row["Email"];
@@ -152,8 +165,8 @@
 					$mail->WordWrap = 70;
 					$mail->Subject = "Check for Capricon Registration Received!";
 					$mail->Body = "Hello! This email is to let you know that we have received your check, numbered $checkNum, that you mailed in to " . 
-						"pay for your convention registration. We've marked your purchase as paid, and we will see you at Capricon!\r\n\r\n" . 
-						"Sincerely,\r\nThe Capricon Registration Team";
+									"pay for your convention registration. We've marked your purchase as paid, and we will see you at Capricon!\r\n\r\n" . 
+									"Sincerely,\r\nThe Capricon Registration Team";
 					$mail->Send();
 				}
 			}
@@ -162,7 +175,7 @@
 		else if($_POST["action"] == "RefundBadge")
 		{
 			$id = $db->real_escape_string($_POST["id"]);
-			$result = $db->query("SELECT PurchaserID, OneTimePurchaserID, PeopleID, OneTimeID, BadgeTypeID, BadgeName, AmountPaid, PaymentSource, PaymentReference, Year FROM PurchasedBadges WHERE BadgeID = $id");
+			$result = $db->query("SELECT PurchaserID, OneTimePurchaserID, PeopleID, OneTimeID, BadgeTypeID, BadgeName, AmountPaid, PaymentSource, PaymentReference, Year, RecordID FROM PurchasedBadges WHERE BadgeID = $id");
 			if($result->num_rows == 0)
 			{
 				echo "<span class=\"requiredField\">Invalid badge ID.</span>";
@@ -182,6 +195,7 @@
 			$source = $row["PaymentSource"];
 			$ref = $row["PaymentReference"];
 			$year = $row["Year"];
+			$recordID = $row["RecordID"];
 			
 			if($source == "Stripe")
 			{
@@ -207,11 +221,11 @@
 			elseif($source == "PayPal")
 			{
 				$padata =	'&TRANSACTION=' . urlencode($ref) .
-						'&REFUNDTYPE=Partial' .
-						'&AMT=' . urlencode($amount) .
-						'&CURRENCYCODE=USD' .
-						'&NOTE=' . urlencode("Refund for badge '$badgeName'.");
-											
+							'&REFUNDTYPE=Partial' .
+							'&AMT=' . urlencode($amount) .
+							'&CURRENCYCODE=USD' .
+							'&NOTE=' . urlencode("Refund for badge '$badgeName'.");
+				
 				$paypal = new MyPayPal();
 				$response = $paypal->PPHttpPost('RefundTransaction', $padata);
 				if(!("SUCCESS" == strtoupper($response["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($response["ACK"])))
@@ -219,19 +233,21 @@
 					echo "<span class=\"requiredField\">The refund attempt failed: " . urldecode($response["L_LONGMESSAGE0"]) . "</span>";
 					return;
 				}
-				$destination = "PayPal account";							
+				$destination = "PayPal account";
 			}
 			else
 			{
 				echo "<span class=\"requiredField\">Unable to refund badges that were not paid by Stripe or Paypal.</span>";
-				return;			
+				return;
 			}
 			
 			$db->query("UPDATE PurchasedBadges SET Status = 'Refunded' WHERE BadgeID = $id");
-			$db->query("INSERT INTO PurchaseHistory (PurchaserID, PurchaserOneTimeID, ItemTypeName, ItemTypeID, Details, PeopleID, OneTimeID, Price, Total, Year, Purchased, PaymentSource, PaymentReference) " . 
-                "VALUES ($purchaser, $purchaserOneTime, 'Badge', $badgeTypeID, 'Refund for: $badgeName', $person, $oneTime, -$amount, -$amount, $year, NOW(), '$source', '$ref')");
+			$db->query("UPDATE PurchaseHistory SET AmountRefunded = -$amount, RefundReason = 'Refund for: $badgeName' WHERE RecordID = $recordID");
+			$db->query("INSERT INTO PurchaseHistory (PurchaserID, PurchaserOneTimeID, ItemTypeName, ItemTypeID, Details, PeopleID, OneTimeID, Price, Total, Year, Purchased, PaymentSource, PaymentReference, RefundReason) " . 
+					"VALUES ($purchaser, $purchaserOneTime, 'Badge', $badgeTypeID, 'Refund for: $badgeName, $recordID', $person, $oneTime, -$amount, -$amount, $year, NOW(), '$source', '$ref', 'Refund for: $badgeName, $recordID')");
+			
 			if(!is_null($peopleID))
-			{		
+			{
 				$result = $db->query("SELECT CONCAT(FirstName, ' ', LastName) AS Name, Email FROM People WHERE PeopleID = $peopleID");
 				$row = $result->fetch_array();
 				$email = $row["Email"];
@@ -248,9 +264,9 @@
 					$mail->WordWrap = 70;
 					$mail->Subject = "Badge Refund Issued";
 					$mail->Body = "Hello! This email is to let you know that we have received a request to refund badge '$badgeName' that you " . 
-						"have purchased. The amount of " . sprintf("$%01.2f", $amount) . " was refunded to your $destination. Please allow up " . 
-						"to 3 to 5 business days for this to appear in your account.\r\n\r\nIf you have any questions, please contact " . 
-						"registration@capricon.org.\r\nSincerely,\r\nThe Capricon Registration Team";
+									"have purchased. The amount of " . sprintf("$%01.2f", $amount) . " was refunded to your $destination. Please allow up " . 
+									"to 3 to 5 business days for this to appear in your account.\r\n\r\nIf you have any questions, please contact " . 
+									"registration@capricon.org.\r\nSincerely,\r\nThe Capricon Registration Team";
 					$mail->Send();
 				}
 				echo "<span>Badge has been successfully refunded. An email has been sent to $name at $email.</span>";
@@ -286,7 +302,7 @@
 				$oneTimeID = "NULL";
 				$purchaserID = is_null($row["ParentID"]) ? $peopleID : $row["ParentID"];
 				$oneTimePurchaserID = "NULL";
-				$result->close();		
+				$result->close();
 			}
 			else
 			{
