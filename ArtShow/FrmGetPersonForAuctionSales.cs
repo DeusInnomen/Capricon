@@ -105,5 +105,15 @@ namespace ArtShow
             dialog.ShowDialog();
             dialog.Close();
         }
+
+        private void TxtID_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == 13)
+            {
+                BtnSearch_Click(this, new EventArgs());
+                e.Handled = true;
+            }
+
+        }
     }
 }

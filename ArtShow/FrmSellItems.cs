@@ -67,6 +67,8 @@ namespace ArtShow
                     item.ForeColor = Color.Red;
                     item.BackColor = Color.LightGray;
                 }
+                else if (shopItem.IsCharity)
+                    item.BackColor = Color.LightGreen;
                 item.Tag = shopItem;
                 LstItems.Items.Add(item);
             }
@@ -118,6 +120,8 @@ namespace ArtShow
             };
             item.SubItems.Add(shopItem.ArtistName);
             item.SubItems.Add(shopItem.Price.ToString("C"));
+            if (shopItem.IsCharity)
+                item.BackColor = Color.LightGreen;
             item.Tag = shopItem;
             LstCart.Items.Add(item);
             CalculateTotal();
@@ -140,7 +144,8 @@ namespace ArtShow
         private void CalculateTotal()
         {
             TotalPrice = LstCart.Items.Cast<ListViewItem>().Sum(cartItem => ((PrintShopItem) cartItem.Tag).Price);
-            TotalTax = TotalPrice * Program.TaxRate;
+            decimal taxibleAmount = LstCart.Items.Cast<ListViewItem>().Where(cartItem => !((PrintShopItem)cartItem.Tag).IsCharity).Sum(cartItem => ((PrintShopItem)cartItem.Tag).Price);
+            TotalTax = taxibleAmount * Program.TaxRate;
             TotalTax = decimal.Round(TotalTax, 2);
             TotalDue = TotalPrice + TotalTax;
             LblAmountDue.Text = TotalPrice.ToString("C");

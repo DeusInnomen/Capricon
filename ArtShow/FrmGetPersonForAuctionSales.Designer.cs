@@ -36,6 +36,7 @@
             this.colLastName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colPiecesWon = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colTotalDue = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.SortImages = new System.Windows.Forms.ImageList(this.components);
             this.BtnSettle = new System.Windows.Forms.Button();
             this.BtnClear = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
@@ -44,7 +45,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.TxtLastName = new System.Windows.Forms.TextBox();
             this.BtnSearch = new System.Windows.Forms.Button();
-            this.SortImages = new System.Windows.Forms.ImageList(this.components);
             this.SuspendLayout();
             // 
             // LstPeople
@@ -58,14 +58,14 @@
             this.colLastName,
             this.colPiecesWon,
             this.colTotalDue});
-            this.LstPeople.Font = new System.Drawing.Font("Microsoft San Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LstPeople.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LstPeople.FullRowSelect = true;
             this.LstPeople.GridLines = true;
             this.LstPeople.Location = new System.Drawing.Point(12, 87);
             this.LstPeople.Name = "LstPeople";
             this.LstPeople.Size = new System.Drawing.Size(519, 202);
             this.LstPeople.SmallImageList = this.SortImages;
-            this.LstPeople.TabIndex = 0;
+            this.LstPeople.TabIndex = 7;
             this.LstPeople.UseCompatibleStateImageBehavior = false;
             this.LstPeople.View = System.Windows.Forms.View.Details;
             this.LstPeople.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.LstPeople_ColumnClick);
@@ -93,8 +93,15 @@
             // 
             // colTotalDue
             // 
-            this.colTotalDue.Text = "Total Due";
+            this.colTotalDue.Text = "Total Bids";
             this.colTotalDue.Width = 86;
+            // 
+            // SortImages
+            // 
+            this.SortImages.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("SortImages.ImageStream")));
+            this.SortImages.TransparentColor = System.Drawing.Color.Transparent;
+            this.SortImages.Images.SetKeyName(0, "Down.png");
+            this.SortImages.Images.SetKeyName(1, "Up.png");
             // 
             // BtnSettle
             // 
@@ -102,7 +109,7 @@
             this.BtnSettle.Location = new System.Drawing.Point(401, 295);
             this.BtnSettle.Name = "BtnSettle";
             this.BtnSettle.Size = new System.Drawing.Size(130, 27);
-            this.BtnSettle.TabIndex = 2;
+            this.BtnSettle.TabIndex = 8;
             this.BtnSettle.Text = "Settle Purchases";
             this.BtnSettle.UseVisualStyleBackColor = true;
             this.BtnSettle.Click += new System.EventHandler(this.BtnSettle_Click);
@@ -113,56 +120,58 @@
             this.BtnClear.Location = new System.Drawing.Point(401, 54);
             this.BtnClear.Name = "BtnClear";
             this.BtnClear.Size = new System.Drawing.Size(130, 27);
-            this.BtnClear.TabIndex = 18;
+            this.BtnClear.TabIndex = 5;
             this.BtnClear.Text = "Clear Search";
             this.BtnClear.UseVisualStyleBackColor = true;
             this.BtnClear.Click += new System.EventHandler(this.BtnClear_Click);
             // 
             // label5
             // 
-            this.label5.Font = new System.Drawing.Font("Microsoft San Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.Location = new System.Drawing.Point(229, 9);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(302, 42);
-            this.label5.TabIndex = 17;
+            this.label5.TabIndex = 6;
             this.label5.Text = "You may search for only one of these at any time. Leave all fields blank to show " +
     "all people.";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft San Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.Location = new System.Drawing.Point(52, 15);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(47, 13);
-            this.label4.TabIndex = 16;
+            this.label4.Size = new System.Drawing.Size(34, 16);
+            this.label4.TabIndex = 1;
             this.label4.Text = "ID #:";
             // 
             // TxtID
             // 
-            this.TxtID.Font = new System.Drawing.Font("Microsoft San Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TxtID.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TxtID.Location = new System.Drawing.Point(105, 12);
             this.TxtID.Name = "TxtID";
-            this.TxtID.Size = new System.Drawing.Size(118, 20);
-            this.TxtID.TabIndex = 15;
+            this.TxtID.Size = new System.Drawing.Size(118, 22);
+            this.TxtID.TabIndex = 0;
+            this.TxtID.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TxtID_KeyPress);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft San Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(12, 41);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(87, 13);
-            this.label1.TabIndex = 14;
+            this.label1.Size = new System.Drawing.Size(76, 16);
+            this.label1.TabIndex = 3;
             this.label1.Text = "Last Name:";
             // 
             // TxtLastName
             // 
-            this.TxtLastName.Font = new System.Drawing.Font("Microsoft San Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TxtLastName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TxtLastName.Location = new System.Drawing.Point(105, 38);
             this.TxtLastName.Name = "TxtLastName";
-            this.TxtLastName.Size = new System.Drawing.Size(118, 20);
-            this.TxtLastName.TabIndex = 13;
+            this.TxtLastName.Size = new System.Drawing.Size(118, 22);
+            this.TxtLastName.TabIndex = 2;
+            this.TxtLastName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TxtID_KeyPress);
             // 
             // BtnSearch
             // 
@@ -170,17 +179,10 @@
             this.BtnSearch.Location = new System.Drawing.Point(256, 54);
             this.BtnSearch.Name = "BtnSearch";
             this.BtnSearch.Size = new System.Drawing.Size(130, 27);
-            this.BtnSearch.TabIndex = 12;
+            this.BtnSearch.TabIndex = 4;
             this.BtnSearch.Text = "Search Database";
             this.BtnSearch.UseVisualStyleBackColor = true;
             this.BtnSearch.Click += new System.EventHandler(this.BtnSearch_Click);
-            // 
-            // SortImages
-            // 
-            this.SortImages.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("SortImages.ImageStream")));
-            this.SortImages.TransparentColor = System.Drawing.Color.Transparent;
-            this.SortImages.Images.SetKeyName(0, "Down.png");
-            this.SortImages.Images.SetKeyName(1, "Up.png");
             // 
             // FrmGetPersonForAuctionSales
             // 
