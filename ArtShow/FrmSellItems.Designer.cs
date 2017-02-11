@@ -174,7 +174,7 @@
             // label2
             // 
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(511, 352);
+            this.label2.Location = new System.Drawing.Point(511, 353);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(144, 23);
             this.label2.TabIndex = 7;
@@ -504,7 +504,7 @@
             // label12
             // 
             this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label12.Location = new System.Drawing.Point(507, 411);
+            this.label12.Location = new System.Drawing.Point(507, 412);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(148, 22);
             this.label12.TabIndex = 71;
@@ -525,7 +525,7 @@
             // LblTaxes
             // 
             this.LblTaxes.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LblTaxes.Location = new System.Drawing.Point(511, 381);
+            this.LblTaxes.Location = new System.Drawing.Point(511, 382);
             this.LblTaxes.Name = "LblTaxes";
             this.LblTaxes.Size = new System.Drawing.Size(144, 22);
             this.LblTaxes.TabIndex = 69;

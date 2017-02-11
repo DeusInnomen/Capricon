@@ -258,6 +258,8 @@ namespace ArtShow
         public bool CheckedIn { get; set; }
         [JsonProperty("Claimed"), JsonConverter(typeof(BoolConverter))]
         public bool Claimed { get; set; }
+        [JsonProperty("IsCharity"), JsonConverter(typeof(BoolConverter))]
+        public bool IsCharity { get; set; }
 
         public string LastError { get; set; }
 
@@ -359,6 +361,8 @@ namespace ArtShow
         public bool CheckedIn { get; set; }
         [JsonProperty("Claimed"), JsonConverter(typeof(BoolConverter))]
         public bool Claimed { get; set; }
+        [JsonProperty("IsCharity"), JsonConverter(typeof(BoolConverter))]
+        public bool IsCharity { get; set; }
 
         public string LastError { get; set; }
 
@@ -414,7 +418,8 @@ namespace ArtShow
                     ShowNumber = ShowNumber,
                     Title = Title,
                     QuantitySent = QuantitySent,
-                    QuantitySold = QuantitySold
+                    QuantitySold = QuantitySold,
+                    IsCharity = IsCharity
                 };
             return copy;
         }

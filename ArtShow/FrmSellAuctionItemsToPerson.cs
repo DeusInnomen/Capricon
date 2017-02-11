@@ -49,6 +49,7 @@ namespace ArtShow
 
             TotalPrice = 0;
             TotalDue = 0;
+            decimal taxibleAmount = 0;
             TotalTax = 0;
             foreach (var showItem in Items)
             {
@@ -60,8 +61,12 @@ namespace ArtShow
                 item.Tag = showItem;
                 LstItems.Items.Add(item);
                 TotalPrice += (decimal)showItem.FinalSalePrice;
+                if (showItem.IsCharity)
+                    item.BackColor = Color.LightGreen;
+                else
+                    taxibleAmount += (decimal)showItem.FinalSalePrice;
             }
-            TotalTax = TotalPrice * Program.TaxRate;
+            TotalTax = taxibleAmount * Program.TaxRate;
             TotalTax = decimal.Round(TotalTax, 2);
             TotalDue = TotalPrice + TotalTax;
             LblAmountDue.Text = TotalPrice.ToString("C");

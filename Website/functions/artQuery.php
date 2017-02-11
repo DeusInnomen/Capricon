@@ -365,7 +365,7 @@
 	{
 		$year = !empty($_POST["Year"]) ? $db->real_escape_string($_POST["Year"]) : (date("n") >= 4 ? date("Y") + 1: date("Y"));
 		$printShopPieces = array();
-		$result = $db->query("SELECT ArtID, ar.ArtistAttendingID, ShowNumber, Title, ar.Notes, DisplayName AS ArtistName, OriginalMedia, QuantitySent, QuickSalePrice, ar.LocationCode, Category, QuantitySold, CheckedIn FROM ArtSubmissions ar JOIN ArtistPresence ap ON ar.ArtistAttendingID = ap.ArtistAttendingID JOIN ArtistDetails ad ON ap.ArtistID = ad.ArtistID WHERE Year = $year AND IsPrintShop = 1 AND CheckedIn = 1");
+		$result = $db->query("SELECT ArtID, ar.ArtistAttendingID, ShowNumber, Title, ar.Notes, DisplayName AS ArtistName, OriginalMedia, QuantitySent, QuickSalePrice, ar.LocationCode, Category, QuantitySold, CheckedIn, IsCharity FROM ArtSubmissions ar JOIN ArtistPresence ap ON ar.ArtistAttendingID = ap.ArtistAttendingID JOIN ArtistDetails ad ON ap.ArtistID = ad.ArtistID JOIN People p ON p.PeopleID = ad.PeopleID WHERE Year = $year AND IsPrintShop = 1 AND CheckedIn = 1");
 		if($result->num_rows > 0)
 		{
 			while($row = $result->fetch_array(MYSQLI_ASSOC))
@@ -472,7 +472,7 @@
 		$year = !empty($_POST["Year"]) ? $db->real_escape_string($_POST["Year"]) : (date("n") >= 4 ? date("Y") + 1: date("Y"));
 
 		$items = array();
-		$sql = "SELECT ar.ArtistAttendingID, ArtID, ShowNumber, Title, ar.Notes, IsOriginal, OriginalMedia, PrintNumber, PrintMaxNumber, MinimumBid, ar.LocationCode, Category, FeesPaid, PurchaserBadgeID, pb.BadgeNumber AS PurchaserNumber, FinalSalePrice, CheckedIn, Claimed, Auctioned, DisplayName, LegalName, ArtistNumber FROM ArtSubmissions ar JOIN ArtistPresence ap ON ar.ArtistAttendingID = ap.ArtistAttendingID JOIN ArtistDetails ad ON ap.ArtistID = ad.ArtistID LEFT OUTER JOIN PurchasedBadges pb ON ar.PurchaserBadgeID = pb.BadgeID AND pb.Year = $year WHERE Claimed = 0 AND PurchaserBadgeID = $id ";
+		$sql = "SELECT ar.ArtistAttendingID, ArtID, ShowNumber, Title, ar.Notes, IsOriginal, OriginalMedia, PrintNumber, PrintMaxNumber, MinimumBid, ar.LocationCode, Category, FeesPaid, PurchaserBadgeID, pb.BadgeNumber AS PurchaserNumber, FinalSalePrice, CheckedIn, Claimed, Auctioned, DisplayName, LegalName, ArtistNumber, IsCharity FROM ArtSubmissions ar JOIN ArtistPresence ap ON ar.ArtistAttendingID = ap.ArtistAttendingID JOIN ArtistDetails ad ON ap.ArtistID = ad.ArtistID LEFT OUTER JOIN PurchasedBadges pb ON ar.PurchaserBadgeID = pb.BadgeID AND pb.Year = $year JOIN People p ON p.PeopleID = ad.PeopleID WHERE Claimed = 0 AND PurchaserBadgeID = $id ";
 		$sql .= "ORDER BY ar.LocationCode, ShowNumber";
 		$result = $db->query($sql);
 		if($result->num_rows > 0)
