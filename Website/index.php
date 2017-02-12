@@ -113,6 +113,7 @@ $interests = UserInterests();
                                          echo '<hr><div class="headertitle">Treasurer Functions</div>' . "\r\n";
                                      echo '<li><a href="artShowSalesSummary.php">Art Show Sales Summary</a></li>' . "\r\n";
                                      echo '<li><a href="registrationStats.php">Registration Statistics</a></li>' . "\r\n";
+                                     echo '<li><a href="registrationSalesSummary.php">Registration Sales Summary</a></li>' . "\r\n";
                                      echo '<li><a href="treasurerStats.php">Treasurer Statistics</a></li>' . "\r\n";
                                  }
                                  echo '<hr><li><a href="logout.php">Log Out</a></li>' . "\r\n";
