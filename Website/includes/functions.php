@@ -1,11 +1,24 @@
 <?php
-	if($_SERVER["HTTPS"] != "on")
+	//One-Place Transplant Code setting - global local_install for installing on a non-http dev server with different pathing:
+	//Made global so it could be used in other files if needed for functions that only run when running in 'local' or 'debug' mode.
+	global $local_setting;
+	$local_setting = true;
+	if ($local_setting != true)
 	{
-		header("Location: https://" . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"]);
-		exit();
-	}
+		//Standard use on server.
+		if($_SERVER["HTTPS"] != "on")
+		{
+			header("Location: https://" . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"]);
+			exit();
+		}
 
-	$path = $_SERVER["DOCUMENT_ROOT"];
+		$path = $_SERVER["DOCUMENT_ROOT"];
+	}
+	else
+	{
+		//No HTTPS and just get current working dir for the root.
+		$path = getcwd();
+	}
 	include_once("$path/includes/dsn.inc");
 	include_once("$path/includes/password.php");
 	include_once("$path/includes/phpmailer/class.phpmailer.php");
