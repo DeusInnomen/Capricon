@@ -7,7 +7,7 @@
 		header('Location: /index.php');
 		
 	$year = date("n") >= 3 ? date("Y") + 1: date("Y");
-    $sql  = "SELECT ab.AvailableBadgeID, bt.Description, ab.Price, ab.AvailableFrom, ab.AvailableTo, ab.AvailableOnline FROM AvailableBadges ab JOIN BadgeTypes bt ON ab.BadgeTypeID = bt.BadgeTypeID WHERE ab.Year = $year ORDER BY ab.AvailableFrom ASC";
+    $sql  = "SELECT ab.AvailableBadgeID, bt.Description, ab.Price, ab.AvailableFrom, ab.AvailableTo, ab.AvailableOnline FROM AvailableBadges ab JOIN BadgeTypes bt ON ab.BadgeTypeID = bt.BadgeTypeID WHERE ab.Year = $year ORDER BY ab.AvailableFrom, ab.BadgeTypeID ASC";
 	
 	$badges = array();
 	$result = $db->query($sql);
