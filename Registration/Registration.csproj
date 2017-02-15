@@ -113,6 +113,12 @@
     <Compile Include="FrmGetDetail.Designer.cs">
       <DependentUpon>FrmGetDetail.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmGetPersonType.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmGetPersonType.Designer.cs">
+      <DependentUpon>FrmGetPersonType.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmLogin.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -166,6 +172,12 @@
     </Compile>
     <Compile Include="FrmProcessing.Designer.cs">
       <DependentUpon>FrmProcessing.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmRelatedPeople.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmRelatedPeople.Designer.cs">
+      <DependentUpon>FrmRelatedPeople.cs</DependentUpon>
     </Compile>
     <Compile Include="FrmSelectPerson.cs">
       <SubType>Form</SubType>
@@ -240,6 +252,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmProcessing.resx">
       <DependentUpon>FrmProcessing.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmRelatedPeople.resx">
+      <DependentUpon>FrmRelatedPeople.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmSelectPerson.resx">
       <DependentUpon>FrmSelectPerson.cs</DependentUpon>
