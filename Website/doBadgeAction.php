@@ -206,7 +206,7 @@
 			}
 			elseif($source == "PayPal")
 			{
-				$padata =	'&TRANSACTION=' . urlencode($ref) .
+				$padata =	'&TRANSACTIONID=' . urlencode($ref) .
 						'&REFUNDTYPE=Partial' .
 						'&AMT=' . urlencode($amount) .
 						'&CURRENCYCODE=USD' .
