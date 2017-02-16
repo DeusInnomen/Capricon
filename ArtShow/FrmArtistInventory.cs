@@ -709,7 +709,7 @@ namespace ArtShow
             var gfx = Graphics.FromImage(image);
             var currentY = 0F;
 
-            var text = item.Title;
+            var text = item.ShowNumber + ": " + item.Title;
             var textLines = WrapText(text, image.Width, fontTextBold);
             foreach (string line in textLines)
             {
