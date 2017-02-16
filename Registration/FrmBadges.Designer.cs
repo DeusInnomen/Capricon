@@ -54,9 +54,9 @@
             this.BtnEditBadge = new System.Windows.Forms.Button();
             this.BtnCompBadge = new System.Windows.Forms.Button();
             this.BtnRefresh = new System.Windows.Forms.Button();
-            this.chkBackOnly = new System.Windows.Forms.CheckBox();
             this.rdoOrderNumber = new System.Windows.Forms.RadioButton();
             this.rdoOrderName = new System.Windows.Forms.RadioButton();
+            this.CmbPrintOption = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // LstBadges
@@ -290,26 +290,13 @@
             this.BtnRefresh.UseVisualStyleBackColor = true;
             this.BtnRefresh.Click += new System.EventHandler(this.BtnRefresh_Click);
             // 
-            // chkBackOnly
-            // 
-            this.chkBackOnly.AutoSize = true;
-            this.chkBackOnly.Enabled = false;
-            this.chkBackOnly.Font = new System.Drawing.Font("Lucida Console", 9.75F);
-            this.chkBackOnly.Location = new System.Drawing.Point(7, 222);
-            this.chkBackOnly.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.chkBackOnly.Name = "chkBackOnly";
-            this.chkBackOnly.Size = new System.Drawing.Size(194, 17);
-            this.chkBackOnly.TabIndex = 22;
-            this.chkBackOnly.Text = "Print Back Label Only";
-            this.chkBackOnly.UseVisualStyleBackColor = true;
-            // 
             // rdoOrderNumber
             // 
             this.rdoOrderNumber.AutoSize = true;
             this.rdoOrderNumber.Checked = true;
             this.rdoOrderNumber.Font = new System.Drawing.Font("Lucida Console", 9.75F);
-            this.rdoOrderNumber.Location = new System.Drawing.Point(7, 242);
-            this.rdoOrderNumber.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.rdoOrderNumber.Location = new System.Drawing.Point(7, 248);
+            this.rdoOrderNumber.Margin = new System.Windows.Forms.Padding(2);
             this.rdoOrderNumber.Name = "rdoOrderNumber";
             this.rdoOrderNumber.Size = new System.Drawing.Size(193, 17);
             this.rdoOrderNumber.TabIndex = 23;
@@ -321,22 +308,35 @@
             // 
             this.rdoOrderName.AutoSize = true;
             this.rdoOrderName.Font = new System.Drawing.Font("Lucida Console", 9.75F);
-            this.rdoOrderName.Location = new System.Drawing.Point(7, 261);
-            this.rdoOrderName.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.rdoOrderName.Location = new System.Drawing.Point(7, 267);
+            this.rdoOrderName.Margin = new System.Windows.Forms.Padding(2);
             this.rdoOrderName.Name = "rdoOrderName";
             this.rdoOrderName.Size = new System.Drawing.Size(169, 17);
             this.rdoOrderName.TabIndex = 24;
             this.rdoOrderName.Text = "Order by Last Name";
             this.rdoOrderName.UseVisualStyleBackColor = true;
             // 
+            // CmbPrintOption
+            // 
+            this.CmbPrintOption.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.CmbPrintOption.FormattingEnabled = true;
+            this.CmbPrintOption.Items.AddRange(new object[] {
+            "Print Both Labels",
+            "Print Front Label Only",
+            "Print Back Label Only"});
+            this.CmbPrintOption.Location = new System.Drawing.Point(7, 222);
+            this.CmbPrintOption.Name = "CmbPrintOption";
+            this.CmbPrintOption.Size = new System.Drawing.Size(260, 21);
+            this.CmbPrintOption.TabIndex = 25;
+            // 
             // FrmBadges
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(737, 408);
+            this.Controls.Add(this.CmbPrintOption);
             this.Controls.Add(this.rdoOrderName);
             this.Controls.Add(this.rdoOrderNumber);
-            this.Controls.Add(this.chkBackOnly);
             this.Controls.Add(this.BtnRefresh);
             this.Controls.Add(this.BtnCompBadge);
             this.Controls.Add(this.BtnEditBadge);
@@ -392,8 +392,8 @@
         private System.Windows.Forms.Button BtnCompBadge;
         private System.Windows.Forms.ImageList SortImages;
         private System.Windows.Forms.Button BtnRefresh;
-        private System.Windows.Forms.CheckBox chkBackOnly;
         private System.Windows.Forms.RadioButton rdoOrderNumber;
         private System.Windows.Forms.RadioButton rdoOrderName;
+        private System.Windows.Forms.ComboBox CmbPrintOption;
     }
 }

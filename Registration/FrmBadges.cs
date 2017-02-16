@@ -28,6 +28,8 @@ namespace Registration
 
             DoRefresh();
 
+            CmbPrintOption.SelectedIndex = 0;
+
             _checkTimer = new System.Threading.Timer(delegate
                 {
                     try
@@ -214,8 +216,8 @@ namespace Registration
                 var badgeType = LstBadges.SelectedItems[0].Text;
                 enableBackOnly = (badgeType == "Concom" || badgeType == "Guest of Honor");
             }
-            chkBackOnly.Enabled = enableBackOnly;
-            chkBackOnly.Checked = enableBackOnly;
+            if(enableBackOnly)
+                CmbPrintOption.SelectedIndex = 2;
         }
 
         private void LstResults_SelectedIndexChanged(object sender, EventArgs e)
@@ -236,7 +238,7 @@ namespace Registration
                         MessageBoxIcon.Exclamation);
                 }
                 else
-                    Badge.PrintBadge(badge, chkBackOnly.Checked);
+                    Badge.PrintBadge(badge, CmbPrintOption.SelectedIndex != 2, CmbPrintOption.SelectedIndex != 1);
             }
         }
 
@@ -267,7 +269,7 @@ namespace Registration
                     count = 0;
                     break;
                 }
-                Badge.PrintBadge(badge, chkBackOnly.Checked);
+                Badge.PrintBadge(badge, CmbPrintOption.SelectedIndex != 2, CmbPrintOption.SelectedIndex != 1);
             }
             dialog.Close();
             if (count == badges.Count) TxtResumeNum.Text = "";
