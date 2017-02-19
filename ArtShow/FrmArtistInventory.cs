@@ -494,7 +494,7 @@ namespace ArtShow
                                 MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.No) return;
             var tags = "";
             foreach (ListViewItem item in lstPrintShop.SelectedItems)
-                tags += ", " + ((ArtShowItem)item.Tag).ArtID;
+                tags += ", " + ((PrintShopItem)item.Tag).ArtID;
 
             var data = Encoding.ASCII.GetBytes("action=DeleteArtItems&ids=" + tags.Substring(2));
 
@@ -522,7 +522,7 @@ namespace ArtShow
 
         private void BtnCheckout_Click(object sender, EventArgs e)
         {
-            var dialog = new FrmArtistCheckout(Presence);
+            var dialog = new FrmArtistCheckout(Artist, Presence);
             dialog.ShowDialog();
             dialog.Close();
         }

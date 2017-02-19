@@ -481,6 +481,8 @@ namespace ArtShow
         public string ShippingDetails { get; set; }
         [JsonProperty("IsEAP"), JsonConverter(typeof(BoolConverter))]
         public bool IsEAP { get; set; }
+        [JsonProperty("IsCharity"), JsonConverter(typeof(BoolConverter))]
+        public bool IsCharity { get; set; }
 
         public string LastError { get; set; }
 
