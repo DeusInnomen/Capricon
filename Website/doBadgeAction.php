@@ -72,15 +72,20 @@
 		{
 			$id = $db->real_escape_string($_POST["id"]);
 			
-			$result = $db->query("SELECT BadgeID FROM PurchasedBadges WHERE BadgeID = $id");
+			$result = $db->query("SELECT BadgeID, RecordID, AmountPaid FROM PurchasedBadges WHERE BadgeID = $id");
 			if($result->num_rows == 0)
 			{
 				echo "<span class=\"requiredField\">Invalid badge ID.</span>";
 				return;
 			}
+			$row = $result->fetch_array();
 			$result->close();
+			
+			$recordID = $row["RecordID"];
+			$total = $row["AmountPaid"];
 						
-			$db->query("UPDATE PurchasedBadges SET Status = 'Deleted' WHERE BadgeID = $id");			
+			$db->query("UPDATE PurchasedBadges SET Status = 'Deleted' WHERE BadgeID = $id");
+			$db->query("UPDATE PurchaseHistory SET AmountRefunded = $total, RefundReason = 'Deleted' WHERE RecordID = $recordID");
 			echo "<span>Badge has been deleted.</span>";
 		}
 		else if($_POST["action"] == "SuperAdminDeleteBadge")
@@ -88,7 +93,7 @@
 			if(DoesUserBelongHere("SuperAdmin")) {
 				$id = $db->real_escape_string($_POST["id"]);
 				
-				$result = $db->query("SELECT BadgeID, BadgeNumber, PurchaserID, OneTimePurchaserID, PeopleID, OneTimeID, Year FROM PurchasedBadges WHERE BadgeID = $id");
+				$result = $db->query("SELECT BadgeID, RecordID, AmountPaid, BadgeNumber, PurchaserID, OneTimePurchaserID, PeopleID, OneTimeID, Year FROM PurchasedBadges WHERE BadgeID = $id");
 				if($result->num_rows == 0)
 				{
 					echo "<span class=\"requiredField\">Invalid badge ID.</span>";
@@ -98,6 +103,8 @@
 				$result->close();
 				
 				$badgeID = $row["BadgeID"];
+				$recordID = $row["RecordID"];
+				$total = $row["AmountPaid"];
 				$badgeNumber = $row["BadgeNumber"];
 				$purchaserID = $row["PurchaserID"];
 				$purchaserOneTimeID = $row["OneTimePurchaserID"];
@@ -105,12 +112,18 @@
 				$oneTimeID = $row["OneTimeID"];
 				$year = $row["Year"];
 				
+				$db->query("UPDATE PurchasedBadges SET Status = 'Deleted' WHERE BadgeID = $id");
+				$db->query("UPDATE PurchaseHistory SET AmountRefunded = $total, RefundReason = 'Deleted' WHERE RecordID = $recordID");
+			
+				/* If it's being purged, then it should be removed from both tables. For now, leave in both tables.
 				$db->query("DELETE FROM PurchasedBadges WHERE BadgeID = $id");
-				$db->query("UPDATE PurchaseHistory SET AmountRefunded = Total, RefundReason = 'Deleted' WHERE PurchaserID " .
+				$db->query("DELETE FROM PurchaseHistory WHERE RecordID = $recordID");
+				old --> $db->query("UPDATE PurchaseHistory SET AmountRefunded = Total, RefundReason = 'Deleted' WHERE PurchaserID " .
 					(!empty($purchaserID) ? "= $purchaserID" : ' IS NULL') . " AND PurchaserOneTimeID " .
 					(!empty($purchaserOneTimeID) ? "= $purchaserOneTimeID" : ' IS NULL') . " AND PeopleID " . 
 					(!empty($peopleID) ? "= $peopleID" : ' IS NULL') . " AND OneTimeID " .
 					(!empty($oneTimeID) ? "= $oneTimeID" : ' IS NULL') . " AND Year = $year");
+				*/
 							
 				echo "<span>Badge has been purged from database.</span>";
 			}
@@ -124,7 +137,7 @@
 			
 			$result = $db->query("SELECT PaymentReference FROM PurchasedBadges WHERE BadgeID = $badgeID");
 			$row = $result->fetch_array();
-			$ref = $row["PaymentReference"];			
+			$ref = $row["PaymentReference"];
 			$result->close();
 			$newRef = $ref . "_#" . $checkNum;
 			
@@ -135,7 +148,7 @@
 			$peopleID = $row["PurchaserID"];
 			$result->close();
 			if(!is_null($peopleID))
-			{		
+			{
 				$result = $db->query("SELECT CONCAT(FirstName, ' ', LastName) AS Name, Email FROM People WHERE PeopleID = $peopleID");
 				$row = $result->fetch_array();
 				$email = $row["Email"];
@@ -162,7 +175,7 @@
 		else if($_POST["action"] == "RefundBadge")
 		{
 			$id = $db->real_escape_string($_POST["id"]);
-			$result = $db->query("SELECT PurchaserID, OneTimePurchaserID, PeopleID, OneTimeID, BadgeTypeID, BadgeName, AmountPaid, PaymentSource, PaymentReference, Year FROM PurchasedBadges WHERE BadgeID = $id");
+			$result = $db->query("SELECT PurchaserID, OneTimePurchaserID, PeopleID, OneTimeID, BadgeTypeID, BadgeName, AmountPaid, PaymentSource, PaymentReference, Year, RecordID FROM PurchasedBadges WHERE BadgeID = $id");
 			if($result->num_rows == 0)
 			{
 				echo "<span class=\"requiredField\">Invalid badge ID.</span>";
@@ -182,6 +195,7 @@
 			$source = $row["PaymentSource"];
 			$ref = $row["PaymentReference"];
 			$year = $row["Year"];
+			$recordID = $row["RecordID"];
 			
 			if($source == "Stripe")
 			{
@@ -219,19 +233,20 @@
 					echo "<span class=\"requiredField\">The refund attempt failed: " . urldecode($response["L_LONGMESSAGE0"]) . "</span>";
 					return;
 				}
-				$destination = "PayPal account";							
+				$destination = "PayPal account";
 			}
 			else
 			{
 				echo "<span class=\"requiredField\">Unable to refund badges that were not paid by Stripe or Paypal.</span>";
-				return;			
+				return;
 			}
 			
 			$db->query("UPDATE PurchasedBadges SET Status = 'Refunded' WHERE BadgeID = $id");
-			$db->query("INSERT INTO PurchaseHistory (PurchaserID, PurchaserOneTimeID, ItemTypeName, ItemTypeID, Details, PeopleID, OneTimeID, Price, Total, Year, Purchased, PaymentSource, PaymentReference) " . 
-                "VALUES ($purchaser, $purchaserOneTime, 'Badge', $badgeTypeID, 'Refund for: $badgeName', $person, $oneTime, -$amount, -$amount, $year, NOW(), '$source', '$ref')");
+			$db->query("UPDATE PurchaseHistory SET AmountRefunded = -$amount, RefundReason = 'Refund for: $badgeName' WHERE RecordID = $recordID");
+			$db->query("INSERT INTO PurchaseHistory (PurchaserID, PurchaserOneTimeID, ItemTypeName, ItemTypeID, Details, PeopleID, OneTimeID, Price, Total, Year, Purchased, PaymentSource, PaymentReference, RefundReason) " . 
+                "VALUES ($purchaser, $purchaserOneTime, 'Badge', $badgeTypeID, 'Refund for: $badgeName, $recordID', $person, $oneTime, -$amount, -$amount, $year, NOW(), '$source', '$ref', 'Refund for: $badgeName, $recordID')");
 			if(!is_null($peopleID))
-			{		
+			{
 				$result = $db->query("SELECT CONCAT(FirstName, ' ', LastName) AS Name, Email FROM People WHERE PeopleID = $peopleID");
 				$row = $result->fetch_array();
 				$email = $row["Email"];
@@ -286,7 +301,7 @@
 				$oneTimeID = "NULL";
 				$purchaserID = is_null($row["ParentID"]) ? $peopleID : $row["ParentID"];
 				$oneTimePurchaserID = "NULL";
-				$result->close();		
+				$result->close();
 			}
 			else
 			{
