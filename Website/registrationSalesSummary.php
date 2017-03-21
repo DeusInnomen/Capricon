@@ -53,7 +53,7 @@ FROM
 	LEFT OUTER JOIN PurchasedBadges pbp ON ph.PeopleID = pbp.PeopleID AND ph.Year = pbp.Year
 	LEFT OUTER JOIN PurchasedBadges pbo ON ph.OneTimeID = pbo.OneTimeID AND ph.Year = pbo.Year
 WHERE
-	ph.ItemTypeName NOT IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop')
+	ph.ItemTypeName NOT IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop', 'HangingFees')
 	AND (ph.AmountRefunded IS null OR ph.AmountRefunded = '')
 	AND ph.Year = $year
 	AND date(ph.Purchased) < '$day1'
@@ -77,7 +77,7 @@ SELECT
 FROM
 	PurchaseHistory ph
 WHERE
-	ph.ItemTypeName NOT IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop')
+	ph.ItemTypeName NOT IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop', 'HangingFees')
 	AND (ph.AmountRefunded IS null OR ph.AmountRefunded = '')
 	AND ph.Year = $year
 	AND date(ph.Purchased) < '$day1'
@@ -99,7 +99,7 @@ SELECT
 FROM
 	PurchaseHistory ph
 WHERE
-	ph.ItemTypeName NOT IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop')
+	ph.ItemTypeName NOT IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop', 'HangingFees')
 	AND (ph.AmountRefunded IS null OR ph.AmountRefunded = '')
 	AND ph.Year = $year
 	AND date(ph.Purchased) < '$day1'
@@ -139,7 +139,7 @@ FROM
 	LEFT OUTER JOIN PurchasedBadges pbp ON ph.PeopleID = pbp.PeopleID AND ph.Year = pbp.Year
 	LEFT OUTER JOIN PurchasedBadges pbo ON ph.OneTimeID = pbo.OneTimeID AND ph.Year = pbo.Year
 WHERE
-	ph.ItemTypeName NOT IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop')
+	ph.ItemTypeName NOT IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop', 'HangingFees')
 	AND (ph.AmountRefunded IS null OR ph.AmountRefunded = '')
 	AND ph.Year = $year
 	AND date(ph.Purchased) = '$day1'
@@ -163,7 +163,7 @@ SELECT
 FROM
 	PurchaseHistory ph
 WHERE
-	ph.ItemTypeName NOT IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop')
+	ph.ItemTypeName NOT IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop', 'HangingFees')
 	AND (ph.AmountRefunded IS null OR ph.AmountRefunded = '')
 	AND ph.Year = $year
 	AND date(ph.Purchased) = '$day1'
@@ -185,7 +185,7 @@ SELECT
 FROM
 	PurchaseHistory ph
 WHERE
-	ph.ItemTypeName NOT IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop')
+	ph.ItemTypeName NOT IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop', 'HangingFees')
 	AND (ph.AmountRefunded IS null OR ph.AmountRefunded = '')
 	AND ph.Year = $year
 	AND date(ph.Purchased) = '$day1'
@@ -226,7 +226,7 @@ FROM
 	LEFT OUTER JOIN PurchasedBadges pbp ON ph.PeopleID = pbp.PeopleID AND ph.Year = pbp.Year
 	LEFT OUTER JOIN PurchasedBadges pbo ON ph.OneTimeID = pbo.OneTimeID AND ph.Year = pbo.Year
 WHERE
-	ph.ItemTypeName NOT IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop')
+	ph.ItemTypeName NOT IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop', 'HangingFees')
 	AND (ph.AmountRefunded IS null OR ph.AmountRefunded = '')
 	AND ph.Year = $year
 	AND date(ph.Purchased) = '$day2'
@@ -250,7 +250,7 @@ SELECT
 FROM
 	PurchaseHistory ph
 WHERE
-	ph.ItemTypeName NOT IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop')
+	ph.ItemTypeName NOT IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop', 'HangingFees')
 	AND (ph.AmountRefunded IS null OR ph.AmountRefunded = '')
 	AND ph.Year = $year
 	AND date(ph.Purchased) = '$day2'
@@ -272,7 +272,7 @@ SELECT
 FROM
 	PurchaseHistory ph
 WHERE
-	ph.ItemTypeName NOT IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop')
+	ph.ItemTypeName NOT IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop', 'HangingFees')
 	AND (ph.AmountRefunded IS null OR ph.AmountRefunded = '')
 	AND ph.Year = $year
 	AND date(ph.Purchased) = '$day2'
@@ -312,7 +312,7 @@ FROM
 	LEFT OUTER JOIN PurchasedBadges pbp ON ph.PeopleID = pbp.PeopleID AND ph.Year = pbp.Year
 	LEFT OUTER JOIN PurchasedBadges pbo ON ph.OneTimeID = pbo.OneTimeID AND ph.Year = pbo.Year
 WHERE
-	ph.ItemTypeName NOT IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop')
+	ph.ItemTypeName NOT IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop', 'HangingFees')
 	AND (ph.AmountRefunded IS null OR ph.AmountRefunded = '')
 	AND ph.Year = $year
 	AND date(ph.Purchased) = '$day3'
@@ -336,7 +336,7 @@ SELECT
 FROM
 	PurchaseHistory ph
 WHERE
-	ph.ItemTypeName NOT IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop')
+	ph.ItemTypeName NOT IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop', 'HangingFees')
 	AND (ph.AmountRefunded IS null OR ph.AmountRefunded = '')
 	AND ph.Year = $year
 	AND date(ph.Purchased) = '$day3'
@@ -358,7 +358,7 @@ SELECT
 FROM
 	PurchaseHistory ph
 WHERE
-	ph.ItemTypeName NOT IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop')
+	ph.ItemTypeName NOT IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop', 'HangingFees')
 	AND (ph.AmountRefunded IS null OR ph.AmountRefunded = '')
 	AND ph.Year = $year
 	AND date(ph.Purchased) = '$day3'
@@ -398,7 +398,7 @@ FROM
 	LEFT OUTER JOIN PurchasedBadges pbp ON ph.PeopleID = pbp.PeopleID AND ph.Year = pbp.Year
 	LEFT OUTER JOIN PurchasedBadges pbo ON ph.OneTimeID = pbo.OneTimeID AND ph.Year = pbo.Year
 WHERE
-	ph.ItemTypeName NOT IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop')
+	ph.ItemTypeName NOT IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop', 'HangingFees')
 	AND (ph.AmountRefunded IS null OR ph.AmountRefunded = '')
 	AND ph.Year = $year
 	AND date(ph.Purchased) = '$day4'
@@ -422,7 +422,7 @@ SELECT
 FROM
 	PurchaseHistory ph
 WHERE
-	ph.ItemTypeName NOT IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop')
+	ph.ItemTypeName NOT IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop', 'HangingFees')
 	AND (ph.AmountRefunded IS null OR ph.AmountRefunded = '')
 	AND ph.Year = $year
 	AND date(ph.Purchased) = '$day4'
@@ -444,7 +444,7 @@ SELECT
 FROM
 	PurchaseHistory ph
 WHERE
-	ph.ItemTypeName NOT IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop')
+	ph.ItemTypeName NOT IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop', 'HangingFees')
 	AND (ph.AmountRefunded IS null OR ph.AmountRefunded = '')
 	AND ph.Year = $year
 	AND date(ph.Purchased) = '$day4'
@@ -484,7 +484,7 @@ FROM
 	LEFT OUTER JOIN PurchasedBadges pbp ON ph.PeopleID = pbp.PeopleID AND ph.Year = pbp.Year
 	LEFT OUTER JOIN PurchasedBadges pbo ON ph.OneTimeID = pbo.OneTimeID AND ph.Year = pbo.Year
 WHERE
-	ph.ItemTypeName NOT IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop')
+	ph.ItemTypeName NOT IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop', 'HangingFees')
 	AND (ph.AmountRefunded IS null OR ph.AmountRefunded = '')
 	AND ph.Year = $year
 	AND date(ph.Purchased) > '$day4'
@@ -508,7 +508,7 @@ SELECT
 FROM
 	PurchaseHistory ph
 WHERE
-	ph.ItemTypeName NOT IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop')
+	ph.ItemTypeName NOT IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop', 'HangingFees')
 	AND (ph.AmountRefunded IS null OR ph.AmountRefunded = '')
 	AND ph.Year = $year
 	AND date(ph.Purchased) > '$day4'
@@ -530,7 +530,7 @@ SELECT
 FROM
 	PurchaseHistory ph
 WHERE
-	ph.ItemTypeName NOT IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop')
+	ph.ItemTypeName NOT IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop', 'HangingFees')
 	AND (ph.AmountRefunded IS null OR ph.AmountRefunded = '')
 	AND ph.Year = $year
 	AND date(ph.Purchased) > '$day4'
