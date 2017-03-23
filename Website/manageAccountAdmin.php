@@ -186,7 +186,7 @@
 				<?php
 				if(DoesUserBelongHere("SuperAdmin"))
 					echo '<a href="adminSwitchAccount.php?id=' . $_GET["id"] . '">!! Log In To This Account !!</a><br />';
-				if(DoesUserBelongHere("SuperAdmin"))
+				if(DoesUserBelongHere("Treasurer"))
 					echo '<a href="adminShowPurchases.php?id=' . $_GET["id"] . '">Show Purchases For This Account</a><br />';
 				?>
 			</div>
