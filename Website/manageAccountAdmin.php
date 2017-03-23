@@ -185,7 +185,10 @@
 				<label>How Did You Hear About Capricon?<input type="text" name="heardFrom" id="heardFrom" style="width: 90%; margin-bottom: 40px;" value="<?php echo $info["HeardFrom"]; ?>" /></label><br />
 				<?php
 				if(DoesUserBelongHere("SuperAdmin"))
-					echo '<a href="adminSwitchAccount.php?id=' . $_GET["id"] . '">!! Log In To This Account !!</a><br />' ?>
+					echo '<a href="adminSwitchAccount.php?id=' . $_GET["id"] . '">!! Log In To This Account !!</a><br />';
+				if(DoesUserBelongHere("Treasurer"))
+					echo '<a href="adminShowPurchases.php?id=' . $_GET["id"] . '">Show Purchases For This Account</a><br />';
+				?>
 			</div>
 			<div class="goback">
 				<a href="/index.php">Return to the Main Menu</a>
