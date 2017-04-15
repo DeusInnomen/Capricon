@@ -85,7 +85,7 @@
 						echo '<p class="noneFound">There are no pending registrations at this time.</p>' . "\r\n"; ?>
 			</div>
 			<div class="goback">
-				<a href="/index.php">Return to the Main Menu</a>
+				<a href="index.php">Return to the Main Menu</a>
 			</div>
 		</div>
 	</div>

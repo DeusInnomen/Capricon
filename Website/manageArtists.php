@@ -175,7 +175,7 @@
 			</form>
 			<span class="clearfix" id="updateFromSearchMessage" style="font-size: 1.05em; font-weight: bold;">&nbsp;</span>
 			<div class="goback">
-				<a href="/index.php">Return to the Main Menu</a>
+				<a href="index.php">Return to the Main Menu</a>
 			</div>
 		</div>
 	</div>

@@ -188,7 +188,7 @@
 					echo '<a href="adminSwitchAccount.php?id=' . $_GET["id"] . '">!! Log In To This Account !!</a><br />' ?>
 			</div>
 			<div class="goback">
-				<a href="/index.php">Return to the Main Menu</a>
+				<a href="index.php">Return to the Main Menu</a>
 			</div>
 			<div style="float: left; width: 50%; margin-bottom: 60px">
 				<div class="headertitle">Your Badge Name</div>

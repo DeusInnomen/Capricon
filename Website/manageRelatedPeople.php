@@ -371,7 +371,7 @@
 			</div>
 <?php } ?>			
 			<div class="goback">
-				<a href="/index.php">Return to the Main Menu</a> - <a href="/manageAccount.php">Manage Your Account</a>
+				<a href="index.php">Return to the Main Menu</a> - <a href="manageAccount.php">Manage Your Account</a>
 			</div>
 		</div>
 	</div>

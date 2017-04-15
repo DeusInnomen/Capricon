@@ -376,7 +376,7 @@ if($result->num_rows > 0)
             <br />
             <div class="clearfix"></div>
             <div class="goback">
-                <a href="/index.php">Return to the Main Menu</a>
+                <a href="index.php">Return to the Main Menu</a>
             </div>
         </div>
     </div>

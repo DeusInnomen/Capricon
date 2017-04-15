@@ -146,7 +146,7 @@
 			<input type="submit" value="Submit Changes to Your Interests" />&nbsp;<span id="saveMessage">&nbsp;</span></form>			
 			<br /><br />
 			<div class="goback">
-				<a href="/index.php">Return to the Main Menu</a>
+				<a href="index.php">Return to the Main Menu</a>
 			</div>
 		</div>
 	</div>

@@ -50,7 +50,7 @@
 			?>
 			<p>At any time, you may return to the <a href="manageMailingLists.php">Manage Mailing Lists</a> page to change your subscription settings.</p>
 			<div class="goback">
-				<a href="/index.php">Return to the Main Menu</a>
+				<a href="index.php">Return to the Main Menu</a>
 			</div>
 		</div>
 	</div>

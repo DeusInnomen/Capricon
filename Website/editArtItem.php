@@ -125,7 +125,7 @@
             <span id="noticeSave" style="font-size: 1.05em; font-weight: bold;">&nbsp;</span>
             <br /><br />
             <div class="goback">
-                <a href="/index.php">Return to the Main Menu</a>
+                <a href="index.php">Return to the Main Menu</a>
             </div>
         </div>
     </div>

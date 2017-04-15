@@ -329,7 +329,7 @@
 			<input type="submit" id="printReport" onclick="printInventoryReport(); return false;" value="Produce Printable Inventory Report" style="margin-bottom: 30px;"><br />
 		<?php } ?>
 			<div class="goback">
-				<a href="/index.php">Return to the Main Menu</a>
+				<a href="index.php">Return to the Main Menu</a>
 			</div>
 		</div>
 	</div>

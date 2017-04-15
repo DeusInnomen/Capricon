@@ -286,6 +286,7 @@ CREATE TABLE IF NOT EXISTS `PendingAccounts` (
   `Interests` varchar(200) NOT NULL DEFAULT '',
   `Password` varchar(255) NOT NULL,
   `Expires` datetime NOT NULL,
+  `Entered` integer(1) NOT NULL,
   PRIMARY KEY (`PendingID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
