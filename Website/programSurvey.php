@@ -84,7 +84,7 @@
 					if(result.success)
 					{
 						if(result.doRedirect)
-							window.location = "/programSurveyInterests.php";
+							window.location = "programSurveyInterests.php";
 						else
 						{
 							$("#accountSaveMessage").addClass("goodMessage");
@@ -106,7 +106,7 @@
 		function transferSurvey()
 		{
 			$.post("doProgramSurveyFunctions.php", { task: "Transfer" }, function(result) {
-				window.location = "/programSurvey.php";
+				window.location = "programSurvey.php";
 			}, 'json');
 			return false;
 		}

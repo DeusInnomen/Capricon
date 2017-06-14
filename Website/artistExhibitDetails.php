@@ -54,7 +54,7 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$(":submit").click(function () {
-				if(this.name == "updateInfo") window.location = "/artistInformation.php";
+				if(this.name == "updateInfo") window.location = "artistInformation.php";
 			});
 			$("select#shippingPref option").each(function() { this.selected = (this.value == "<?php echo $request["ShippingPref"]; ?>"); });
 			$("#requestForm :radio").click(function () {

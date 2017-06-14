@@ -214,7 +214,7 @@
 		}
 
 		function printInventoryReport() {
-			window.location = "/artistInventory.php";
+			window.location = "artistInventory.php";
 		}
 
 	</script>

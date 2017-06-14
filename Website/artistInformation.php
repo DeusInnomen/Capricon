@@ -56,7 +56,7 @@
 					if(result.success)
 					{
 						if(result.doRedirect)
-							window.location = "/artistExhibitDetails.php";
+							window.location = "artistExhibitDetails.php";
 						else
 						{
 							$("#accountSaveMessage").addClass("goodMessage");

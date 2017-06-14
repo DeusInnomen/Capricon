@@ -48,7 +48,7 @@
 							$("#statusMessage p").html("Your password has been successfully reset. For security reasons, " + 
 								"you have been automatically logged out. You will be returned to the main menu in 5 seconds.");
 							$("#reset_form").fadeOut(500);						
-							setTimeout(function() { window.location = "/index.php"; }, 5000);
+							setTimeout(function() { window.location = "index.php"; }, 5000);
 						}
 						else
 						{

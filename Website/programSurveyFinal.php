@@ -50,7 +50,7 @@
 					if(result.success)
 					{
 						if(result.doRedirect)
-							window.location = "/index.php";
+							window.location = "index.php";
 						else
 						{
 							$("#accountSaveMessage").addClass("goodMessage");

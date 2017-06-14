@@ -73,6 +73,10 @@ $interests = UserInterests();
                                      }
                                      echo '<li><a href="manageArtistRequests.php">View Requests to Show Art</a></li>' . "\r\n";
                                      echo '<li><a href="artistExhibitsSummary.php">Artist Exhibits Summary</a></li>' . "\r\n";
+									 if(DoesUserBelongHere("superadmin")) {
+                                         echo '<li><a href="manageArtSales.php">Sales Debug</a></li>' . "\r\n";
+                                         echo '<li><a href="manageInvoice.php">Invoice Debug</a></li>' . "\r\n";
+                                     }
                                  }
                                  if(DoesUserBelongHere("Catan"))
                                  {

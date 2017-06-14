@@ -37,7 +37,7 @@
 			$("#updatePermsForm").submit(function () {
 				$.post("doBulkPermissions.php", $(this).serialize(), function(result) {
 					if(result.success)
-						window.location = "/manageAllAccounts.php";
+						window.location = "manageAllAccounts.php";
 					else
 						$("#message").html(result.message);
 				}, 'json');

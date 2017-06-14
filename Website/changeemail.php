@@ -35,7 +35,7 @@
 	<script type="text/javascript" src="includes/global.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			setTimeout(function() { window.location = "/index.php"; }, 5000);
+			setTimeout(function() { window.location = "index.php"; }, 5000);
 		});
 	</script>
 </head>

@@ -57,6 +57,7 @@
 			$badge = trim($row['BadgeName']);
 			$result->close();
 			
+			//if(true)
 			if(password_verify($pass, $dbpw))
 			{
 				if(!$checkOnly)
