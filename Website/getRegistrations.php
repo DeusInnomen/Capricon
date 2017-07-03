@@ -2,7 +2,7 @@
 	session_start();
 	include_once('includes/functions.php');
 	if(!DoesUserBelongHere("RegStaff"))
-		header('Location: /index.php');
+		header('Location: index.php');
 	
 	$showLinks = DoesUserBelongHere("RegLead");
 	$step = 20;

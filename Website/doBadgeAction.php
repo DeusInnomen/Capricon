@@ -2,7 +2,7 @@
 	session_start();
 	include_once('includes/functions.php');
 	if(!DoesUserBelongHere("RegLead"))
-		header('Location: /index.php');
+		header('Location: index.php');
 	require_once("Stripe/Stripe.php");
 	include_once('includes/paypal.php');
 
@@ -115,7 +115,7 @@
 				echo "<span>Badge has been purged from database.</span>";
 			}
 			else
-				header('Location: /index.php');
+				header('Location: index.php');
 		}
 		else if($_POST["action"] == "ApproveBadge")
 		{

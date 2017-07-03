@@ -5,16 +5,16 @@
 	$printShopPieces = array();
 
 	if(!isset($_SESSION["PeopleID"]))
-		header('Location: /login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
+		header('Location: login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
 	elseif(!DoesUserBelongHere("Artist"))
-		header('Location: /main.php');
+		header('Location: main.php');
 	else
 	{
 		$year = date("n") >= 3 ? date("Y") + 1: date("Y");
 		$capriconYear = $year - 1980;
 		if(!empty($_GET["attendID"])) {
             if(!DoesUserBelongHere("ArtShowLead"))
-                header('Location: /main.php');
+                header('Location: main.php');
             $attendID = $_GET["attendID"];
 		    $result = $db->query("SELECT ap.ArtistAttendingID, ap.Status, ap.StatusReason, ad.IsEAP, ad.DisplayName, p.IsCharity " .
     			"FROM ArtistPresence ap INNER JOIN ArtistDetails ad ON ad.ArtistID = ap.ArtistID INNER JOIN People p ON ad.peopleID = p.PeopleID WHERE ap.ArtistAttendingID = $attendID");
@@ -177,7 +177,7 @@
 
         function editArtShowPiece() {
 		    var id = $("#artShowForm input[type=radio]:checked").val();
-            var url = '/editArtItem.php?artID=' + id<?php echo ($attendID > 0 ? " + \"&attendID=$attendID\"" : ""); ?>;
+            var url = 'editArtItem.php?artID=' + id<?php echo ($attendID > 0 ? " + \"&attendID=$attendID\"" : ""); ?>;
 		    window.location.href = url;
 		}
 

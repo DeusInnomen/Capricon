@@ -2,11 +2,11 @@
 	session_start();
 	include_once('includes/functions.php');
 	if(!isset($_SESSION["PeopleID"]))
-		header('Location: /login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
+		header('Location: login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
 	elseif(!DoesUserBelongHere("SuperAdmin"))
-		header('Location: /index.php');
+		header('Location: index.php');
 	elseif(!isset($_POST["IDs"]))
-		header('Location: /index.php');
+		header('Location: index.php');
 		
 	$IDs = explode("|", $_POST["IDs"]);
 	$IDList = str_replace("|", ", ", $_POST["IDs"]);

@@ -2,7 +2,7 @@
 	session_start();
 	include_once('includes/functions.php');
 	if(empty($_GET["code"]))
-		header('Location: /manageMailingLists.php');
+		header('Location: manageMailingLists.php');
 	$name = !empty($_GET["name"]) ? $_GET["name"] : (!empty($_SESSION["FullName"]) ? $_SESSION["FullName"] : "");
 	$email = !empty($_GET["address"]) ? $_GET["address"] : (!empty($_SESSION["Email"]) ? $_SESSION["Email"] : "");
 	$code = $_GET["code"];
@@ -46,7 +46,7 @@
 					echo "<p>An invalid email address was provided. Please hit Back on your browser and verify you typed your address correctly.</p>";
 				}
 				else
-					header('Location: /manageMailingLists.php');
+					header('Location: manageMailingLists.php');
 			?>
 			<p>At any time, you may return to the <a href="manageMailingLists.php">Manage Mailing Lists</a> page to change your subscription settings.</p>
 			<div class="goback">

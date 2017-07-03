@@ -3,9 +3,9 @@
 	include_once('includes/functions.php');
 	DoCleanup();
 	if(!isset($_SESSION["PeopleID"]))
-		header('Location: /login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
+		header('Location: login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
 	elseif(!DoesUserBelongHere("Treasurer"))
-		header('Location: /main.php');
+		header('Location: main.php');
 	else
 	{
 		$certs = array();

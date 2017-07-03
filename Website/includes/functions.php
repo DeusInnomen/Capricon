@@ -24,6 +24,9 @@
 	include_once("$path/includes/phpmailer/class.phpmailer.php");
 	require("$path/includes/fpdf.php");
 	
+	//Additional BCF Libraries
+	include_once("$path/includes/grid.php");
+		
 	function DoCleanup()
 	{
 		global $db;

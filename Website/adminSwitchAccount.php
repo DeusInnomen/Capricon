@@ -2,9 +2,9 @@
 	session_start();
 	include_once('includes/functions.php');
 	if(!DoesUserBelongHere("SuperAdmin"))
-		header('Location: /index.php');
+		header('Location: index.php');
 	elseif(!isset($_GET["id"]))
-		header('Location: /manageAllAccounts.php');
+		header('Location: manageAllAccounts.php');
 
 	$result = $db->query("SELECT FirstName, LastName, BadgeName, Email FROM People WHERE PeopleID = " . $_GET["id"]);
 	if($result->num_rows > 0)
@@ -19,8 +19,8 @@
 		$_SESSION['FullName'] = $name;
 		$_SESSION['BadgeName'] = $badge;
 		$_SESSION['Email'] = $email;
-		header('Location: /index.php');
+		header('Location: index.php');
 	}
 	else
-		header('Location: /manageAllAccounts.php');
+		header('Location: manageAllAccounts.php');
 ?>

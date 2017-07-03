@@ -8,12 +8,6 @@
 
 		
 	$year = date("n") >= 3 ? date("Y") + 1: date("Y");
-	$result = $db->query("SELECT * from ArtSubmissions");
-	
-	$people = array();
-	while($row = $result->fetch_array())
-		$people[] = $row;
-	$result->close();	
 	
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
@@ -123,11 +117,20 @@
 			<h1>Art Sales Debug</h1>
 			<p>These buttons control running sales functions as if this were the POS system</p>
 			<p>Then we can force test Invoicing as well.</p>
+			
+			<?php //echo table_array($people); ?>
+			<?php echo table_sql("SELECT ArtID, Title, OriginalMedia, " .
+					" IF(PrintNumber AND PrintMaxNumber,CONCAT(PrintNumber,' of ',PrintMaxNumber),CONCAT(IFNULL(PrintNumber,''),IFNULL(PrintMaxNumber,''))) as Print, " . 
+					" MinimumBid, QuickSalePrice, FeesPaid FROM ArtSubmissions WHERE " . 
+					" IsPrintShop = 0"); ?>
+			
+			<?php
+			/*
 			<div class="standardTable">
 				<form id="artistForm" method="post">
 				<table>
 					<tr><th>Name</th><th>Display Name</th></th><th>Artist?</th><th>Email</th><th>Applied?</th><th>Inventories</th></tr>
-<?php
+					<?php
 					foreach($people as $person)
 					{
 						echo "<tr><td>" . $person["Name"] . "</td><td>" . $person["DisplayName"] . "</td><td style=\"text-align: center;\"><input type=\"checkbox\" id=\"" . 
@@ -140,11 +143,13 @@
 				</table>
 				<br />
 				</form>
-				<label for="sendNotices"><input type="checkbox" id="sendNotices" name="sendNotices"> Send Email Notification to People
-				Gaining the Artist Permission (When Possible)</label><br />
-				<input type="submit" id="updateArtists" onclick="updateArtistList(); return false;" value="Update Artist List"><br/>
-				<span id="updateMessage" style="font-size: 1.05em; font-weight: bold;">&nbsp;</span>
-			</div>			
+			</div>				
+			*/
+			?>
+			<label for="sendNotices"><input type="checkbox" id="sendNotices" name="sendNotices"> Send Email Notification to People
+			Gaining the Artist Permission (When Possible)</label><br />
+			<input type="submit" id="updateArtists" onclick="updateArtistList(); return false;" value="Update Artist List"><br/>
+			<span id="updateMessage" style="font-size: 1.05em; font-weight: bold;">&nbsp;</span>		
 			<div class="goback">
 				<a href="index.php">Return to the Main Menu</a>
 			</div>

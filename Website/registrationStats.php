@@ -4,9 +4,9 @@
 	include_once('includes/inc.graph.php');
 	
 	if(!isset($_SESSION["PeopleID"]))
-		header('Location: /login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
+		header('Location: login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
 	elseif(!DoesUserBelongHere("RegStaff"))
-		header('Location: /index.php');
+		header('Location: index.php');
 
 	$year = isset($_GET['year']) ? $_GET['year'] : (date("n") >= 3 ? date("Y") + 1: date("Y"));
 	$capriconYear = $year - 1980;

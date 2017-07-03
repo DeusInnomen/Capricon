@@ -2,7 +2,7 @@
 	session_start();
 	include_once('includes/functions.php');
 	if(!DoesUserBelongHere("RegLead"))
-		header('Location: /index.php');
+		header('Location: index.php');
 	
 	$department = $db->real_escape_string($_POST["department"]);
 	$badgeTypeID = $db->real_escape_string($_POST["badgeType"]);

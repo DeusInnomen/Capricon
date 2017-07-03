@@ -1,7 +1,7 @@
 <?php
 	session_start();
 	if(!isset($_GET['id']))
-		header('Location: /index.php');
+		header('Location: index.php');
 	else
 	{
 		include_once('includes/functions.php');
@@ -9,7 +9,7 @@
 		$result = PostToURL("https://registration.capricon.org/reminders.php", array ('id' => $id, 'type' => 'Password'));
 		$values = json_decode($result, true);
 		if(!$values["success"])
-			header('Location: /index.php');		
+			header('Location: index.php');		
 	}
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">

@@ -2,7 +2,7 @@
 	session_start();
 	include_once('includes/functions.php');
 	if(!isset($_GET['id']))
-		header('Location: /index.php');
+		header('Location: index.php');
 	else
 	{
 		$result = $db->query("SELECT PeopleID, Data FROM ConfirmationLinks WHERE Code = '" .

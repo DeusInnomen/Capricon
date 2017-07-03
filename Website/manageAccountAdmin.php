@@ -2,11 +2,11 @@
 	session_start();
 	include_once('includes/functions.php');
 	if(!isset($_SESSION["PeopleID"]))
-		header('Location: /login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
+		header('Location: login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
 	elseif(!DoesUserBelongHere("RegLead") && !DoesUserBelongHere("Ops"))
-		header('Location: /index.php');
+		header('Location: index.php');
 	elseif(!isset($_GET["id"]))
-		header('Location: /manageAllAccounts.php');
+		header('Location: manageAllAccounts.php');
 	else
 	{
 		$result = $db->query("SELECT FirstName, LastName, Address1, Address2, City, State, ZipCode, Country, " .
