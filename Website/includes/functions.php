@@ -492,4 +492,245 @@
 		
 		return $pdf;
 	}
+	
+	function invoiceData($id) 
+	{
+		//This function is meant to pull a specific invoice when printing using viewInvoice.php
+		
+	}
+	
+	function sql_to_array($sql)
+	{
+		//This is a table_upload compatible array maker function.
+		//used for Copying data from table to table safely
+		
+		global $db;		
+		$result = $db->query($sql);
+				
+		$field_count = mysqli_field_count($db);
+		
+		//$rows = mysql_num_rows($rs);
+		
+		//echo "received $rows rows<Br>";
+		
+		$i = 0;
+		$out_array = Array();
+		
+		while($row=$result->fetch_array())
+		{
+			//echo "<pre>";
+			//print_r($fields);
+			//echo "</pre>";
+			
+			for($x=0;$x<$field_count;$x++)
+			{
+				//Got to love that they dumbed down the StdClass.
+				$field = mysqli_fetch_field_direct($result, $x);
+				$column = $field->name;
+				
+				//echo "Data[$column] = ".$row[$column]."<br>";
+				
+				$out_array[$i][$column] = $row[$column];
+			}
+			$i++;	
+		}
+		
+		return $out_array;
+	}
+	
+	function render_queries($in_queries)
+	{
+		//This function will take an array of queries of the form 'select','update','insert'
+		//The basic processing is, this will start a transaction, then for each line it will:		
+		//Check the select statement, if it returns a row it will run update, if it doesn't it will run insert.
+		//If ANY update or insert returns an error, it will run a rollback and return false.
+		//Otherwise will return a true.
+		
+		try
+		{
+			//Start Transaction
+			
+			foreach($in_queries as $query_row)
+			{
+				if(sizeof($query_row)==3)
+				{
+					
+					
+					
+				}
+				else
+				{
+					//ERROR, incorrect input!
+					//Throw error to force rollback
+					throw new Exception("Input query missing include three options");
+				}
+			}
+		}
+		catch(Exception $e)
+		{
+			//GENERATE ROLLBACK
+			return false;
+		}
+		
+		return true;
+	}
+	
+	function update_from_array($in_array,$out_table,$keys,$columns = null,$insert_column = null)
+	{
+		//use try/catch to generate a false (to let parent function know to rollback) if something fails on the way through.
+		try
+		{
+		
+			//DB used for pushing the updates from the array (Transaction should be done OUTSIDE this function so you can rollback multiple
+			//updates at once
+			global $db;		
+			
+			$debug = false;
+			
+			//This function is for taking data from one table and posting it to another as part of a process (like creation of invoice)
+			//Will take each incoming row, then generate a 'select->insert or update' set based on the table and keys specified.
+			//You can also specify an 'Insert' key column that it will fill with the last 'Auto_Update' value from mysqli_insert_id
+			//returns the in_array with the insert ID/column added to each record (Uses the select to grab it instead of 1 if specified)
+			
+			//Columns variable added so you can override the columns you want spit out - in case you need to maintain other values but don't want to include them in an update.
+			
+			$out_array = Array();
+			
+			//Convert key to array
+			$key_array = str_getcsv($keys);
+			$column_array = Array();
+			
+			if($columns != null) 
+			{
+				//then use it, but tack on the keys to the 'all' for insert.
+				$column_array = str_getcsv($columns);
+				
+				$all_column_array = $column_array;
+				foreach($key_array as $key)
+				{
+					array_push($all_column_array,$key);
+				}
+			}
+			else
+			{	
+				//Just general from the array itself and remove the keys from the update columns.
+				$all_column_array = array_keys($in_array[0]);
+				foreach($all_column_array as $column)
+				{
+					//Only record non-keys
+					if(!in_array($column,$key_array,true))
+						array_push($column_array,$column);
+				}
+			}
+			
+			foreach($in_array as $row)
+			{
+				$row_keys_array = Array();
+							
+				$update_values_array = Array();
+				$insert_values_array = Array();
+				
+				foreach($key_array as $key)
+				{
+					if(strlen($key)>0)
+					{
+						//if ($debug) echo "Creating Key for Row of $key = ".$row[$key]."<br>";
+						array_push($row_keys_array,$key." = '".addslashes($row[$key])."'");
+					}
+				}
+				
+				foreach($all_column_array as $column)
+				{
+					if(in_array($column,$column_array,true))
+					{
+						//Record in Update values
+						array_push($update_values_array,$column." = '".addslashes($row[$column])."'");
+					}
+					
+					//Record in Insert values (includes keys too)
+					array_push($insert_values_array,"'".addslashes($row[$column])."'");
+				}
+							
+				if ($debug) echo "Working on Row with Keys = \"".implode(" AND ",$row_keys_array)."\"<br>";
+				
+				//If there's an insert column, lets snag it using the select SQL -
+				if($insert_column != null)
+				{
+					$select_sql = "SELECT ".$insert_column." as key FROM ".$out_table." WHERE ".implode(" AND ",$row_keys_array);
+				}
+				else
+				{
+					$select_sql = "SELECT 1 as check FROM ".$out_table." WHERE ".implode(" AND ",$row_keys_array);
+				}
+				$update_sql = "UPDATE ".$out_table." SET ".implode(", ",$update_values_array)." WHERE ".implode(" AND ",$row_keys_array);
+				$insert_sql = "INSERT INTO ".$out_table." (".implode(", ",$all_column_array).") VALUES (".implode(", ",$insert_values_array).");";
+				
+				//echo $select_sql."<br>";
+				//echo $update_sql."<br>";
+				//echo $insert_sql."<br><br>";
+				
+				//If we have a insert_id or selected id we insert it here:
+				
+				//Lets transact this one if we're not on DEBUG
+				$result = $db->query($select_sql);
+				
+				//Fetch
+				$key_val = null;
+				$found = false;
+				if($result)
+				{
+					while($check = $result->fetch_array()) 
+					{
+						$key_val = $check["key"];
+						$found = true;
+					}
+					if($result) 
+						$result->free();
+				}
+				
+				
+				//if Found, we use Update.
+				if($found)
+				{
+					if($debug)
+					{
+						echo "Update: ".$update_sql."<br>";
+					}
+					else
+					{
+						$result = $db->query($update_sql);
+						if(!$result)
+							throw new Exception("Error updating: ".$update_sql);
+					}
+				}
+				else
+				{
+					if($debug)
+					{
+						echo "Insert: ".$insert_sql."<br><br>";
+					}
+					else
+					{
+						$result = $db->query($insert_sql);
+						$key_val = mysqli_insert_id($db);
+						if(!$result)
+							throw new Exception("Error inserting: ".$insert_sql);
+					}
+				}
+				
+				//Add our new insert value to the array for returning (for header/line coordination in calling function)
+				$row[$insert_column] = $key_val;
+				
+				//keep the array for returning.
+				array_push($out_array,$row);
+			}
+			
+			return $out_array;
+		}
+		catch(Exception $e)
+		{
+			//Return False (to hopefully generate a rollback upstream if required)
+			return false;
+		}
+	}
 ?>

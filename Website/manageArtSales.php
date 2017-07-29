@@ -20,6 +20,42 @@
 	<link rel="shortcut icon" href="includes/favicon.ico" />
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 	<script type="text/javascript" src="includes/global.js"></script>
+	<script type="text/javascript">	
+	function testInvoice() 
+	{
+		/*
+		var toAdd = "";
+		$("#artistForm :input:checkbox:checked").each(function() {
+			if($(this).attr("current") == "0")
+				toAdd += "|" + $(this).attr("id");
+		});
+		if(toAdd.length > 0) toAdd = toAdd.substring(1);
+
+		var toRemove = "";
+		$("#artistForm :input:checkbox:not(:checked)").each(function() {
+			if($(this).attr("current") == "1")
+				toRemove += "|" + $(this).attr("id");
+		});
+		if(toRemove.length > 0) toRemove = toRemove.substring(1);
+		*/
+		
+		$.post("doInvoice.php", { action: "CreateInvoices" }, function(result) 
+		{
+			if(result.success) 
+			{
+				$("#updateMessage").html(result.message);
+			}
+			else
+			{
+				$("#updateMessage").html("Error");
+			}
+		}, 'json')
+		.fail(function() 
+		{
+			$("#updateMessage").html("JSON Error in Response");
+		});
+	}
+	</script>
 	<?
 	/*
 	<script type="text/javascript">
@@ -118,12 +154,18 @@
 			<p>These buttons control running sales functions as if this were the POS system</p>
 			<p>Then we can force test Invoicing as well.</p>
 			
-			<?php //echo table_array($people); ?>
-			<?php echo table_sql("SELECT ArtID, Title, OriginalMedia, " .
-					" IF(PrintNumber AND PrintMaxNumber,CONCAT(PrintNumber,' of ',PrintMaxNumber),CONCAT(IFNULL(PrintNumber,''),IFNULL(PrintMaxNumber,''))) as Print, " . 
-					" MinimumBid, QuickSalePrice, FeesPaid FROM ArtSubmissions WHERE " . 
-					" IsPrintShop = 0"); ?>
+			<p>This is a list of things that need to be invoiced:</p>
 			
+			<?php //echo table_array($people); ?>
+			<?php 
+
+			//This one is unsold art (denoted here by QuantitySold not being filled out.
+			//Will need to review with Chris if we have to generate sales lines.
+			echo table_sql("SELECT ArtID, Title, OriginalMedia, " .
+				" IF(PrintNumber AND PrintMaxNumber,CONCAT(PrintNumber,' of ',PrintMaxNumber),CONCAT(IFNULL(PrintNumber,''),IFNULL(PrintMaxNumber,''))) as Print, " . 
+				" MinimumBid, QuickSalePrice, FeesPaid FROM ArtSubmissions WHERE " . 
+				" QuantitySold<1 or QuantitySold IS NULL"); ?>
+		
 			<?php
 			/*
 			<div class="standardTable">
@@ -146,9 +188,7 @@
 			</div>				
 			*/
 			?>
-			<label for="sendNotices"><input type="checkbox" id="sendNotices" name="sendNotices"> Send Email Notification to People
-			Gaining the Artist Permission (When Possible)</label><br />
-			<input type="submit" id="updateArtists" onclick="updateArtistList(); return false;" value="Update Artist List"><br/>
+			<input type="submit" id="testInvoice" onclick="testInvoice(); return false;" value="Test Invoice"><br/>
 			<span id="updateMessage" style="font-size: 1.05em; font-weight: bold;">&nbsp;</span>		
 			<div class="goback">
 				<a href="index.php">Return to the Main Menu</a>

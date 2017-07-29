@@ -31,6 +31,7 @@
 			return;
 		}
 	}
+	//Really?  A ternary operator?  You devil you.
 	$id = isset($_POST['peopleID']) ? $_POST['peopleID'] : $_SESSION['PeopleID'];	
 	
 	// Email changes
