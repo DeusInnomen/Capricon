@@ -41,7 +41,7 @@ if ($fill_color[0]=='') $fill_color=array(230,230,230);
 //Set footer color to halftone of header:
 $foot_color=array($header_color[0]/2,$header_color[1]/2,$header_color[2]/2);
 //Set default File name: OBCReport_CurrentDate.pdf
-if ($filename=='') $filename="OBCReport_".date("m_d_Y").".pdf";
+if ($filename=='') $filename="CAPInvoice_".$id."_".date("m_d_Y").".pdf";
 //Page break after grouplevel 1?
 if ($pagebreak=='') $pagebreak=0;
 //Show the report total? (default yes=1)
@@ -152,7 +152,7 @@ $out_array = $pdf->sql_to_table_array($sql);
 //$pdf->debug = true;
 
 //New table is more stylish, but I have to repair the placement functions (I built them into OLD)
-//$pdf->New_Table($out_array,120);
+//$pdf->New_Table($out_array,140,30);
 
 $pdf->Old_Table($out_array,140,30);
 
