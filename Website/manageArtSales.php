@@ -190,6 +190,15 @@
 			?>
 			<input type="submit" id="testInvoice" onclick="testInvoice(); return false;" value="Test Invoice"><br/>
 			<span id="updateMessage" style="font-size: 1.05em; font-weight: bold;">&nbsp;</span>		
+			
+			<?php 
+
+			//Recent Invoices
+			echo table_sql("SELECT "
+				." CONCAT('<a href=\"viewInvoice.php?id=',invoiceID,'\" target=\"_blank\">View</a>') as View "
+				." , invoiceID, peopleID, Email, BadgeName, email_sent, mail_sent from invoice_header ORDER BY invoiceID DESC limit 10"); ?>
+			
+			
 			<div class="goback">
 				<a href="index.php">Return to the Main Menu</a>
 			</div>

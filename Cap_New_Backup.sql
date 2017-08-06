@@ -755,3 +755,42 @@ CREATE TABLE `SurveyInterests` (
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+
+-- Invoice Tables -
+
+CREATE TABLE `invoice_header` (
+  `invoiceID` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `peopleID` int(10) unsigned NOT NULL,
+  `FirstName` varchar(45) NOT NULL,
+  `LastName` varchar(45) NOT NULL,
+  `B_Address1` varchar(45) NOT NULL,
+  `B_Address2` varchar(45) NOT NULL,
+  `B_City` varchar(45) NOT NULL,
+  `B_State` varchar(45) NOT NULL,
+  `B_Zip` varchar(45) NOT NULL,
+  `B_Phone1` varchar(45) NOT NULL,
+  `B_Phone1Type` varchar(45) NOT NULL,
+  `Email` varchar(45) NOT NULL,
+  `BadgeName` varchar(45) NOT NULL,
+  `email_sent` int(1) unsigned NOT NULL,
+  `mail_sent` int(1) unsigned NOT NULL,
+  `S_Address1` varchar(45) NOT NULL,
+  `S_Address2` varchar(45) NOT NULL,
+  `S_City` varchar(45) NOT NULL,
+  `S_State` varchar(45) NOT NULL,
+  `S_Zip` varchar(45) NOT NULL,
+  `B_Country` varchar(45) NOT NULL,
+  `S_Country` varchar(45) NOT NULL,
+  PRIMARY KEY (`invoiceID`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
+
+CREATE TABLE `invoice_line` (
+  `lineID` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `invoiceID` int(10) unsigned NOT NULL,
+  `line_type` int(10) unsigned NOT NULL,
+  `description` varchar(255) NOT NULL,
+  `qty` decimal(12,5) NOT NULL,
+  `price` decimal(12,5) NOT NULL,
+  `lot_no` varchar(45) NOT NULL,
+  PRIMARY KEY (`lineID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
