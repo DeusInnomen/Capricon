@@ -93,28 +93,30 @@ $interests = UserInterests();
                                      if(DoesUserBelongHere("RegLead"))
                                          echo '<li><a href="giftCertsAdmin.php">Manage Gift Certificates</a></li>' . "\r\n";
                                  }
-                                 if(DoesUserBelongHere("RegStaff"))
-                                 {
-                                     echo '<hr><div class="headertitle">Registration Functions</div>' . "\r\n";
-                                     echo '<li><a href="viewRegistrations.php">View Current Registrations</a></li>' . "\r\n";
-                                     echo '<li><a href="enterRegistrations.php">Enter Manual Registrations</a></li>' . "\r\n";
-                                     echo '<li><a href="registrationStats.php">Registration Statistics</a></li>' . "\r\n";
-                                     echo '<li><a href="registrationStatsGraph.php">Registration Statistics Graph</a></li>' . "\r\n";
-                                     echo '<li><a href="getCurrentRegCSV.php">Download Registration List (CSV)</a></li>' . "\r\n";
-                                     if(DoesUserBelongHere("RegLead"))
-                                     {
-                                         echo '<li><a href="badgeRates.php">View Available Badges and Rates</a></li>' . "\r\n";
-                                         echo '<li><a href="viewPendingRegistrations.php">View Pending Registrations</a></li>' . "\r\n";
-                                         echo '<li><a href="issueCompBadges.php">Issue Complimentary Badges</a></li>' . "\r\n";
-                                         echo '<li><a href="staffBadges.php">Issue Staff Badges</a></li>' . "\r\n";
-                                         echo '<li><a href="promoCodesUsed.php">View Promo Codes Used</a></li>' . "\r\n";
-                                     }
-                                     if(DoesUserBelongHere("Treasurer"))
-                                         echo '<hr><div class="headertitle">Treasurer Functions</div>' . "\r\n";
-                                     echo '<li><a href="artShowSalesSummary.php">Art Show Sales Summary</a></li>' . "\r\n";
-                                     echo '<li><a href="registrationStats.php">Registration Statistics</a></li>' . "\r\n";
-                                     echo '<li><a href="treasurerStats.php">Treasurer Statistics</a></li>' . "\r\n";
-                                 }
+								 if(DoesUserBelongHere("RegStaff") || DoesUserBelongHere("Marketing")) {
+									echo '<hr><div class="headertitle">Registration Functions</div>' . "\r\n";
+									 echo '<li><a href="viewRegistrations.php">View Current Registrations</a></li>' . "\r\n";
+									 if(DoesUserBelongHere("RegLead") || DoesUserBelongHere("Marketing"))
+										echo '<li><a href="enterRegistrations.php">Enter Manual Registrations</a></li>' . "\r\n";
+									 echo '<li><a href="registrationStats.php">Registration Statistics</a></li>' . "\r\n";
+									 echo '<li><a href="registrationStatsGraph.php">Registration Statistics Graph</a></li>' . "\r\n";
+									 echo '<li><a href="getCurrentRegCSV.php">Download Registration List (CSV)</a></li>' . "\r\n";
+									 if(DoesUserBelongHere("RegLead"))
+									 {
+										 echo '<li><a href="badgeRates.php">View Available Badges and Rates</a></li>' . "\r\n";
+										 echo '<li><a href="viewPendingRegistrations.php">View Pending Registrations</a></li>' . "\r\n";
+										 echo '<li><a href="issueCompBadges.php">Issue Complimentary Badges</a></li>' . "\r\n";
+										 echo '<li><a href="staffBadges.php">Issue Staff Badges</a></li>' . "\r\n";
+										 echo '<li><a href="promoCodesUsed.php">View Promo Codes Used</a></li>' . "\r\n";
+									 }
+									 if(DoesUserBelongHere("Treasurer")) {
+										 echo '<hr><div class="headertitle">Treasurer Functions</div>' . "\r\n";
+										 echo '<li><a href="artShowSalesSummary.php">Art Show Sales Summary</a></li>' . "\r\n";
+										 echo '<li><a href="registrationStats.php">Registration Statistics</a></li>' . "\r\n";
+										 echo '<li><a href="registrationSalesSummary.php">Registration Sales Summary</a></li>' . "\r\n";
+										 echo '<li><a href="treasurerStats.php">Treasurer Statistics</a></li>' . "\r\n";
+									 }
+								 }
                                  echo '<hr><li><a href="logout.php">Log Out</a></li>' . "\r\n";
                                  echo '</ul>';
                              }

@@ -3,7 +3,7 @@
 	include_once('includes/functions.php');
 	if(!isset($_SESSION["PeopleID"]))
 		header('Location: /login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
-	elseif(!DoesUserBelongHere("RegLead"))
+	elseif(!DoesUserBelongHere("RegLead") && !DoesUserBelongHere("Marketing"))
 		header('Location: /index.php');
 		
 	$badgePrice = '70';
