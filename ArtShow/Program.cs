@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
@@ -37,8 +38,9 @@ namespace ArtShow
             Year = DateTime.Now.Month > 4 ? DateTime.Now.Year + 1 : DateTime.Now.Year;
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 #if !DEBUG
-{  
+            {  
   
             var login = new FrmLogin();
             var result = login.ShowDialog();

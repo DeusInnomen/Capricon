@@ -197,42 +197,45 @@ namespace Registration
             return JsonConvert.DeserializeObject<Badge>(responseJson);            
         }
 
-        public static void PrintBadge(Badge badge, bool backOnly = false)
+        public static void PrintBadge(Badge badge, bool printFront = true, bool printBack = true)
         {
             var labelData = Encoding.ASCII.GetString(Properties.Resources.BadgeFront);
             var label = DYMO.Label.Framework.Label.OpenXml(labelData);
             var builder = new LabelSetBuilder();
             var record = builder.AddRecord();
-            if (!backOnly)
+            if (printFront)
             {
                 record.AddTextMarkup("BadgeName", "<font family=\"Arial\" size=\"32\">" + SecurityElement.Escape(badge.BadgeName) + "</font>");
                 record.AddTextMarkup("BadgeNumber", "<font family=\"Lucida Console\" size=\"22\">" + badge.BadgeNumber + "</font>");
                 label.Print(Framework.GetLabelWriterPrinters().First(), null, builder.Xml);
             }
 
-            if (badge.BadgeTypeID == 2)
+            if (printBack)
             {
-                labelData = Encoding.ASCII.GetString(Properties.Resources.BadgeBackKid);
-                label = DYMO.Label.Framework.Label.OpenXml(labelData);
-                builder = new LabelSetBuilder();
-                record = builder.AddRecord();
-                record.AddTextMarkup("RealName", "<font family=\"Arial\" size=\"18\">" + SecurityElement.Escape(badge.Name) + "</font>");
-                record.AddTextMarkup("ParentName", "<font family=\"Arial\" size=\"18\">" + SecurityElement.Escape(badge.ParentName) +
-                    " " + SecurityElement.Escape(badge.ParentContact) + "</font>");
-                record.AddTextMarkup("BadgeType", "<font family=\"Arial\" size=\"18\">" + SecurityElement.Escape(badge.Description) + "</font>");
-                record.AddTextMarkup("BadgeNumber", "<font family=\"Lucida Console\" size=\"22\">" + badge.BadgeNumber + "</font>");
-                label.Print(Framework.GetLabelWriterPrinters().First(), null, builder.Xml);
-            }
-            else
-            {
-                labelData = Encoding.ASCII.GetString(Properties.Resources.BadgeBack);
-                label = DYMO.Label.Framework.Label.OpenXml(labelData);
-                builder = new LabelSetBuilder();
-                record = builder.AddRecord();
-                record.AddTextMarkup("RealName", "<font family=\"Arial\" size=\"24\">" + SecurityElement.Escape(badge.Name) + "</font>");
-                record.AddTextMarkup("BadgeType", "<font family=\"Arial\" size=\"24\">" + SecurityElement.Escape(badge.Description) + "</font>");
-                record.AddTextMarkup("BadgeNumber", "<font family=\"Lucida Console\" size=\"22\">" + badge.BadgeNumber + "</font>");
-                label.Print(Framework.GetLabelWriterPrinters().First(), null, builder.Xml);
+                if (badge.BadgeTypeID == 2)
+                {
+                    labelData = Encoding.ASCII.GetString(Properties.Resources.BadgeBackKid);
+                    label = DYMO.Label.Framework.Label.OpenXml(labelData);
+                    builder = new LabelSetBuilder();
+                    record = builder.AddRecord();
+                    record.AddTextMarkup("RealName", "<font family=\"Arial\" size=\"18\">" + SecurityElement.Escape(badge.Name) + "</font>");
+                    record.AddTextMarkup("ParentName", "<font family=\"Arial\" size=\"18\">" + SecurityElement.Escape(badge.ParentName) +
+                        " " + SecurityElement.Escape(badge.ParentContact) + "</font>");
+                    record.AddTextMarkup("BadgeType", "<font family=\"Arial\" size=\"18\">" + SecurityElement.Escape(badge.Description) + "</font>");
+                    record.AddTextMarkup("BadgeNumber", "<font family=\"Lucida Console\" size=\"22\">" + badge.BadgeNumber + "</font>");
+                    label.Print(Framework.GetLabelWriterPrinters().First(), null, builder.Xml);
+                }
+                else
+                {
+                    labelData = Encoding.ASCII.GetString(Properties.Resources.BadgeBack);
+                    label = DYMO.Label.Framework.Label.OpenXml(labelData);
+                    builder = new LabelSetBuilder();
+                    record = builder.AddRecord();
+                    record.AddTextMarkup("RealName", "<font family=\"Arial\" size=\"24\">" + SecurityElement.Escape(badge.Name) + "</font>");
+                    record.AddTextMarkup("BadgeType", "<font family=\"Arial\" size=\"24\">" + SecurityElement.Escape(badge.Description) + "</font>");
+                    record.AddTextMarkup("BadgeNumber", "<font family=\"Lucida Console\" size=\"22\">" + badge.BadgeNumber + "</font>");
+                    label.Print(Framework.GetLabelWriterPrinters().First(), null, builder.Xml);
+                }
             }
         }
     }

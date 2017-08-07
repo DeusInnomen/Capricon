@@ -16,16 +16,18 @@ namespace ArtShow
     {
         private List<CheckoutItems> Items { get; set; }
         private ArtistPresence Presence { get; set; }
+        private Artist Artist { get; set; }
 
         private int ArtShowSortColumn = 0;
         private bool ArtShowSortAscend = true;
         private int PrintShopSortColumn = 0;
         private bool PrintShopSortAscend = true;
 
-        public FrmArtistCheckout(ArtistPresence presence)
+        public FrmArtistCheckout(Artist artist, ArtistPresence presence)
         {
             InitializeComponent();
             Presence = presence;
+            Artist = artist;
             CmbMarkMode.SelectedIndex = 0;
 
             var data = Encoding.ASCII.GetBytes("action=GetArtistCheckout&id=" + Presence.ArtistAttendingID + "&year=" + Program.Year.ToString());
@@ -64,7 +66,7 @@ namespace ArtShow
                 item.SubItems.Add(piece.Claimed ? "Yes" : "No");
                 item.Tag = piece;
                 LstShowItems.Items.Add(item);
-                if (piece.FeesPaid || piece.IsEAP) continue;
+                if (piece.FeesPaid || piece.IsEAP || Artist.IsCharity) continue;
                 if (piece.MinimumBid != null && piece.MinimumBid < 100)
                     feesDue += (decimal)0.5;
                 else
@@ -99,11 +101,13 @@ namespace ArtShow
             {
                 LblShippingCostText.Text = "";
                 LblShippingCost.Text = "";
-            }                
+            }
 
             LblShowTotal.Text = showTotal.ToString("C");
             LblShopTotal.Text = shopTotal.ToString("C");
             var conShare = (showTotal + shopTotal)*(decimal) 0.1;
+            if (Artist.IsCharity)
+                conShare = (decimal) 0.0;
             LblConShare.Text = conShare.ToString("C");
             LblHangingFees.Text = feesDue.ToString("C");
             LblTotalOwed.Text = (showTotal + shopTotal - conShare - feesDue - shippingCost).ToString("C");

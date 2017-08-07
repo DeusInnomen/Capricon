@@ -265,7 +265,7 @@
 					$originalTotal += $price;
 					
 					$sql = "INSERT INTO PurchaseHistory (PurchaserID, PurchaserOneTimeID, ItemTypeName, PeopleID, OneTimeID, Details, Price, Total, Year, Purchased, PaymentSource, PaymentReference) " . 
-                        "VALUES ($purchaser, $onetime, 'Miscellaneous Charge', $purchaser, $onetime, '$details', $price, $total, $year, NOW(), '$source', '$ref')";
+                        "VALUES ($purchaser, $onetime, 'Miscellaneous Charge', $purchaser, $onetime, '$details', $price, $price, $year, NOW(), '$source', '$ref')";
 					if($db->query($sql) === false)
 					{
 						$response["Result"] = "Failure";
