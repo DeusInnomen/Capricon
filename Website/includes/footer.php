@@ -8,14 +8,14 @@
 			else
 				echo "\t" . 'You are logged in as: <span class="userName">' . $_SESSION["FullName"] . "</span><br />\r\n";
 			echo "\t\tAccess Level: " . GetUserDescription($_SESSION["PeopleID"]) . "<br />\r\n";
-			echo "\t\t" . '<a href="/logout.php">Log Out</a>';
+			echo "\t\t" . '<a href="logout.php">Log Out</a>';
 		}
 		else
 		{
 			echo "\tYou are not presently logged in.<br />\r\n\r\n";			
-			echo "\t\t" . '<a href="/login.php">Log In</a>';
+			echo "\t\t" . '<a href="login.php">Log In</a>';
 		}
-		echo ' -- <a href="/index.php">Main Menu</a> -- <a href="mailto:it@phandemonium.org?Subject=Capricon%20Registration%20Site%20Question">Email Support</a>' . "\r\n";
+		echo ' -- <a href="index.php">Main Menu</a> -- <a href="mailto:it@phandemonium.org?Subject=Capricon%20Registration%20Site%20Question">Email Support</a>' . "\r\n";
 	?>
 	</div>
 	<div class="footerNotes">

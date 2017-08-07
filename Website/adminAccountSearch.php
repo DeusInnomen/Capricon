@@ -2,7 +2,7 @@
 	session_start();
 	include_once('includes/functions.php');
 	if(!DoesUserBelongHere("RegLead"))
-		header('Location: /index.php');
+		header('Location: index.php');
 
 	$sql = "SELECT PeopleID, FirstName, LastName, BadgeName, Email FROM People ";
 	$where = "WHERE IsCharity = 0 AND Email != '' ";

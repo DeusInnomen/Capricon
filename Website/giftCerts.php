@@ -3,7 +3,7 @@
 	include_once('includes/functions.php');
 	DoCleanup();
 	if(!isset($_SESSION["PeopleID"]))
-		header('Location: /login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
+		header('Location: login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
 	else
 	{
 		$certs = array();
@@ -184,7 +184,7 @@
 			</form>
 			<div class="noticeSection" id="cartActionNotice">&nbsp;</div>
 			<div class="goback">
-				<a href="/index.php">Return to the Main Menu</a>
+				<a href="index.php">Return to the Main Menu</a>
 			</div>
 		</div>
 	</div>

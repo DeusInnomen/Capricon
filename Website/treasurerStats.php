@@ -2,9 +2,9 @@
 session_start();
 include_once('includes/functions.php');
 if(!isset($_SESSION["PeopleID"]))
-    header('Location: /login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
+    header('Location: login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
 elseif(!DoesUserBelongHere("Treasurer"))
-    header('Location: /index.php');
+    header('Location: index.php');
 
 $year = isset($_GET['year']) ? $_GET['year'] : (date("n") >= 3 ? date("Y") + 1: date("Y"));
 $capriconYear = $year - 1980;
@@ -22,7 +22,13 @@ $row = $result->fetch_array();
 $allBadges = $row["Badges"];
 $result->close();
 
-$sql = "SELECT COUNT(*) AS Badges FROM PurchasedBadges WHERE Year = $year AND Status != 'Paid'";
+$sql = "SELECT COUNT(*) AS Badges FROM PurchasedBadges WHERE Year = $year AND Status = 'Pending'";
+$result = $db->query($sql);
+$row = $result->fetch_array();
+$pendingBadges = $row["Badges"];
+$result->close();
+
+$sql = "SELECT COUNT(*) AS Badges FROM PurchasedBadges WHERE Year = $year AND Status NOT IN ('Paid', 'Pending')";
 $result = $db->query($sql);
 $row = $result->fetch_array();
 $skippedBadges = $row["Badges"];
@@ -100,7 +106,7 @@ if($result->num_rows > 0)
     $result->close();
 }
 
-$sql = "SELECT CAST(Purchased AS DATE) AS Day, ItemTypeName, COUNT(RecordID) AS Count, PaymentSource, SUM(Total) AS Revenue, Details FROM PurchaseHistory AND RefundReason is NULL WHERE Year = $year AND ItemTypeName = 'Miscellaneous Charge' GROUP BY CAST(Purchased AS DATE), ItemTypeName, Details, PaymentSource ORDER BY CAST(Purchased AS DATE), ItemTypeName, Details, PaymentSource";
+$sql = "SELECT CAST(Purchased AS DATE) AS Day, ItemTypeName, COUNT(RecordID) AS Count, PaymentSource, SUM(Total) AS Revenue, Details FROM PurchaseHistory WHERE Year = $year AND ItemTypeName != 'Badge' AND RefundReason is NULL GROUP BY CAST(Purchased AS DATE), ItemTypeName, Details, PaymentSource ORDER BY CAST(Purchased AS DATE), ItemTypeName, Details, PaymentSource";
 $miscItemsByDayByTypeByPayment = array();
 $result = $db->query($sql);
 if($result->num_rows > 0)
@@ -110,17 +116,17 @@ if($result->num_rows > 0)
     $result->close();
 }
 
-$sql = "SELECT CAST(Purchased AS DATE) AS Day, ItemTypeName, Details, PaymentSource, Price, AmountRefunded, RefundReason FROM PurchaseHistory WHERE Year = $year AND RefundReason IS NOT NULL ORDER BY CAST(Purchased AS DATE), ItemTypeName, PaymentSource";
-$refundItemsByDayByTypeByPayment = array();
+$sql = "SELECT CAST(Purchased AS DATE) AS Day, ItemTypeName, Details, PaymentSource, Total, AmountRefunded, RefundReason FROM PurchaseHistory WHERE Year = $year AND RefundReason IS NOT NULL ORDER BY CAST(Purchased AS DATE), ItemTypeName, PaymentSource";
+$refundItemsByDayByTypeByPaymentPH = array();
 $result = $db->query($sql);
 if($result->num_rows > 0)
 {
 	while($row = $result->fetch_array())
-		$refundItemsByDayByTypeByPayment[] = $row;
+		$refundItemsByDayByTypeByPaymentPH[] = $row;
 	$result->close();
 }
 
-$sql = "SELECT CAST(Purchased AS DATE) AS Day, ItemTypeName, COUNT(RecordID) AS Count, PaymentSource, SUM(Price) AS Revenue, Details FROM PurchaseHistory AND RefundReason IS NOT NULL WHERE Year = $year AND ItemTypeName = 'Miscellaneous Charge' GROUP BY CAST(Purchased AS DATE), ItemTypeName, Details, PaymentSource ORDER BY CAST(Purchased AS DATE), ItemTypeName, Details, PaymentSource";
+$sql = "SELECT CAST(Purchased AS DATE) AS Day, ItemTypeName, COUNT(RecordID) AS Count, PaymentSource, SUM(Total) AS Revenue, Details FROM PurchaseHistory WHERE Year = $year AND ItemTypeName != 'Badge' AND RefundReason IS NOT NULL GROUP BY CAST(Purchased AS DATE), ItemTypeName, Details, PaymentSource ORDER BY CAST(Purchased AS DATE), ItemTypeName, Details, PaymentSource";
 $refundMiscItemsByDayByTypeByPayment = array();
 $result = $db->query($sql);
 if($result->num_rows > 0)
@@ -129,6 +135,18 @@ if($result->num_rows > 0)
 		$refundMiscItemsByDayByTypeByPayment[] = $row;
 	$result->close();
 }
+
+$sql = "SELECT CAST(Created AS DATE) AS Day, B.Name AS BadgeType, BadgeName, Department, PaymentSource, OriginalPrice, AmountPaid, Status FROM PurchasedBadges JOIN BadgeTypes B on (B.BadgeTypeID = PurchasedBadges.BadgeTypeID) WHERE Year = $year AND Status NOT IN ('Paid') ORDER BY CAST(Created AS DATE), PurchasedBadges.BadgeTypeID, PaymentSource";
+$refundItemsByDayByTypeByPaymentPB = array();
+$result = $db->query($sql);
+if($result->num_rows > 0)
+{
+	while($row = $result->fetch_array())
+		$refundItemsByDayByTypeByPaymentPB[] = $row;
+	$result->close();
+}
+
+
 
 // TODO: Update the next three queries to find the current year's charities, where People.IsCharity = True
 $sql = "SELECT sum(`FinalSalePrice`) AS Revenue FROM `ArtSubmissions` WHERE `ArtistAttendingID`=130 AND `Category`='Sold'";
@@ -191,6 +209,7 @@ if($result->num_rows > 0)
         <div class="centerboxwide">
             <h1>Treasurer Statistics</h1>
 			<p>Total Paid Badges from Purchased Badges for Capricon <?php echo $capriconYear; ?>: <b><?php echo $allBadges; ?></b><br />
+			Total Pending Badges from Purchased Badges for Capricon <?php echo $capriconYear; ?>: <b><?php echo $pendingBadges; ?></b><br />
 			Total Non-Paid Badges from Purchased Badges for Capricon <?php echo $capriconYear; ?>: <b><?php echo $skippedBadges; ?></b></p>
 			<p>Total Paid Badges from Purchase History for Capricon <?php echo $capriconYear; ?>: <b><?php echo $allBadgesPH; ?></b><br />
 			Total Non-Paid from Purchase History for Capricon <?php echo $capriconYear; ?>: <b><?php echo $skippedallBadgesPH; ?></b></p>
@@ -201,7 +220,7 @@ if($result->num_rows > 0)
 					<li><a href="#tabs-1">Summarize Items</a></li>
 					<li><a href="#tabs-2">Summarize Items by type</a></li>
 					<li><a href="#tabs-3">Detail of Items</a></li>
-					<li><a href="#tabs-4">Detail of Refunds</a></li>
+					<li><a href="#tabs-4">Detail of Non-Paid Items</a></li>
                 </ul>
                 <div id="tabs-1" class="standardTable">
                     <?php
@@ -303,21 +322,21 @@ if($result->num_rows > 0)
                 </div>
 				<div id="tabs-4" class="standardTable">
 				<?php
-					echo "<p>Breakdown of Refund Items by Payment Type</p>\r\n";
+					echo "<p>Breakdown of Non-Paid Items by Payment Type (PurchaseHistory)</p>\r\n";
 					echo "<table>\r\n";
-					echo "<tr><th>Day</th><th>Item Name</th><th>Name</th><th>Payment Type</th><th>Price</th><th>Refund</th><th>Refund Reason</th></tr>\r\n";
+					echo "<tr><th>Day</th><th>Item Name</th><th>Name</th><th>Payment Type</th><th>Total</th><th>Refund</th><th>Refund Reason</th></tr>\r\n";
 					$revenue = 0;
 					$refund = 0;
-					foreach($refundItemsByDayByTypeByPayment as $record) {
-						echo "<td>" . $record["Day"] . "</td><td>" . $record["ItemTypeName"] . "</td><td>" . $record["Details"] . "</td><td>" . $record["PaymentSource"] . "</td><td>" . $record["Price"] . "</td><td>" . $record["AmountRefunded"] . "</td><td>" . $record["RefundReason"] . "</td></tr>\r\n";
-						$revenue += $record["Price"];
+					foreach($refundItemsByDayByTypeByPaymentPH as $record) {
+						echo "<td>" . $record["Day"] . "</td><td>" . $record["ItemTypeName"] . "</td><td>" . $record["Details"] . "</td><td>" . $record["PaymentSource"] . "</td><td>" . $record["Total"] . "</td><td>" . $record["AmountRefunded"] . "</td><td>" . $record["RefundReason"] . "</td></tr>\r\n";
+						$revenue += $record["Total"];
 						$refund += $record["AmountRefunded"];
 					}
 					echo "</table>\r\n";
 					echo "<p>Total Price: <b>" . sprintf("$%01.2f", $revenue) . "</b></p>\r\n";
 					echo "<p>Total Refunded: <b>" . sprintf("$%01.2f", $refund) . "</b></p>\r\n";
 					echo "<br>\r\n";
-					echo "<p>Breakdown of Refund Miscellaneous Items by Payment Type</p>\r\n";
+					echo "<p>Breakdown of Non-Paid Miscellaneous Items by Payment Type</p>\r\n";
 					echo "<table>\r\n";
 					echo "<tr><th>Day</th><th>Item Name</th><th>Count</th><th>Revenue</th><th>Payment Type</th></tr>\r\n";
 					$revenue = 0;
@@ -327,6 +346,17 @@ if($result->num_rows > 0)
 					}
 					echo "</table>\r\n";
 					echo "<p>Total Refunded: <b>" . sprintf("$%01.2f", $revenue) . "</b></p>\r\n";
+					echo "<br>\r\n";
+					echo "<p>Breakdown of Non-Paid Items by Payment Type (PurchasedBadges)</p>\r\n";
+					echo "<table>\r\n";
+					echo "<tr><th>Day</th><th>Badge Type</th><th>Badge Name</th><th>Department</th><th>Payment Type</th><th>Original Price</th><th>Amount Paid</th><th>Status</th></tr>\r\n";
+					$revenue = 0;
+					foreach($refundItemsByDayByTypeByPaymentPB as $record) {
+						echo "<td>" . $record["Day"] . "</td><td>" . $record["BadgeType"] . "</td><td>" . $record["BadgeName"] . "</td><td>" . $record["Department"] . "</td><td>" . $record["PaymentSource"] . "</td><td>" . $record["OriginalPrice"] . "</td><td>" . $record["AmountPaid"] . "</td><td>" . $record["Status"] . "</td></tr>\r\n";
+						$revenue += $record["OriginalPrice"];
+					}
+					echo "</table>\r\n";
+					echo "<p>Total Price: <b>" . sprintf("$%01.2f", $revenue) . "</b></p>\r\n";
 				?>
 				</div>
 			</div>
@@ -346,7 +376,7 @@ if($result->num_rows > 0)
             <br />
             <div class="clearfix"></div>
             <div class="goback">
-                <a href="/index.php">Return to the Main Menu</a>
+                <a href="index.php">Return to the Main Menu</a>
             </div>
         </div>
     </div>

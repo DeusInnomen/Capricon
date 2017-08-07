@@ -2,7 +2,7 @@
 	session_start();
 	include_once('includes/functions.php');
 	if(!isset($_SESSION["PeopleID"]))
-		header('Location: /login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
+		header('Location: login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
 	else
 	{
 		$year = date("n") >= 3 ? date("Y") + 1: date("Y");
@@ -50,7 +50,7 @@
 					if(result.success)
 					{
 						if(result.doRedirect)
-							window.location = "/index.php";
+							window.location = "index.php";
 						else
 						{
 							$("#accountSaveMessage").addClass("goodMessage");
@@ -94,7 +94,7 @@
 				</form>
 			</div>
 			<div class="goback">
-				<a href="/index.php">Return to the Main Menu</a>
+				<a href="index.php">Return to the Main Menu</a>
 			</div>
 		</div>
 	</div>

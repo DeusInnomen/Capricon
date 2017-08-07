@@ -2,7 +2,7 @@
 	session_start();
 	include_once('includes/functions.php');
 	if(!isset($_SESSION["PeopleID"]))
-		header('Location: /login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
+		header('Location: login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
 	else
 	{
 		$canCopy = false;
@@ -84,7 +84,7 @@
 					if(result.success)
 					{
 						if(result.doRedirect)
-							window.location = "/programSurveyInterests.php";
+							window.location = "programSurveyInterests.php";
 						else
 						{
 							$("#accountSaveMessage").addClass("goodMessage");
@@ -106,7 +106,7 @@
 		function transferSurvey()
 		{
 			$.post("doProgramSurveyFunctions.php", { task: "Transfer" }, function(result) {
-				window.location = "/programSurvey.php";
+				window.location = "programSurvey.php";
 			}, 'json');
 			return false;
 		}
@@ -188,7 +188,7 @@
 				</form>
 			</div>
 			<div class="goback">
-				<a href="/index.php">Return to the Main Menu</a>
+				<a href="index.php">Return to the Main Menu</a>
 			</div>
 		</div>
 	</div>

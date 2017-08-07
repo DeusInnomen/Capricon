@@ -1,10 +1,10 @@
 <?php
 	session_start();
 	if(!isset($_GET['id']))
-		header('Location: /index.php');
+		header('Location: index.php');
 	include_once('includes/functions.php');
 	if(!isset($_SESSION["PeopleID"]))
-		header('Location: /login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
+		header('Location: login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
 	$data = $db->real_escape_string($_GET['id']);
 	
 	DoCleanup();
@@ -55,7 +55,7 @@
 		<div class="centerboxnarrow">
 			<p><?php echo $message; ?></p>
 			<div class="goback">
-				<a href="/index.php">Return to the Main Menu</a>
+				<a href="index.php">Return to the Main Menu</a>
 			</div>
 		</div>
 	</div>

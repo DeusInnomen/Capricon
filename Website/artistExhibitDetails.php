@@ -2,16 +2,16 @@
 	session_start();
 	include_once('includes/functions.php');
 	if(!isset($_SESSION["PeopleID"]))
-		header('Location: /login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
+		header('Location: login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
 	elseif(!DoesUserBelongHere("Artist"))
-		header('Location: /main.php');
+		header('Location: main.php');
 	else
 	{
 		$year = date("n") >= 3 ? date("Y") + 1: date("Y");
 		$capriconYear = $year - 1980;
 		$result = $db->query("SELECT ArtistID FROM ArtistDetails WHERE PeopleID = " . $_SESSION["PeopleID"]);
 		if($result->num_rows == 0)
-			header('Location: /artistInformation.php');
+			header('Location: artistInformation.php');
 		else
 		{
 			$result->close();
@@ -54,7 +54,7 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$(":submit").click(function () {
-				if(this.name == "updateInfo") window.location = "/artistInformation.php";
+				if(this.name == "updateInfo") window.location = "artistInformation.php";
 			});
 			$("select#shippingPref option").each(function() { this.selected = (this.value == "<?php echo $request["ShippingPref"]; ?>"); });
 			$("#requestForm :radio").click(function () {
@@ -168,7 +168,7 @@
 				</form>
 			</div>
 			<div class="goback">
-				<a href="/index.php">Return to the Main Menu</a>
+				<a href="index.php">Return to the Main Menu</a>
 			</div>
 		</div>
 	</div>

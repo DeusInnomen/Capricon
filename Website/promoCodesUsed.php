@@ -2,9 +2,9 @@
     session_start();
     include_once('includes/functions.php');
     if(!isset($_SESSION["PeopleID"]))
-        header('Location: /login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
+        header('Location: login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
     elseif(!DoesUserBelongHere("RegLead"))
-        header('Location: /index.php');
+        header('Location: index.php');
 
     $year = isset($_GET['year']) ? $_GET['year'] : (date("n") >= 3 ? date("Y") + 1: date("Y"));
     $badges = array();
@@ -57,7 +57,7 @@ if(!empty($badges))
 <? } ?>
 			</div>
 			<div class="goback">
-				<a href="/index.php">Return to the Main Menu</a>
+				<a href="index.php">Return to the Main Menu</a>
 			</div>
 		</div>
 	</div>

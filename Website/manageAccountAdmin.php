@@ -2,11 +2,11 @@
 	session_start();
 	include_once('includes/functions.php');
 	if(!isset($_SESSION["PeopleID"]))
-		header('Location: /login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
+		header('Location: login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
 	elseif(!DoesUserBelongHere("RegLead") && !DoesUserBelongHere("Ops"))
-		header('Location: /index.php');
+		header('Location: index.php');
 	elseif(!isset($_GET["id"]))
-		header('Location: /manageAllAccounts.php');
+		header('Location: manageAllAccounts.php');
 	else
 	{
 		$result = $db->query("SELECT FirstName, LastName, Address1, Address2, City, State, ZipCode, Country, " .
@@ -188,7 +188,7 @@
 					echo '<a href="adminSwitchAccount.php?id=' . $_GET["id"] . '">!! Log In To This Account !!</a><br />' ?>
 			</div>
 			<div class="goback">
-				<a href="/index.php">Return to the Main Menu</a>
+				<a href="index.php">Return to the Main Menu</a>
 			</div>
 			<div style="float: left; width: 50%; margin-bottom: 60px">
 				<div class="headertitle">Your Badge Name</div>

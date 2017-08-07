@@ -1,7 +1,7 @@
 <?php
 	session_start();
 	include_once('includes/functions.php');
-	$return = isset($_GET["return"]) ? urldecode($_GET["return"]) : "/index.php";
+	$return = isset($_GET["return"]) ? urldecode($_GET["return"]) : "index.php";
 	$message = "Please enter your email address and password to log in.";
 	if(isset($_GET["resend"]))
 	{

@@ -2,9 +2,9 @@
 	session_start();
 	include_once('includes/functions.php');
 	if(!isset($_SESSION["PeopleID"]))
-		header('Location: /login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
+		header('Location: login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
 	elseif(!DoesUserBelongHere("RegLead"))
-		header('Location: /index.php');
+		header('Location: index.php');
 	else
 	{
 		$badges = array();
@@ -85,7 +85,7 @@
 						echo '<p class="noneFound">There are no pending registrations at this time.</p>' . "\r\n"; ?>
 			</div>
 			<div class="goback">
-				<a href="/index.php">Return to the Main Menu</a>
+				<a href="index.php">Return to the Main Menu</a>
 			</div>
 		</div>
 	</div>

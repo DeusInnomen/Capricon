@@ -54,7 +54,7 @@
 			USA<br />
 			Email: <a href="mailto:it@phandemonium.org?Subject=Capricon%20Registration%20Privacy%20Question">it@phandemonium.org</a><br /><br /><br /><br />
 			<div class="goback">
-				<a href="/index.php">Return to the Main Menu</a>
+				<a href="index.php">Return to the Main Menu</a>
 			</div>
 		</div>
 	</div>

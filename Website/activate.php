@@ -1,7 +1,7 @@
 <?php
 	session_start();
 	if(!isset($_GET['id']))
-		header('Location: /index.php');
+		header('Location: index.php');
 	include_once('includes/functions.php');
 	$id = $db->real_escape_string($_GET['id']);
 

@@ -2,13 +2,13 @@
 	session_start();
 	include_once('includes/functions.php');
 	if(!isset($_SESSION["PeopleID"]))
-		header('Location: /login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
+		header('Location: login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
 	elseif(!DoesUserBelongHere("RegStaff"))
-		header('Location: /index.php');
-		
-	$year = date("n") >= 3 ? date("Y") + 1: date("Y");
-    $sql  = "SELECT ab.AvailableBadgeID, bt.Description, ab.Price, ab.AvailableFrom, ab.AvailableTo, ab.AvailableOnline FROM AvailableBadges ab JOIN BadgeTypes bt ON ab.BadgeTypeID = bt.BadgeTypeID WHERE ab.Year = $year ORDER BY ab.AvailableFrom ASC";
-	
+		header('Location: index.php');
+
+    $year = isset($_GET['year']) ? $_GET['year'] : (date("n") >= 3 ? date("Y") + 1: date("Y"));
+    $sql  = "SELECT ab.AvailableBadgeID, bt.Description, ab.Price, ab.AvailableFrom, ab.AvailableTo, ab.AvailableOnline FROM AvailableBadges ab JOIN BadgeTypes bt ON ab.BadgeTypeID = bt.BadgeTypeID WHERE ab.Year = $year ORDER BY ab.AvailableFrom, ab.BadgeTypeID ASC";
+
 	$badges = array();
 	$result = $db->query($sql);
 	if($result->num_rows > 0)
@@ -95,7 +95,7 @@
 	<div class="content">
 		<div class="centerboxwide">
 			<h1>Available Badges for Current Con Year</h1>
-			<p>The following is a list of badges defined for the current convention year. <span style="font-weight: bold;">'Active'</span>badges are presently available for purchase through this website. <span style="font-weight: bold;">'Expires Soon'</span> badges will be unavailable within one week. <span style="font-weight: bold;">'Onsite Only'</span> badges are only available for purchase via the Registration software used at the convention. <?php echo DoesUserBelongHere("RegLead") ? "You may edit the badges below, but please do not alter any values without contacting IT and the Treasurer first. " : ""; ?>Please contact <a href="mailto:it@phandemonium.org">it@phandemonium.org</a> if additional badge options are needed.</p>
+			<p>The following is a list of badges defined for the current convention year. <span style="font-weight: bold;">'Active'</span> badges are presently available for purchase through this website. <span style="font-weight: bold;">'Expires Soon'</span> badges will be unavailable within one week. <span style="font-weight: bold;">'Onsite Only'</span> badges are only available for purchase via the Registration software used at the convention. <?php echo DoesUserBelongHere("RegLead") ? "You may edit the badges below, but please do not alter any values without contacting IT and the Treasurer first. " : ""; ?>Please contact <a href="mailto:it@phandemonium.org">it@phandemonium.org</a> if additional badge options are needed.</p>
 			<div id="badgeList" class="standardTable">
 			<form id="badgeEditor" method="post">
 			<?php
@@ -147,7 +147,7 @@
 			<div class="noticeSection" id="badgeActionNotice"><?php echo $message; ?></div>
 			<div class="clearfix"></div>
 			<div class="goback">
-				<a href="/index.php">Return to the Main Menu</a>
+				<a href="index.php">Return to the Main Menu</a>
 			</div>
 		</div>
 	</div>

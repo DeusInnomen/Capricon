@@ -2,9 +2,9 @@
 	session_start();
 	include_once('includes/functions.php');
 	if(!isset($_SESSION["PeopleID"]))
-		header('Location: /login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
+		header('Location: login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
 	elseif(!DoesUserBelongHere("ArtShowStaff"))
-		header('Location: /index.php');
+		header('Location: index.php');
 		
 	$year = date("n") >= 3 ? date("Y") + 1: date("Y");
 	$result = $db->query("SELECT ap.ArtistAttendingID, p.Email, ad.DisplayName, ad.LegalName, ad.IsPro, ad.ArtType, ap.IsAttending, ap.AgentName, ap.AgentContact, ap.ShippingPref, ap.ShippingAddress, ap.NeedsElectricity, ap.NumTables, ap.NumGrid, ap.Notes, ap.Status, ap.StatusReason FROM ArtistPresence ap INNER JOIN ArtistDetails ad ON ap.ArtistID = ad.ArtistID INNER JOIN People p ON ad.PeopleID = p.PeopleID WHERE ap.Year = $year AND ad.IsEAP = 1");
@@ -188,7 +188,7 @@
 			</div>
 			<div class="clearfix"></div>
 			<div class="goback">
-				<a href="/index.php">Return to the Main Menu</a>
+				<a href="index.php">Return to the Main Menu</a>
 			</div>
 		</div>
 	</div>

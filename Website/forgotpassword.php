@@ -47,7 +47,7 @@
 				<input type="submit" value="Submit" />
 			</form>
 			<hr />
-			<p>Return to the <a href="/index.php">Main Menu</a>.</p>
+			<p>Return to the <a href="index.php">Main Menu</a>.</p>
 		</div>
 	</div>
 	<?php include('includes/footer.php'); ?>

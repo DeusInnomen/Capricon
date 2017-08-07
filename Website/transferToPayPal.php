@@ -57,7 +57,7 @@
 		 
 	}else{
 		$_SESSION["PayPalError"] = urldecode($response["L_ERRORCODE0"]) . ": " . urldecode($response["L_LONGMESSAGE0"]);
-		header('Location: /shoppingCart.php');
+		header('Location: shoppingCart.php');
 	}
 				
 ?>

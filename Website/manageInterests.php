@@ -2,7 +2,7 @@
 	session_start();
 	include_once('includes/functions.php');
 	if(!isset($_SESSION["PeopleID"]))
-		header('Location: /login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
+		header('Location: login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
 	else
 		$interests = UserInterests();
 ?>
@@ -146,7 +146,7 @@
 			<input type="submit" value="Submit Changes to Your Interests" />&nbsp;<span id="saveMessage">&nbsp;</span></form>			
 			<br /><br />
 			<div class="goback">
-				<a href="/index.php">Return to the Main Menu</a>
+				<a href="index.php">Return to the Main Menu</a>
 			</div>
 		</div>
 	</div>

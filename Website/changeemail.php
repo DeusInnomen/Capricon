@@ -2,7 +2,7 @@
 	session_start();
 	include_once('includes/functions.php');
 	if(!isset($_GET['id']))
-		header('Location: /index.php');
+		header('Location: index.php');
 	else
 	{
 		$result = $db->query("SELECT PeopleID, Data FROM ConfirmationLinks WHERE Code = '" .
@@ -35,7 +35,7 @@
 	<script type="text/javascript" src="includes/global.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			setTimeout(function() { window.location = "/index.php"; }, 5000);
+			setTimeout(function() { window.location = "index.php"; }, 5000);
 		});
 	</script>
 </head>

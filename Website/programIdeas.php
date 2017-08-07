@@ -89,7 +89,7 @@
 			<div style="font-size: 1.05em;" class="errorMessage" id="message">&nbsp;</div></form>
 			<br /><br />
 			<div class="goback">
-				<a href="/index.php">Return to the Main Menu</a>
+				<a href="index.php">Return to the Main Menu</a>
 			</div>
 		</div>
 	</div>

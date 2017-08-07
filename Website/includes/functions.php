@@ -1,16 +1,33 @@
 <?php
-	if($_SERVER["HTTPS"] != "on")
+	//One-Place Transplant Code setting - global local_install for installing on a non-http dev server with different pathing:
+	//Made global so it could be used in other files if needed for functions that only run when running in 'local' or 'debug' mode.
+	global $local_setting;
+	$local_setting = true;
+	if ($local_setting != true)
 	{
-		header("Location: https://" . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"]);
-		exit();
-	}
+		//Standard use on server.
+		if($_SERVER["HTTPS"] != "on")
+		{
+			header("Location: https://" . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"]);
+			exit();
+		}
 
-	$path = $_SERVER["DOCUMENT_ROOT"];
+		$path = $_SERVER["DOCUMENT_ROOT"];
+	}
+	else
+	{
+		//No HTTPS and just get current working dir for the root.
+		$path = getcwd();
+	}
 	include_once("$path/includes/dsn.inc");
 	include_once("$path/includes/password.php");
 	include_once("$path/includes/phpmailer/class.phpmailer.php");
 	require("$path/includes/fpdf.php");
 	
+	//Additional BCF Libraries
+	include_once("$path/includes/grid.php");
+	include_once("$path/includes/fpdf_ext.php");
+		
 	function DoCleanup()
 	{
 		global $db;
@@ -44,6 +61,7 @@
 			$badge = trim($row['BadgeName']);
 			$result->close();
 			
+			//if(true)
 			if(password_verify($pass, $dbpw))
 			{
 				if(!$checkOnly)
@@ -474,5 +492,463 @@
 		$pdf->Cell(0, 8, 'Card # ___________________________________ Expiration (MM/YYYY): ____________ CVV/Security Code: ________', 0, 1);
 		
 		return $pdf;
+	}
+	
+	function invoiceData($id) 
+	{
+		//This function is meant to pull a specific invoice when printing using viewInvoice.php
+		
+	}
+	
+	function sql_to_array($sql, $debug=false)
+	{
+		//This is a table_upload compatible array maker function.
+		//used for Copying data from table to table safely
+		
+		global $db;		
+		$result = $db->query($sql);
+				
+		$field_count = mysqli_field_count($db);
+		
+		//$rows = mysql_num_rows($rs);
+		
+		//echo "received $rows rows<Br>";
+		
+		$i = 0;
+		$out_array = Array();
+		
+		if($result)
+			while($row=$result->fetch_array())
+			{
+				//echo "<pre>";
+				//print_r($fields);
+				//echo "</pre>";
+				
+				for($x=0;$x<$field_count;$x++)
+				{
+					//Got to love that they dumbed down the StdClass.
+					$field = mysqli_fetch_field_direct($result, $x);
+					$column = $field->name;
+					
+					//echo "Data[$column] = ".$row[$column]."<br>";
+					
+					$out_array[$i][$column] = $row[$column];
+				}
+				$i++;	
+			}
+		else
+		{
+			if($debug)
+			{
+				echo "Error in SQL: ".mysqli_error($db)."<br>";
+			}
+		}
+		
+		return $out_array;
+	}
+	
+	function array_groupby($in_array,$group_columns_array,$key_col = null)
+	{
+		//Simplistic Grouping function - 
+		//Takes a table array (in the form used below) and can export an array grouped using the group_columns_array in this format:
+		//EITHER: Array(ColName,Type) - where Type is Sum, Min, Max, First, Avg - can add more to the switch later.
+		//Or if it's just a string (and not an array) will split a CSV list of columns and assume they're just grouping columns for a header
+		//Used for calculating headers - key_cols is what to name a 'keying column' that is used to relate the header to the line.
+		//Will number each summary and link them (for use realigning lines to a returned 'insert' key)
+		//(If $key_cols is specified, will return an array of TWO arrays - detail then header - keyed)
+		
+		$debug = true;
+		
+		//Gather our grouping columns
+		if(sizeof($group_columns_array)>1)
+		{
+			//Process the types - group_columns is for Groupby, special columns will be split to their own array.
+		}
+		else
+		{
+			//Just CSV it
+			$group_columns = str_getcsv($group_columns_array);
+		}
+		
+		//Now we have two processing ways - with/without $key_col - to save memeory/processing we'll only generate the second array if we need to.
+		$check_header = Array();
+		
+		$out_header = Array();
+		$out_detail = Array();
+		
+		//foreach($in_array as $row)
+		for($x=0;$x<sizeof($in_array);$x++)
+		{
+			$row = $in_array[$x];
+			
+			$check_row = Array();
+			
+			//Take the row, build a 'record' we're looking for (Summary Values will be in another array) then we can use search.
+			foreach($group_columns as $column)
+			{
+				$check_row[$column]=$row[$column];
+			}
+			
+			//Now look for that value.
+			$row_key = array_search($check_row,$check_header,true);
+			
+			/*
+			echo "<pre>";
+			print_r($check_row);
+			echo "</pre>";
+			
+			echo "<pre>";
+			print_r($out_header);
+			echo "</pre><br><br>";
+			*/
+			
+			if($row_key !== false)
+			{
+				//Found
+				//if($debug) echo "Found Key at row $row_key<br>";
+				
+				//First, add our key to the line we're working on if it's not null
+				if($key_col!=null)
+				{
+					$in_array[$x][$key_col]=$row_key;
+				}
+				
+				//Here is where we would add to the Summary for the same row key.
+			}
+			else
+			{				
+				$new_key = sizeof($check_header);
+				
+				$out_row = $check_row;
+				
+				//Use the Sizeof for each 'New' header
+				if($key_col!=null)
+				{
+					$in_array[$x][$key_col]=$new_key;
+					
+					$out_row[$key_col]=$new_key;
+				}
+				
+				//Add it
+				//if($debug) echo "Key missing<br>";
+				array_push($check_header,$check_row);
+				
+				array_push($out_header,$out_row);
+			}
+			
+		}
+				
+		if($key_col!=null)
+		{
+			return Array($in_array,$out_header);
+		}
+		else
+		{
+			return $out_header;
+		}
+	}
+	
+	function update_from_array($in_array,$out_table,$keys,$columns = null,$insert_column = null)
+	{
+		//use try/catch to generate a false (to let parent function know to rollback) if something fails on the way through.
+		try
+		{
+		
+			//DB used for pushing the updates from the array (Transaction should be done OUTSIDE this function so you can rollback multiple
+			//updates at once
+			global $db;		
+			
+			$debug = false;
+			
+			//This function is for taking data from one table and posting it to another as part of a process (like creation of invoice)
+			//Will take each incoming row, then generate a 'select->insert or update' set based on the table and keys specified.
+			//You can also specify an 'Insert' key column that it will fill with the last 'Auto_Update' value from mysqli_insert_id
+			//returns the in_array with the insert ID/column added to each record (Uses the select to grab it instead of 1 if specified)
+			
+			//Columns variable added so you can override the columns you want spit out - in case you need to maintain other values but don't want to include them in an update.
+			
+			$out_array = Array();
+			
+			//Convert key to array
+			$key_array = str_getcsv($keys);
+			$column_array = Array();
+			
+			if($columns != null) 
+			{	
+				//then use it, but tack on the keys to the 'all' for insert.
+				$column_array = str_getcsv($columns);
+				
+				$all_column_array = $column_array;
+				
+				if(strlen($keys)>0)
+					foreach($key_array as $key)
+					{
+						array_push($all_column_array,$key);
+					}
+			}
+			else
+			{	
+				//Just general from the array itself and remove the keys from the update columns.
+				$all_column_array = array_keys($in_array[0]);
+				foreach($all_column_array as $column)
+				{
+					//Only record non-keys
+					if(!in_array($column,$key_array,true))
+						array_push($column_array,$column);
+				}
+			}
+			
+			if($debug) echo "Keys = [".implode(',',$key_array)."]<br>";
+			if($debug) echo "All Columns = [".implode(',',$all_column_array)."]<br>";
+			
+			foreach($in_array as $row)
+			{
+				$row_keys_array = Array();
+							
+				$update_values_array = Array();
+				$insert_values_array = Array();
+				
+				foreach($key_array as $key)
+				{
+					if(strlen($key)>0)
+					{
+						//if ($debug) echo "Creating Key for Row of $key = ".$row[$key]."<br>";
+						array_push($row_keys_array,$key." = '".addslashes($row[$key])."'");
+					}
+				}
+				
+				foreach($all_column_array as $column)
+				{
+					if(in_array($column,$column_array,true))
+					{
+						//Record in Update values
+						array_push($update_values_array,$column." = '".addslashes($row[$column])."'");
+					}
+					
+					//Record in Insert values (includes keys too)
+					array_push($insert_values_array,"'".addslashes($row[$column])."'");
+				}
+							
+				if ($debug) echo "Working on Row with Keys = \"".implode(" AND ",$row_keys_array)."\"<br>";
+				
+				//If there are keys, then lets do this with Keys
+				if($keys != null)
+				{
+					//If there's an insert column, lets snag it using the select SQL -
+					if($insert_column != null)
+					{
+						$select_sql = "SELECT ".$insert_column." as key FROM ".$out_table." WHERE ".implode(" AND ",$row_keys_array);
+					}
+					else
+					{
+						$select_sql = "SELECT 1 FROM ".$out_table." WHERE ".implode(" AND ",$row_keys_array);
+					}
+				}
+				else
+				{
+					//Then this is a forced insert
+					$select_sql = "";
+				}
+				
+				$update_sql = "UPDATE ".$out_table." SET ".implode(", ",$update_values_array)." WHERE ".implode(" AND ",$row_keys_array);
+				$insert_sql = "INSERT INTO ".$out_table." (".implode(", ",$all_column_array).") VALUES (".implode(", ",$insert_values_array).");";
+				
+				if($debug) echo "Select: ".$select_sql."<br>";
+				
+				//echo $select_sql."<br>";
+				//echo $update_sql."<br>";
+				//echo $insert_sql."<br><br>";
+				
+				//If we have a insert_id or selected id we insert it here:
+				
+				//Lets transact this one if we're not on DEBUG
+				$result = $false;
+				if(strlen($select_sql)>0)
+					$result = $db->query($select_sql);
+				
+				//Fetch
+				$key_val = null;
+				$found = false;
+				if($result)
+				{
+					while($check = $result->fetch_array()) 
+					{
+						$key_val = $check["key"];
+						$found = true;
+					}
+					if($result) 
+						$result->free();
+				}
+				
+				
+				//if Found, we use Update.
+				if($found)
+				{
+					if($debug)
+					{
+						echo "Update: ".$update_sql."<br>";
+					}
+					else
+					{
+						//echo "Writing Update<br>";
+						$result = $db->query($update_sql);
+						if($db->error)
+						{
+							echo "Error in update ".$db->error."<Br>";
+							throw new Exception("Error ".$db->error." updating: ".$update_sql);
+						}
+					}
+				}
+				else
+				{
+					if($debug)
+					{
+						echo "Insert: ".$insert_sql."<br><br>";
+					}
+					else
+					{
+						//echo "Writing Insert ".$insert_sql."<br>";
+						$result = $db->query($insert_sql);
+						$key_val = mysqli_insert_id($db);
+						if($db->error)
+						{
+							echo "Error in insert ".$db->error."<Br>";
+							throw new Exception("Error ".$db->error." inserting: ".$insert_sql);
+						}
+					}
+				}
+				
+				//Add our new insert value to the array for returning (for header/line coordination in calling function)
+				if($insert_column != null)
+				{
+					if($debug) echo "Writing return key for '".$insert_column."' = '".$key_val."'<br>";
+					$row[$insert_column] = $key_val;
+				}
+					
+				//keep the array for returning.
+				array_push($out_array,$row);
+			}
+			
+			return $out_array;
+		}
+		catch(Exception $e)
+		{
+			//Return False (to hopefully generate a rollback upstream if required)
+			return false;
+		}
+	}
+	
+	function array_lookup_key($lookup_array,$column_array,$value)
+	{
+		//For each value in $in_array we shall look up the 'column' in lookup array and pull the key number from it.
+		//This is like array_lookup but returns the key
+		
+		$out_key = -1;
+		
+		if(sizeof($column_array)>1)
+		{
+			
+		}
+		else
+		{
+			//Single Column
+			$column = $column_array;
+			
+			//Look it up and return the key of the right one.
+			for($f=0;$f < sizeof($lookup_array);$f++)
+			{
+			
+				$l_value = trim($lookup_array[$f][$column]);
+				$v_value = trim($value);
+				
+				//echo "Checking [$l_value] = [$v_value]<br>";
+				
+				if ($l_value === $v_value)
+				{
+					//echo "Found Key $f<Br>";
+					$out_key = $f;
+				}
+			}
+			
+		}
+		
+		return $out_key;
+	}
+
+	function array_lookup($in_array,$lookup_array,$column_array,$dest)
+	{
+		//For each value in $in_array we shall look up the 'column' in lookup array and pull the 'dest' column from it.
+		//Then return in_array with all the lookup'd values.
+		
+		if(sizeof($column_array)>1)
+		{
+			//Only made for single level table lookups
+		}
+		else
+		{
+			//Single Column
+			$column = $column_array;
+		
+			for($i=0;$i < sizeof($in_array);$i++)
+			{
+				$value = $in_array[$i][$column];
+				$dest_value = "";
+				
+				//echo "Looking Up $value in $column <br>";
+				
+				//Lets roll through lookup array and see if that value exists.  (And if it exists twice, use the last)
+				for($f=0;$f < sizeof($lookup_array);$f++)
+				{
+				
+					$l_value = $lookup_array[$f][$column];
+					$d_value = $lookup_array[$f][$dest];
+					
+					//echo "Checking $l_value = $value to set $d_value<br>";
+					
+					if ($l_value === $value || $l_value == $value)
+					{
+						//echo "Found";
+						$dest_value = $d_value;	
+					}
+				}
+				
+				if (strlen($dest_value)>0)
+				{
+					//Then we found a value.
+					//echo "Set";
+					$in_array[$i][$dest]=$dest_value;
+				}
+			}
+			
+		}
+		
+		return $in_array;
+	}
+
+	function special_array_split($in_array,$column_array)
+	{
+		//this function takes an array and returns a 'subset' of columns
+		
+		$out_array = Array();
+		
+		if (sizeof($column_array)>1)
+		{
+			for($i=0;$i < sizeof($in_array);$i++)
+			{	
+				for($f=0;$f < sizeof($column_array);$f++)
+				{
+					$out_array[$i][$column_array[$f]]=$in_array[$i][$column_array[$f]];
+				}
+			}
+		}
+		else
+		{
+			for($i=0;$i < sizeof($in_array);$i++)
+			{	
+				$out_array[$i][$column_array]=$in_array[$i][$column_array];
+			}
+		}
+		
+		return $out_array;
 	}
 ?>
