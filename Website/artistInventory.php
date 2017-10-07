@@ -5,7 +5,7 @@
 	DoCleanup();
 
 	if(!DoesUserBelongHere("Artist"))
-		header('Location: main.php');
+		header('Location: index.php');
 
 	$year = date("n") >= 3 ? date("Y") + 1: date("Y");
 	$capriconYear = $year - 1980;

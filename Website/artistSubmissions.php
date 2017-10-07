@@ -7,21 +7,21 @@
 	if(!isset($_SESSION["PeopleID"]))
 		header('Location: login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
 	elseif(!DoesUserBelongHere("Artist"))
-		header('Location: main.php');
+		header('Location: index.php');
 	else
 	{
 		$year = date("n") >= 3 ? date("Y") + 1: date("Y");
 		$capriconYear = $year - 1980;
 		if(!empty($_GET["attendID"])) {
             if(!DoesUserBelongHere("ArtShowLead"))
-                header('Location: main.php');
+                header('Location: index.php');
             $attendID = $_GET["attendID"];
 		    $result = $db->query("SELECT ap.ArtistAttendingID, ap.Status, ap.StatusReason, ad.IsEAP, ad.DisplayName, p.IsCharity " .
     			"FROM ArtistPresence ap INNER JOIN ArtistDetails ad ON ad.ArtistID = ap.ArtistID INNER JOIN People p ON ad.peopleID = p.PeopleID WHERE ap.ArtistAttendingID = $attendID");
         }
         else {
             $attendID = 0;
-		    $result = $db->query("SELECT ap.ArtistAttendingID, ap.Status, ap.StatusReason, ad.IsEAP, ad.DisplayName, p.IsCharity " .
+		    $result = $db->query("SELECT ap.ArtistAttendingID, ap.Status, ap.StatusReason, ad.IsEAP, ad.DisplayName, p.IsCharity, ad.FeesWaived " .
     			"FROM ArtistPresence ap INNER JOIN ArtistDetails ad ON ad.ArtistID = ap.ArtistID INNER JOIN People p ON ad.peopleID = p.PeopleID WHERE ap.Year = $year AND ad.PeopleID = " . $_SESSION["PeopleID"]);
         }
 			
@@ -30,8 +30,9 @@
 			$request = $result->fetch_array();
 			$result->close();
 			$id = $request["ArtistAttendingID"];
-			$isEAP = $request["IsEAP"];
-            $isCharity = $request["IsCharity"];
+			$isEAP = ($request["IsEAP"] == 1);
+            $isCharity = ($request["IsCharity"] == 1);
+            $feesWaived = ($request["FeesWaived"] == 1 || $isEAP || $isCharity);
             if(DoesUserBelongHere("ArtShowLead"))
                 $pieceLimit = 9999999;
             else
@@ -65,7 +66,7 @@
 				}
 				
 				$perms = UserPermissions();
-				if($isEAP || in_array("artistgoh", $perms))
+				if($feesWaived || in_array("artistgoh", $perms))
 					$feesToPay = false;
 				
 				$result = $db->query("SELECT ArtID, ShowNumber, Title, Notes, OriginalMedia, QuantitySent, QuickSalePrice " . 
