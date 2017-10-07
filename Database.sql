@@ -638,6 +638,146 @@ ALTER TABLE `ShoppingCart`
   ADD CONSTRAINT `fk_ShoppingCart_PromoCodeID` FOREIGN KEY (`PromoCodeID`) REFERENCES `PromoCodes` (`CodeID`) ON DELETE SET NULL,
   ADD CONSTRAINT `fk_ShoppingCart_PurchaserID` FOREIGN KEY (`PurchaserID`) REFERENCES `People` (`PeopleID`) ON DELETE SET NULL;
 
+  
+CREATE TABLE IF NOT EXISTS `ShoppingCart` (
+  `CartID` int(8) NOT NULL AUTO_INCREMENT,
+  `PurchaserID` int(8) DEFAULT NULL,
+  `ItemTypeName` varchar(20) DEFAULT NULL,
+  `ItemTypeID` int(8) DEFAULT NULL,
+  `ItemDetail` varchar(50) DEFAULT NULL,
+  `PeopleID` int(8) DEFAULT NULL,
+  `Price` decimal(5,2) NOT NULL DEFAULT '0.00',
+  `PromoCodeID` int(8) DEFAULT NULL,
+  `CertificateID` int(8) DEFAULT NULL,
+  `Created` datetime NOT NULL,
+  PRIMARY KEY (`CartID`),
+  KEY `fk_ShoppingCart_PeopleID` (`PeopleID`),
+  KEY `fk_ShoppingCart_PurchaserID` (`PurchaserID`),
+  KEY `fk_ShoppingCart_PromoCodeID` (`PromoCodeID`),
+  KEY `fk_ShoppingCart_CertificateID` (`CertificateID`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+  
+  CREATE TABLE IF NOT EXISTS Invoice (
+	InvoiceID int(8) NOT NULL AUTO_INCREMENT,
+	InvoiceType varchar(20) NOT NULL,
+	RelatedRecordID int(8) DEFAULT NULL,
+	Status enum('Created','Sent','Paid','Cancelled') NOT NULL DEFAULT 'Created',
+	Created datetime NOT NULL,
+	Sent datetime DEFAULT NULL,
+	Fulfilled datetime DEFAULT NULL,
+	LastChanged timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	PRIMARY KEY (InvoiceID)
+  );
+  
+  CREATE TABLE IF NOT EXISTS InvoiceLine (
+	InvoiceLineID int(8) NOT NULL AUTO_INCREMENT,
+	InvoiceID int(8) NOT NULL,
+	LineNumber int(4) NOT NULL,
+	Description varchar(200) NOT NULL,
+	Price decimal(7, 2) NOT NULL DEFAULT 0.00,
+	Tax decimal(5, 2) NOT NULL DEFAULT 0.00,
+	ReferenceID int(8) DEFAULT NULL,
+	PRIMARY KEY (InvoiceLineID),
+	KEY fk_InvoiceLine_InvoiceID (InvoiceID)
+  );
+  
+ALTER TABLE `InvoiceLine`
+  ADD CONSTRAINT `fk_InvoiceLine_InvoiceID` FOREIGN KEY (`InvoiceID`) REFERENCES `Invoice` (`InvoiceID`) ON DELETE CASCADE;
+  
+  
+CREATE TABLE IF NOT EXISTS InvoicesPaid (
+	InvoicesPaidID int(8) NOT NULL AUTO_INCREMENT,
+	RecordID int(8) NOT NULL,
+	InvoiceID int(8) NOT NULL,
+	PRIMARY KEY (InvoicesPaidID),
+	KEY fk_InvoicesPaid_InvoiceID (InvoiceID),
+	KEY fk_InvoicesPaid_RecordID (RecordID)
+);
+
+ALTER TABLE `InvoicesPaid`
+  ADD CONSTRAINT `fk_InvoicesPaid_InvoiceID` FOREIGN KEY (`InvoiceID`) REFERENCES `Invoice` (`InvoiceID`) ON DELETE CASCADE;
+ALTER TABLE `InvoicesPaid`
+  ADD CONSTRAINT `fk_InvoicesPaid_RecordID` FOREIGN KEY (`RecordID`) REFERENCES `PurchaseHistory` (`RecordID`) ON DELETE CASCADE;
+
+  CREATE TABLE IF NOT EXISTS DealerConfig (
+	DealerConfigID int(8) NOT NULL AUTO_INCREMENT,
+	Year int(4) NOT NULL,
+	WaitListAfterTableNum int(3) NOT NULL DEFAULT 999,
+	WaitListAfterDate datetime DEFAULT NULL,
+	ElectricFee decimal(5, 2) NOT NULL DEFAULT '50.00',
+	BadgeFee decimal(5, 2) NOT NULL DEFAULT '45.00',
+	PRIMARY KEY (DealerConfigID)
+  );
+  
+  CREATE TABLE IF NOT EXISTS DealerTablePrices (
+	TablePriceID int(8) NOT NULL AUTO_INCREMENT,
+	Quantity int(2) NOT NULL,
+	Price decimal(5, 2) NOT NULL,
+	PRIMARY KEY (TablePriceID)
+  );
+  
+  CREATE TABLE IF NOT EXISTS Dealer (
+	DealerID int(8) NOT NULL AUTO_INCREMENT,
+	PeopleID int(8) NOT NULL,
+	CompanyName varchar(50) NOT NULL,
+	LegalName varchar(100) NOT NULL,
+	URL varchar(100) DEFAULT NULL,
+	Description varchar(300) NOT NULL DEFAULT '',
+	Address1 varchar(80) NOT NULL,
+	Address2 varchar(80) DEFAULT NULL,
+	Address3 varchar(80) DEFAULT NULL,
+	City varchar(30) NOT NULL,
+	State varchar(2) DEFAULT NULL,
+	ZipCode varchar(10) DEFAULT NULL,
+	Country varchar(20) NOT NULL DEFAULT 'USA',
+	Phone varchar(20) DEFAULT NULL,
+	PhoneType enum('Home','Mobile','Work','Other') DEFAULT NULL,
+	TaxNumber varchar(30) DEFAULT NULL,
+	Created datetime NOT NULL,
+	LastChanged timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	PRIMARY KEY (DealerID),
+	KEY fk_Dealer_PeopleID (PeopleID)
+  );
+
+ALTER TABLE `Dealer`
+  ADD CONSTRAINT `fk_Dealer_PeopleID` FOREIGN KEY (`PeopleID`) REFERENCES `People` (`PeopleID`) ON DELETE CASCADE;
+  
+  CREATE TABLE IF NOT EXISTS DealerPresence (
+	DealerPresenceID int(8) NOT NULL AUTO_INCREMENT,
+	DealerID int(8) NOT NULL,
+	NumTables int(2) NOT NULL,
+	ElectricalNeeded tinyint(1) NOT NULL DEFAULT 0,
+	AddedDetails varchar(500) NOT NULL DEFAULT '',
+	Status enum('Pending','Approved','Rejected','Waitlist') NOT NULL DEFAULT 'Pending',
+	Created datetime NOT NULL,
+	LastChanged timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	PRIMARY KEY (DealerPresenceID),
+	KEY fk_DealerPresence_DealerID (DealerID)
+  );
+  
+ALTER TABLE `DealerPresence`
+  ADD CONSTRAINT `fk_DealerPresence_DealerID` FOREIGN KEY (`DealerID`) REFERENCES `Dealer` (`DealerID`) ON DELETE CASCADE;
+    
+  CREATE TABLE IF NOT EXISTS DealerBadges (
+	DealerBadgeID int(8) NOT NULL AUTO_INCREMENT,
+	DealerPresenceID int(8) NOT NULL,
+	BadgeName varchar(40) NOT NULL,
+	FirstName varchar(50) NOT NULL,
+	LastName varchar(50) NOT NULL,
+	Price decimal(5, 2) NOT NULL,
+	BadgeTypeID int(8) NOT NULL,
+	PRIMARY KEY (DealerBadgeID),
+	KEY fk_DealerBadges_DealerPresenceID (DealerPresenceID),
+	KEY fk_DealerBadges_BadgeTypeID (BadgeTypeID)
+  );
+  
+ALTER TABLE `DealerBadges`
+  ADD CONSTRAINT `fk_DealerBadges_DealerPresenceID` FOREIGN KEY (`DealerPresenceID`) REFERENCES `DealerPresence` (`DealerPresenceID`) ON DELETE CASCADE;
+ALTER TABLE `DealerBadges`
+  ADD CONSTRAINT `fk_DealerBadges_BadgeTypeID` FOREIGN KEY (`BadgeTypeID`) REFERENCES `BadgeTypes` (`BadgeTypeID`) ON DELETE SET NULL;
+  
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+

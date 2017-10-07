@@ -10,10 +10,13 @@
     <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
     <Server>PHPDev</Server>
     <PublishEvent>None</PublishEvent>
-    <PHPDevAutoPort>True</PHPDevAutoPort>
+    <PHPDevAutoPort>true</PHPDevAutoPort>
     <PHPDevPort>39094</PHPDevPort>
     <PHPDevHostName>localhost</PHPDevHostName>
     <IISProjectUrl>http://localhost:39094/</IISProjectUrl>
+    <Runtime>PHP</Runtime>
+    <RuntimeVersion>5.6</RuntimeVersion>
+    <EnvName>PHPDev</EnvName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <IncludeDebugInformation>true</IncludeDebugInformation>
@@ -24,6 +27,12 @@
   <ItemGroup>
     <Compile Include="artShowSales.php" />
     <Compile Include="artShowSalesSummary.php" />
+    <Compile Include="dealerApplication.php" />
+    <Compile Include="dealerConfig.php" />
+    <Compile Include="dealerDetails.php" />
+    <Compile Include="dealerTablePrices.php" />
+    <Compile Include="doDealerFunctions.php" />
+    <Compile Include="doInvoiceFunctions.php" />
     <Compile Include="doManualRegistration.php" />
     <Compile Include="editArtItem.php" />
     <Compile Include="functions\.htaccess" />
@@ -187,8 +196,12 @@
     <Compile Include="includes\selectivizr-min.js" />
     <Compile Include="includes\stripe.png" />
     <Compile Include="includes\style.css" />
+    <Compile Include="invoices.php" />
     <Compile Include="manageCharities.php" />
+    <Compile Include="manageDealers.php" />
+    <Compile Include="processInvoices.php" />
     <Compile Include="promoCodesUsed.php" />
+    <Compile Include="showInvoice.php" />
     <Compile Include="stripeWebhook.php" />
     <Compile Include="Stripe\data\ca-certificates.crt" />
     <Compile Include="Stripe\Stripe\Util\Set.php" />
@@ -275,7 +288,7 @@
     <Compile Include="manageArtists.php" />
     <Compile Include="manageInterests.php" />
     <Compile Include="manageMailingLists.php" />
-    <Compile Include="managePendingEntries.php" />
+    <Compile Include="manageMailedInvoices.php" />
     <Compile Include="manageRelatedPeople.php" />
     <Compile Include="manualRegUserSearch.php" />
     <Compile Include="noBadgesAvailable.php" />
@@ -293,11 +306,14 @@
     <Compile Include="register.php" />
     <Compile Include="registrationStats.php" />
     <Compile Include="registrationStatsGraph.php" />
-    <Compile Include="RegistrationWebsite.phpproj" />
+    <Compile Include="RegistrationWebsite.phpproj">
+      <Publishable>False</Publishable>
+    </Compile>
     <Compile Include="reminders.php" />
     <Compile Include="resetpassword.php" />
     <Compile Include="shoppingCart.php" />
     <Compile Include="staffBadges.php" />
+    <Compile Include="transferInvoicesToPayPal.php" />
     <Compile Include="transferToPayPal.php" />
     <Compile Include="treasurerStats.php" />
     <Compile Include="viewCatanSignups.php" />
@@ -322,5 +338,8 @@
     <Folder Include="Stripe\Stripe\Util" />
     <Folder Include="Stripe\Stripe" />
     <Folder Include="Stripe" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="includes\capricious_clear.png" />
   </ItemGroup>
 </Project>

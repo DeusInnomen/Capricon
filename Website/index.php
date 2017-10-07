@@ -46,7 +46,7 @@ $interests = UserInterests();
                                  echo '<li><a href="manageMailingLists.php">Manage Mailing List Subscriptions</a></li>' . "\r\n";
                                  echo '<hr><div class="headertitle">Convention Participation</div>' . "\r\n";
                                  echo '<li><a href="programIdeas.php">Submit a Program Panel Idea</a></li>' . "\r\n";
-                                 echo '<li><a href="programSurvey.php">Programming Survey</a></li>' . "\r\n";
+                                 echo '<li><a href="https://zambia.capricon.org" target="_new">Program Participant Application</a></li>' . "\r\n";
                                  if(DoesUserBelongHere("Program"))
                                  {
                                      echo '<hr><div class="headertitle">Programming Team</div>' . "\r\n";
@@ -58,6 +58,7 @@ $interests = UserInterests();
                                  echo '<li><a href="badges.php">Purchase Badges and Other Items</a></li>' . "\r\n";
                                  echo '<li><a href="giftCerts.php">View or Purchase Gift Certificates</a></li>' . "\r\n";
                                  echo '<li><a href="purchases.php">View Your Purchase History</a></li>' . "\r\n";
+                                 echo '<li><a href="invoices.php">Manage Your Invoices</a></li>' . "\r\n";
                                  if(DoesUserBelongHere("Artist"))
                                  {
                                      echo '<hr><div class="headertitle">Artist Information</div>' . "\r\n";
@@ -73,15 +74,22 @@ $interests = UserInterests();
                                      }
                                      echo '<li><a href="manageArtistRequests.php">View Requests to Show Art</a></li>' . "\r\n";
                                      echo '<li><a href="artistExhibitsSummary.php">Artist Exhibits Summary</a></li>' . "\r\n";
-									 if(DoesUserBelongHere("superadmin")) {
-                                         echo '<li><a href="manageArtSales.php">Sales Debug</a></li>' . "\r\n";
-                                         echo '<li><a href="manageInvoice.php">Invoice Debug</a></li>' . "\r\n";
-                                     }
                                  }
-                                 if(DoesUserBelongHere("Catan"))
+                                 if(DoesUserBelongHere("Dealer"))
                                  {
-                                     echo '<hr><div class="headertitle">Catan Tournament</div>' . "\r\n";
-                                     echo '<li><a href="viewCatanSignups.php">View Tournament Signups</a></li>' . "\r\n";
+                                     echo '<hr><div class="headertitle">Dealer Information</div>' . "\r\n";
+                                     echo '<li><a href="dealerDetails.php">Dealer Business Details</a></li>' . "\r\n";
+                                     echo '<li><a href="dealerApplication.php">Application for Capricon Dealer\'s Hall</a></li>' . "\r\n";
+                                 }
+                                 if(DoesUserBelongHere("DealerStaff"))
+                                 {
+                                     echo '<hr><div class="headertitle">Dealer Staff Functions</div>' . "\r\n";
+                                     if(DoesUserBelongHere("DealerLead")) {
+                                         echo '<li><a href="manageDealers.php">Manage Dealer Applications</a></li>' . "\r\n";
+                                         echo '<li><a href="dealerConfig.php">Dealer Application Configuration</a></li>' . "\r\n";
+                                         echo '<li><a href="dealerTablePrices.php">Configure Dealer Table Prices</a></li>' . "\r\n";
+                                     }
+                                     echo '<li>(Reports will be here in the near future.)</li>' . "\r\n";
                                  }
                                  if(DoesUserBelongHere("Marketing"))
                                  {
@@ -115,6 +123,7 @@ $interests = UserInterests();
 									 }
 									 if(DoesUserBelongHere("Treasurer")) {
 										 echo '<hr><div class="headertitle">Treasurer Functions</div>' . "\r\n";
+										 echo '<li><a href="manageMailedInvoices.php">Manage Mailed Invoice Payments</a></li>' . "\r\n";
 										 echo '<li><a href="artShowSalesSummary.php">Art Show Sales Summary</a></li>' . "\r\n";
 										 echo '<li><a href="registrationStats.php">Registration Statistics</a></li>' . "\r\n";
 										 echo '<li><a href="registrationSalesSummary.php">Registration Sales Summary</a></li>' . "\r\n";
