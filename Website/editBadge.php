@@ -275,15 +275,13 @@ if(isset($badge))
                       }
                       if(DoesUserBelongHere("Treasurer"))
                       {
-                          echo 'Refunds should only be done in extreme cases.<br>';
                           if($disableRefund)
                               echo '<input type="submit" onclick="return false;" value="Refund Badge" class="masterTooltip" title="' . $disableMessage . '" readonly><br><br>';
                           else
                               echo '<input type="submit" onclick="refundBadge(); return false;" value="Refund Badge">' . ($badge["PaymentSource"] == "PayPal" ? " Note: This badge can only be refunded in the next " . (60 - $diff) . " day" . ((60 - $diff) == 1 ? "" : "s") . " via PayPal." : "") . '<br><br>';
                       } ?>
 				<?php echo ($badge["PaymentSource"] == "PayPal" ? '<p style="font-weight: bold;">CONTACT CHRIS (IT) BEFORE REFUNDING PAYPAL! Untested code!</p>' : ""); ?>
-				<?php /*  <input type="submit" onclick="rolloverBadge(); return false;" value="Rollover Badge to <?php echo date("n") >= 3 ? date("Y") + 2: date("Y") + 1; ?>" <?php echo (($badge["Status"] == "Rolled Over" || $badge["AmountPaid"] == 0) ? "disabled" : ""); ?>> */ ?>
-				<p>The rollover option has been removed per the Board. Phandemonium does not do rollovers.</p>
+				<input type="submit" onclick="rolloverBadge(); return false;" value="Rollover Badge to <?php echo date("n") >= 3 ? date("Y") + 2: date("Y") + 1; ?>" <?php echo (($badge["Status"] == "Rolled Over" || $badge["AmountPaid"] == 0) ? "disabled" : ""); ?>>
 				<br>
 				</form>
 				<div id="actionResult"></div>
