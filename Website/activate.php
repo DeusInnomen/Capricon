@@ -31,11 +31,10 @@
 			    foreach($interests as $interest)
 			    {
 				    $db->query("INSERT INTO PeopleInterests (PeopleID, Interest) VALUES ($peopleID, '$interest')");
-				    // REMOVE AFTER NEXT CAP
 				    if($interest == "ArtShow")
-				    {
 					    $db->query("INSERT INTO Permissions (PeopleID, Permission) VALUES ($peopleID, 'Artist')");
-				    }
+				    if($interest == "Dealer")
+					    $db->query("INSERT INTO Permissions (PeopleID, Permission) VALUES ($peopleID, 'Dealer')");
 			    }
 		    }
         }

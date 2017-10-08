@@ -1,7 +1,7 @@
 <?php
 	session_start();
 	include_once('includes/functions.php');
-	
+
 	if(!isset($_SESSION['PeopleID']))
 	{
 		echo '{ "success": false, "message": "No user is logged in." }';
@@ -27,15 +27,25 @@
 
 	if(isset($_POST['intArtShow']))
 	{
-		$result = $db->query("SELECT PermissionID FROM Permissions WHERE PeopleID = $peopleID AND Permission = 'Artist'");
+		$result = $db->query("SELECT PermissionID FROM Permissions WHERE PeopleID = $id AND Permission = 'Artist'");
 		if($result->num_rows == 0)
-			$db->query("INSERT INTO Permissions (PeopleID, Permission) VALUES ($peopleID, 'Artist')");
-		else
-		{
-			$result->close();
-			$db->query("DELETE FROM Permissions WHERE PeopleID = $peopleID AND Permission = 'Artist'");
-		}
-	}
+			$db->query("INSERT INTO Permissions (PeopleID, Permission) VALUES ($id, 'Artist')");
+        else
+	        $result->close();
+    }
+    else
+        $db->query("DELETE FROM Permissions WHERE PeopleID = $id AND Permission = 'Artist'");
+
+    if(isset($_POST['intDealer']))
+	{
+		$result = $db->query("SELECT PermissionID FROM Permissions WHERE PeopleID = $id AND Permission = 'Dealer'");
+		if($result->num_rows == 0)
+            $db->query("INSERT INTO Permissions (PeopleID, Permission) VALUES ($id, 'Dealer')");
+        else
+	        $result->close();
+    }
+    else
+        $db->query("DELETE FROM Permissions WHERE PeopleID = $id AND Permission = 'Dealer'");
 
 	echo '{ "success": true, "message": "Your interests have been saved." }';
 ?>
