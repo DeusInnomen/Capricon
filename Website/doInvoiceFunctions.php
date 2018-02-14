@@ -135,55 +135,70 @@
                     $price = $row["BadgeFee"];
                     $result->close();
 
+                    $result = $db->query("SELECT BadgeID FROM PurchasedBadges WHERE Year = $year AND PeopleID = " . $_SESSION["PeopleID"]);
+                    if($result->num_rows > 0) {
+                        $hasBadge = true;
+                        $result->close();
+                    }
+                    else
+                        $hasBadge = false;
+
                     $sql = "SELECT p.FirstName, p.LastName, p.BadgeName, d.Address1, d.Address2, d.Address3, d.City, d.State, d.ZipCode, d.Country, d.Phone, d.PhoneType FROM People p "
                         . "JOIN Dealer d ON p.PeopleID = d.PeopleID JOIN DealerPresence dp ON dp.DealerID = d.DealerID WHERE dp.DealerPresenceID = $presenceID";
                     $result = $db->query($sql);
                     $dealer = $result->fetch_array();
                     $result->close();
 
-                    $badgeName = $db->real_escape_string($dealer["BadgeName"]);
-                    $badgeNumber = GetNextBadgeNumber($year);
-                    foreach($invoiceData as $line) {
-                        if($line["Description"] == "Dealer's Badge Fee")
-                            $price = $line["Price"];
-                    }
-                    $message .= "Badges Generated:\r\n$badgeName (#$badgeNumber for " . $dealer["FirstName"] . " " . $dealer["LastName"] . ")\r\n";
-
-                    $sql = "INSERT INTO PurchasedBadges (Year, PeopleID, PurchaserID, BadgeNumber, BadgeTypeID, BadgeName, Status, " .
-                        "OriginalPrice, AmountPaid, PaymentSource, PaymentReference, RecordID, Created) VALUES ($year, " .
-                        "$peopleID, $peopleID, $badgeNumber, 1, '$badgeName', 'Paid', $price, $price, '$source', '$ref', $recordID, NOW())";
-                    $db->query($sql);
-
                     $result = $db->query("SELECT BadgeName, FirstName, LastName, Price, BadgeTypeID FROM DealerBadges WHERE DealerPresenceID = $presenceID");
                     $badges = array();
                     while($row = $result->fetch_array())
                         $badges[] = $row;
                     $result->close();
-                    foreach($badges as $badge) {
-                        $badgeName = $badge["BadgeName"];
-                        $price = $badge["Price"];
-                        $badgeTypeID = $badge["BadgeTypeID"];
-                        $badgeNumber = GetNextBadgeNumber($year);
 
-                        $sql = "INSERT INTO OneTimeRegistrations (FirstName, LastName, Address1, Address2, City, State, Country, ZipCode, Phone1, Phone1Type) "
-                            . "VALUES ('" . $db->real_escape_string($badge["FirstName"])
-                            . "', '" . $db->real_escape_string($badge["LastName"])
-                            . "', '" . $db->real_escape_string($dealer["Address1"])
-                            . "', '" . $db->real_escape_string($dealer["Address2"])
-                            . "', '" . $db->real_escape_string($dealer["City"])
-                            . "', '" . $db->real_escape_string($dealer["State"])
-                            . "', '" . $db->real_escape_string($dealer["Country"])
-                            . "', '" . $db->real_escape_string($dealer["ZipCode"])
-                            . "', '" . $db->real_escape_string($dealer["Phone"])
-                            . "', '" . $db->real_escape_string($dealer["PhoneType"]) . "')";
-                        $db->query($sql);
-                        $oneTimeID = $db->insert_id;
+                    if(!$hasBadge || sizeof($badges) > 0) {
+                        $message .= "Badges Generated:\r\n";
 
-                        $sql = "INSERT INTO PurchasedBadges (Year, OneTimeID, PurchaserID, BadgeNumber, BadgeTypeID, BadgeName, Status, " .
-                            "OriginalPrice, AmountPaid, PaymentSource, PaymentReference, RecordID, Created) VALUES ($year, " .
-                            "$oneTimeID, $peopleID, $badgeNumber, $badgeTypeID, '$badgeName', 'Paid', $price, $price, '$source', '$ref', $recordID, NOW())";
-                        $db->query($sql);
-                        $message .= "$badgeName (#$badgeNumber for " . $badge["FirstName"] . " " . $badge["LastName"] . ")\r\n";
+                        if(!$hasBadge) {
+                            $badgeName = $db->real_escape_string($dealer["BadgeName"]);
+                            $badgeNumber = GetNextBadgeNumber($year);
+                            foreach($invoiceData as $line) {
+                                if($line["Description"] == "Dealer's Badge Fee")
+                                    $price = $line["Price"];
+                            }
+
+                            $sql = "INSERT INTO PurchasedBadges (Year, PeopleID, PurchaserID, BadgeNumber, BadgeTypeID, BadgeName, Status, " .
+                                "OriginalPrice, AmountPaid, PaymentSource, PaymentReference, RecordID, Created) VALUES ($year, " .
+                                "$peopleID, $peopleID, $badgeNumber, 1, '$badgeName', 'Paid', $price, $price, '$source', '$ref', $recordID, NOW())";
+                            $db->query($sql);
+
+                            $message .= "$badgeName (#$badgeNumber for " . $dealer["FirstName"] . " " . $dealer["LastName"] . ")\r\n";
+                        }
+                        foreach($badges as $badge) {
+                            $badgeName = $badge["BadgeName"];
+                            $price = $badge["Price"];
+                            $badgeTypeID = $badge["BadgeTypeID"];
+                            $badgeNumber = GetNextBadgeNumber($year);
+
+                            $sql = "INSERT INTO OneTimeRegistrations (FirstName, LastName, Address1, Address2, City, State, Country, ZipCode, Phone1, Phone1Type) "
+                                . "VALUES ('" . $db->real_escape_string($badge["FirstName"])
+                                . "', '" . $db->real_escape_string($badge["LastName"])
+                                . "', '" . $db->real_escape_string($dealer["Address1"])
+                                . "', '" . $db->real_escape_string($dealer["Address2"])
+                                . "', '" . $db->real_escape_string($dealer["City"])
+                                . "', '" . $db->real_escape_string($dealer["State"])
+                                . "', '" . $db->real_escape_string($dealer["Country"])
+                                . "', '" . $db->real_escape_string($dealer["ZipCode"])
+                                . "', '" . $db->real_escape_string($dealer["Phone"])
+                                . "', '" . $db->real_escape_string($dealer["PhoneType"]) . "')";
+                            $db->query($sql);
+                            $oneTimeID = $db->insert_id;
+
+                            $sql = "INSERT INTO PurchasedBadges (Year, OneTimeID, PurchaserID, BadgeNumber, BadgeTypeID, BadgeName, Status, " .
+                                "OriginalPrice, AmountPaid, PaymentSource, PaymentReference, RecordID, Created) VALUES ($year, " .
+                                "$oneTimeID, $peopleID, $badgeNumber, $badgeTypeID, '$badgeName', 'Paid', $price, $price, '$source', '$ref', $recordID, NOW())";
+                            $db->query($sql);
+                            $message .= "$badgeName (#$badgeNumber for " . $badge["FirstName"] . " " . $badge["LastName"] . ")\r\n";
+                        }
                     }
                     $message .= "\r\n";
 

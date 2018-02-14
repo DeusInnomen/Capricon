@@ -45,7 +45,6 @@ $interests = UserInterests();
                                  echo '<li><a href="manageRelatedPeople.php">Manage Related People</a></li>' . "\r\n";
                                  echo '<li><a href="manageMailingLists.php">Manage Mailing List Subscriptions</a></li>' . "\r\n";
                                  echo '<hr><div class="headertitle">Convention Participation</div>' . "\r\n";
-                                 echo '<li><a href="programIdeas.php">Submit a Program Panel Idea</a></li>' . "\r\n";
                                  echo '<li><a href="https://zambia.capricon.org" target="_new">Program Participant Application</a></li>' . "\r\n";
                                  if(DoesUserBelongHere("Program"))
                                  {
@@ -89,7 +88,7 @@ $interests = UserInterests();
                                          echo '<li><a href="dealerConfig.php">Dealer Application Configuration</a></li>' . "\r\n";
                                          echo '<li><a href="dealerTablePrices.php">Configure Dealer Table Prices</a></li>' . "\r\n";
                                      }
-                                     echo '<li>(Reports will be here in the near future.)</li>' . "\r\n";
+                                     echo '<li><a href="dealerReportApproved.php">Download Approved Dealer Report (CSV)</a></li>' . "\r\n";
                                  }
                                  if(DoesUserBelongHere("Marketing"))
                                  {
@@ -142,7 +141,6 @@ $interests = UserInterests();
                                  echo '<li><a href="forgotpassword.php">Reset Your Account Password</a></li>' . "\r\n";
                                  echo "<hr>\r\n";
                                  echo '<div class="headertitle">Other Useful Links</div>' . "\r\n";
-                                 echo '<li><a href="programIdeas.php">Submit a Program Panel Idea</a></li>' . "\r\n";
                                  echo '<li><a href="manageMailingLists.php">Manage Mailing List Subscriptions</a></li>' . "\r\n";
                                  echo "<hr>\r\n";
                                  echo '<li><a href="blankRegForm.php">Download a Blank Registration Form (PDF)</a></li>' . "\r\n";

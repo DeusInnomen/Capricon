@@ -27,7 +27,6 @@ $total = 0.0;
 $num = -1;
 
 $_SESSION["InvoiceIDs"] = $invoiceIds;
-unset($_SESSION["InvoiceIDs"]);
 
 $padata =	'&METHOD=SetExpressCheckout' .
           '&RETURNURL=' . urlencode("https://registration.capricon.org/processInvoices.php") .

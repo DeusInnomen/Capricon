@@ -25,14 +25,17 @@
     <IncludeDebugInformation>false</IncludeDebugInformation>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="addManualCharge.php" />
     <Compile Include="artShowSales.php" />
     <Compile Include="artShowSalesSummary.php" />
     <Compile Include="dealerApplication.php" />
     <Compile Include="dealerConfig.php" />
     <Compile Include="dealerDetails.php" />
+    <Compile Include="dealerReportApproved.php" />
     <Compile Include="dealerTablePrices.php" />
     <Compile Include="doDealerFunctions.php" />
     <Compile Include="doInvoiceFunctions.php" />
+    <Compile Include="doManualCharge.php" />
     <Compile Include="doManualRegistration.php" />
     <Compile Include="editArtItem.php" />
     <Compile Include="functions\.htaccess" />

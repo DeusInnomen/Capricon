@@ -62,7 +62,7 @@ else
     <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
     <script type="text/javascript" src="includes/jquery.payment.js"></script>
     <script type="text/javascript">
-        Stripe.setPublishableKey('<?php $stripePublicKey; ?>');
+        Stripe.setPublishableKey('<?php echo $stripePublicKey; ?>');
 
 		var stripeResponseHandler = function(status, response) {
 			var $form = $("#cc-payment-form");
@@ -354,7 +354,7 @@ else
 								    <img src="includes/card_logos.gif" class="masterTooltip" title="We accept Visa, Mastercard, American Express, Discover, JCB and Diner's Club.">
 							    </div>
 						    </div>
-						    <button type="submit">Submit Payment</button><span class="payment-errors"></span>
+						    <button type="submit">Submit Payment</button><br /><span class="payment-errors"></span>
 					    </form>
 				    </div>
 				    <div id="paymentPaypal" style="display: none;">

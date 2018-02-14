@@ -239,7 +239,7 @@
                 $mail->FromName = "Capricon Registration System";
                 $mail->AddAddress("dealers@capricon.org", "Capricon Dealers");
                 $mail->WordWrap = 135;
-                $mail->Subject = "New Dealer Application Received";
+                $mail->Subject = "New Dealer Application Received (" . $dealer["CompanyName"] . ")";
                 $msg = "Hello! This email is to let you know that a request to be a Dealer at the next Capricon has been received:\r\n\r\n";
                 $msg .= "Company: " . $dealer["CompanyName"] . "\r\n";
                 $msg .= "Contact: " . $dealer["FirstName"] . " " . $dealer["LastName"] . "\r\n";
@@ -294,6 +294,46 @@
                     . "AddedDetails = '$addedDetails' WHERE DealerPresenceID = $dealerPresenceID";
                 $db->query($sql);
                 $verb = "updated";
+
+                $numBadges = (!empty($_POST["addlFName1"]) ? 1 : 0) + (!empty($_POST["addlFName2"]) ? 1 : 0) + (!empty($_POST["addlFName3"]) ? 1 : 0) + (!empty($_POST["addlFName4"]) ? 1 : 0)
+                    + (!empty($_POST["addlFName5"]) ? 1 : 0);
+
+                $result = $db->query("SELECT FirstName, LastName, Email, CompanyName, Description, ContactEmail, OnlyUseThisEmail FROM DealerPresence dp " .
+                    "JOIN Dealer d on d.DealerID = dp.DealerID JOIN People p ON d.PeopleID = p.PeopleID WHERE DealerPresenceID = $dealerPresenceID");
+                $dealer = $result->fetch_array();
+                $result->close();
+
+                $mail = new PHPMailer;
+                $mail->isSMTP();
+                $mail->SMTPAuth = true;
+                $mail->Port = 587;
+                $mail->Host = "mail.capricon.org";
+                $mail->Username = "outgoing@capricon.org";
+                $mail->Password = $smtpPass;
+                $mail->From = "registration@capricon.org";
+                $mail->FromName = "Capricon Registration System";
+                $mail->AddAddress("dealers@capricon.org", "Capricon Dealers");
+                $mail->WordWrap = 135;
+                $mail->Subject = "Updated Dealer Application Received (" . $dealer["CompanyName"] . ")";
+                $msg = "Hello! This email is to let you know that a request to be a Dealer at the next Capricon has been updated:\r\n\r\n";
+                $msg .= "Company: " . $dealer["CompanyName"] . "\r\n";
+                $msg .= "Contact: " . $dealer["FirstName"] . " " . $dealer["LastName"] . "\r\n";
+                $msg .= "Email: ";
+                if($dealer["OnlyUseThisEmail"] == 1)
+                    $msg .= $dealer["ContactEmail"] . "\r\n";
+                else if(empty($dealer["ContactEmail"]))
+                    $msg .= $dealer["Email"] . "\r\n";
+                else
+                    $msg .= $dealer["ContactEmail"] . " or " . $dealer["Email"] . "\r\n";
+                $msg .= "Description: " . $dealer["Description"] . "\r\n";
+                $msg .= "Tables Requested: $tableCount\r\n";
+                $msg .= "Electricity Needed? " . ($electric == 1 ? "Yes" : "No") . "\r\n";
+                $msg .= "# Extra Badges: $numBadges\r\n";
+                if(!empty($addedDetails) && trim($addedDetails) != "")
+                    $msg .= "Additional Details: $addedDetails\r\n";
+                $msg .= "You may view or update this application by going to https://registration.capricon.org/manageDealers.php. \r\n\r\nSincerely,\r\nThe Capricon Registration System\r\n";
+                $mail->Body = $msg;
+                $mail->Send();
             }
 
             $db->query("DELETE FROM DealerBadges WHERE DealerPresenceID = $dealerPresenceID");
@@ -436,6 +476,15 @@
                 $result->close();
                 $tableFee = $row["Price"];
 
+                $result = $db->query("SELECT BadgeID FROM PurchasedBadges WHERE Year = $year AND PeopleID = " . $_SESSION["PeopleID"]);
+                if($result->num_rows > 0) {
+                    $hasBadge = true;
+                    $result->close();
+                }
+                else
+                    $hasBadge = false;
+
+
                 $badges = array();
                 if($presenceID != "") {
                     $result = $db->query("SELECT BadgeName, FirstName, LastName, Price, BadgeTypeID FROM DealerBadges WHERE DealerPresenceID = $presenceID");
@@ -456,7 +505,8 @@
                     if($electric) {
                         $db->query("INSERT INTO InvoiceLine (InvoiceID, LineNumber, Description, Price, Tax) VALUES ($invoiceID, " . $lineNum++ . ", 'Fee for Electricity', $electricFee, 0)");
                     }
-                    $db->query("INSERT INTO InvoiceLine (InvoiceID, LineNumber, Description, Price, Tax) VALUES ($invoiceID, " . $lineNum++ . ", 'Dealer\\'s Badge Fee', $badgeFee, 0)");
+                    if(!$hasBadge)
+                        $db->query("INSERT INTO InvoiceLine (InvoiceID, LineNumber, Description, Price, Tax) VALUES ($invoiceID, " . $lineNum++ . ", 'Dealer\\'s Badge Fee', $badgeFee, 0)");
                     foreach($badges as $badge)
                         $db->query("INSERT INTO InvoiceLine (InvoiceID, LineNumber, Description, Price, Tax) VALUES ($invoiceID, " . $lineNum++ . ", 'Badge Fee for \"" . $db->real_escape_string($badge["BadgeName"]) . "\"', " . $badge["Price"] . ", 0)");
                 }
@@ -507,9 +557,10 @@
                         $msg .= "The Dealers Team has included the following message for you:\r\n\r\n$message\r\n\r\n";
                     $msg .= "An invoice has been generated based on your request, and the details are as follows:\r\n\r\n";
                     $msg .= $invoiceMessage . "\r\n";
-                    $msg .= "You may make a payment online within the Registration system at https://registration.capricon.org/invoices.php " .
-                        "using a credit card or Paypal. Thank you so much for considering Capricon for selling your products!\r\n\r\nSincerely,\r\nThe " .
-						"Capricon Dealers Team";
+                    $msg .= "You may make a payment online within the Registration system at https://registration.capricon.org/invoices.php "
+                        . "using a credit card, Paypal, or mailed-in check. If you wish to pay this invoice with a check, select the 'Mail-In Payment' option when paying "
+                        . "the invoice. This will let us know you will be mailing in a check for the payment, and it will send you an email with a PDF to print out and "
+                        . "send to us with your payment.\r\n\r\nThank you so much for considering Capricon for selling your products!\r\n\r\nSincerely,\r\nThe Capricon Dealers Team";
                     $mail->Body = $msg;
                     $mail->Send();
 
@@ -533,12 +584,17 @@
                     return;
                 }
 
-                $result = $db->query("SELECT InvoiceID FROM Invoice WHERE InvoiceType = 'Dealer' AND RelatedRecordID = $presenceID ORDER BY Created DESC LIMIT 1");
+                $result = $db->query("SELECT InvoiceID, Status FROM Invoice WHERE InvoiceType = 'Dealer' AND RelatedRecordID = $presenceID ORDER BY Created DESC LIMIT 1");
                 if($result->num_rows > 0) {
                     $row = $result->fetch_array();
                     $invoiceID = $row["InvoiceID"];
+                    $invoiceStatus = $row["Status"];
                     $result->close();
 
+                    if($invoiceStatus == "Paid") {
+                        echo '{ "success": false, "message": "This application has a paid invoice and cannot be modified." }';
+                        return;
+                    }
                     $db->query("UPDATE Invoice SET Status = 'Cancelled', Cancelled = NOW() WHERE InvoiceID = $invoiceID");
                 }
 
@@ -567,7 +623,7 @@
                 }
             }
         }
-        else if($status == "Waitlist") {
+        else if($status == "Waitlist" || $status == "Pending") {
             foreach($presenceIDs as $presenceID) {
                 $result = $db->query("SELECT FirstName, LastName, Email, CompanyName, ContactEmail, OnlyUseThisEmail FROM DealerPresence dp " .
                     "JOIN Dealer d on d.DealerID = dp.DealerID JOIN People p ON d.PeopleID = p.PeopleID WHERE DealerPresenceID = $presenceID");
@@ -581,12 +637,16 @@
                     return;
                 }
 
-                $result = $db->query("SELECT InvoiceID FROM Invoice WHERE InvoiceType = 'Dealer' AND RelatedRecordID = $presenceID ORDER BY Created DESC LIMIT 1");
+                $result = $db->query("SELECT InvoiceID, Status FROM Invoice WHERE InvoiceType = 'Dealer' AND RelatedRecordID = $presenceID ORDER BY Created DESC LIMIT 1");
                 if($result->num_rows > 0) {
                     $row = $result->fetch_array();
                     $invoiceID = $row["InvoiceID"];
+                    $invoiceStatus = $row["Status"];
                     $result->close();
-
+                    if($invoiceStatus == "Paid") {
+                        echo '{ "success": false, "message": "This application has a paid invoice and cannot be modified." }';
+                        return;
+                    }
                     $db->query("UPDATE Invoice SET Status = 'Cancelled', Cancelled = NOW() WHERE InvoiceID = $invoiceID");
                 }
 
@@ -605,17 +665,28 @@
                     if(!empty($dealer["ContactEmail"]))
                         $mail->AddAddress($dealer["ContactEmail"], $dealer["CompanyName"]);
                     $mail->WordWrap = 70;
-                    $mail->Subject = "Waitlisting of your Capricon Dealer's Hall Application";
-                    $msg = "Hello! This email is to let you know that your request to be a Dealer at the next Capricon has been waitlist. ";
-                    if(!empty($message))
-                        $msg .= "The Dealers Team has included the following message for you:\r\n\r\n$message\r\n\r\n";
-                    $msg .= "If you have any questions, please contact the team at dealers@capricon.org!\r\n\r\nSincerely,\r\nThe Capricon Dealers Team\r\n";
+                    if($status == "Pending") {
+                        $mail->Subject = "Return of your Capricon Dealer's Hall Application";
+                        $msg = "Hello! This email is to let you know that your request to be a Dealer at the next Capricon has been returned to you in the "
+                            . "'Pending' status. You can now make edits as you wish. If there was an unpaid Invoice, it has been cancelled. Please contact us "
+                            . "when you have finished making your changes. ";
+                        if(!empty($message))
+                            $msg .= "The Dealers Team has included the following message for you:\r\n\r\n$message\r\n\r\n";
+                        $msg .= "If you have any questions, please contact the team at dealers@capricon.org!\r\n\r\nSincerely,\r\nThe Capricon Dealers Team\r\n";
+                    }
+                    else {
+                        $mail->Subject = "Waitlisting of your Capricon Dealer's Hall Application";
+                        $msg = "Hello! This email is to let you know that your request to be a Dealer at the next Capricon has been waitlist. ";
+                        if(!empty($message))
+                            $msg .= "The Dealers Team has included the following message for you:\r\n\r\n$message\r\n\r\n";
+                        $msg .= "If you have any questions, please contact the team at dealers@capricon.org!\r\n\r\nSincerely,\r\nThe Capricon Dealers Team\r\n";
+                    }
                     $mail->Body = $msg;
                     $mail->Send();
                 }
             }
         }
-        echo '{ "success": true, "message": "The application has been successfully updated.' . ($noEmail ? ' An email was not generated for this updated.' : "") . '" }';
+        echo '{ "success": true, "message": "The application has been successfully updated.' . ($noEmail ? ' An email was not generated for this update.' : "") . '" }';
     }
 	else
 		echo '{ "success": false, "message": "Unknown request submitted." }';

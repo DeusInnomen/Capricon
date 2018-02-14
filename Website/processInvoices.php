@@ -23,15 +23,23 @@ function HandleCart()
     $token = isset($_POST["stripeToken"]) ? $_POST["stripeToken"] : "";
     $method = isset($_POST["method"]) ? $_POST["method"] : "";
     $invoiceIds = isset($_SESSION["InvoiceIDs"]) ? $_SESSION["InvoiceIDs"] : $_POST["invoiceIDs"];
+    if(isset($_SESSION["InvoiceIDs"]))
+        unset($_SESSION["InvoiceIDs"]);
+    error_log("DEBUG: Session InvoiceIDs = '" + $_SESSION["InvoiceIDs"] + "'");
+    error_log("DEBUG: Post InvoiceIDs = '" + $_POST["invoiceIDs"] + "'");
+    error_log("DEBUG: InvoiceIDs = '$invoiceIds'");
     $ref = "";
     $message = "";
     $year = date("n") >= 3 ? date("Y") + 1: date("Y");
     $capriconYear = $year - 1980;
     $peopleID = $_SESSION["PeopleID"];
 
-    $result = $db->query("SELECT i.InvoiceID, i.InvoiceType, i.PeopleID, i.RelatedRecordID, i.Status, ils.SubTotal, ils.Taxes, ils.TotalDue, i.Created, i.Sent, i.Fulfilled, i.Cancelled, il.LineNumber, "
+    $sql = "SELECT i.InvoiceID, i.InvoiceType, i.PeopleID, i.RelatedRecordID, i.Status, ils.SubTotal, ils.Taxes, ils.TotalDue, i.Created, i.Sent, i.Fulfilled, i.Cancelled, il.LineNumber, "
         . "il.Description, il.Price, il.Tax, il.ReferenceID FROM Invoice i JOIN InvoiceLine il ON i.InvoiceID = il.InvoiceID JOIN (SELECT InvoiceID, SUM(Price) AS SubTotal, SUM(Tax) AS Taxes, "
-        . "SUM(Price) + SUM(Tax) AS TotalDue FROM InvoiceLine GROUP BY InvoiceID) ils ON i.InvoiceID = ils.InvoiceID WHERE i.InvoiceID IN ($invoiceIds) ORDER BY Created DESC, LineNumber ASC");
+        . "SUM(Price) + SUM(Tax) AS TotalDue FROM InvoiceLine GROUP BY InvoiceID) ils ON i.InvoiceID = ils.InvoiceID WHERE i.InvoiceID IN ($invoiceIds) ORDER BY Created DESC, LineNumber ASC";
+    error_log("DEBUG: Invoice SQL = $sql");
+
+    $result = $db->query($sql);
     $invoices = array(); // Full invoices with lines
     $invoicesShort = array(); // Just the first line, for Paypal processing
     $priceTotal = 0.0;
@@ -181,7 +189,7 @@ function HandleCart()
             $body .= "Taxes:            " . sprintf("$%01.2f", $taxTotal) . "\r\n";
         }
         $body .= "Total To Be Paid: " . sprintf("$%01.2f", $total) . "\r\n\r\n";
-        $body .= "Attached to this email is a PDF containing your invoice. Please print this out and mail it with a check for the total amount due to:\r\n\r\n" 
+        $body .= "Attached to this email is a PDF containing your invoice. Please print this out and mail it with a check for the total amount due to:\r\n\r\n"
             . "Capricon\r\n"
             . "126 E Wing Street #244\r\n"
             . "Arlington Heights, IL 60004\r\n\r\n"

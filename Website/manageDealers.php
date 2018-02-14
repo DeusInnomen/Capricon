@@ -11,11 +11,12 @@ else
 
     $dealers = array();
     $result = $db->query("SELECT dp.DealerPresenceID, d.CompanyName, IFNULL(d.LegalName, d.CompanyName) AS LegalName, dp.NumTables, dp.ElectricalNeeded, dp.AddedDetails, dp.Status, " 
-        . "dp.StatusReason, IFNULL(i.Status, 'Not Created') AS InvoiceStatus, il.Amount AS InvoiceAmount, i.Created AS InvoiceCreated, i.Sent AS InvoiceSent, i.Fulfilled AS InvoiceFulfilled, " 
-        . "i.Cancelled AS InvoiceCancelled FROM DealerPresence dp JOIN Dealer d ON dp.DealerID = d.DealerID LEFT OUTER JOIN (SELECT i1.InvoiceID, i1.RelatedRecordID, i1.Status, i1.Created, " 
-        . "i1.Sent, i1.Fulfilled, i1.Cancelled FROM Invoice i1 LEFT OUTER JOIN Invoice i2 ON i1.RelatedRecordID = i2.RelatedRecordID AND i1.Created < i2.Created AND i1.InvoiceType = 'Dealer' " 
-        . "WHERE i2.RelatedRecordID IS NULL) i ON i.RelatedRecordID = dp.DealerPresenceID LEFT OUTER JOIN (SELECT InvoiceID, SUM(Price) + SUM(Tax) AS Amount FROM InvoiceLine GROUP BY InvoiceID) il " 
-        . "ON i.InvoiceID = il.InvoiceID WHERE dp.Year = $year ORDER BY FIELD(dp.Status, 'Pending', 'Waitlist', 'Approved', 'Rejected'), d.CompanyName ASC");
+        . "dp.StatusReason, IFNULL(i.Status, 'Not Created') AS InvoiceStatus, il.Amount AS InvoiceAmount, i.Created AS InvoiceCreated, i.Sent AS InvoiceSent, i.Fulfilled AS InvoiceFulfilled, "
+        . "i.Cancelled AS InvoiceCancelled, IFNULL(b.Badges, 0) AS Badges FROM DealerPresence dp JOIN Dealer d ON dp.DealerID = d.DealerID LEFT OUTER JOIN (SELECT i1.InvoiceID, i1.RelatedRecordID, " 
+        . "i1.Status, i1.Created, i1.Sent, i1.Fulfilled, i1.Cancelled FROM Invoice i1 LEFT OUTER JOIN Invoice i2 ON i1.RelatedRecordID = i2.RelatedRecordID AND i1.Created < i2.Created AND " 
+        . "i1.InvoiceType = 'Dealer' WHERE i2.RelatedRecordID IS NULL) i ON i.RelatedRecordID = dp.DealerPresenceID LEFT OUTER JOIN (SELECT InvoiceID, SUM(Price) + SUM(Tax) AS Amount FROM " 
+        . "InvoiceLine GROUP BY InvoiceID) il ON i.InvoiceID = il.InvoiceID LEFT OUTER JOIN (SELECT DealerPresenceID, COUNT(DealerBadgeID) AS Badges FROM DealerBadges GROUP BY DealerPresenceID) b " 
+        . "ON b.DealerPresenceID = dp.DealerPresenceID WHERE dp.Year = $year ORDER BY FIELD(dp.Status, 'Pending', 'Waitlist', 'Approved', 'Rejected'), d.CompanyName ASC");
 	while($row = $result->fetch_array())
 		$dealers[] = $row;
 	$result->close();
@@ -118,7 +119,7 @@ else
                             foreach($dealers as $dealer)
                             {
                                 if($dealer["Status"] == "Approved" || $dealer["Status"] == "Rejected") {
-                                    echo "<tr class=\"masterTooltip\" title=\"Legal Name: " . $dealer["LegalName"] . "<br>Added Details:<br>" . $dealer["AddedDetails"];
+                                    echo "<tr class=\"masterTooltip\" title=\"Legal Name: " . $dealer["LegalName"] . "<br>Extra Badges: " . $dealer["Badges"] . "<br>Added Details:<br>" . $dealer["AddedDetails"];
                                     if(!empty($dealer["InvoiceStatus"])){
                                         echo "<br><br>Invoice Amount: " . sprintf("$%01.2f", $dealer["InvoiceAmount"]);
                                         if(!empty($dealer["InvoiceSent"]))
@@ -153,6 +154,7 @@ else
                     With Selected: <select id="action" name="action" style="width: 165px;" disabled>
                         <option value="Approved" selected>Approve Requests</option>
                         <option value="Rejected">Reject Requests</option>
+                        <option value="Pending">Send Requests Back</option>
                         <option value="Waitlist">Waitlist Requests</option>
                         <option value="NoChange">Update Reason Only</option>
                     </select><label for="reason" style=" margin-left: 15px;">Reason: <input type="text" id="reason" name="reason" style="width: 40%;" maxlength="100" placeholder="Optional" disabled></label>

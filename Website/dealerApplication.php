@@ -8,10 +8,8 @@ elseif(!DoesUserBelongHere("Dealer"))
 else
 {
     $result = $db->query("SELECT DealerID FROM Dealer WHERE PeopleID = " . $_SESSION["PeopleID"]);
-    if($result->num_rows == 0) {
+    if($result->num_rows == 0)
         header('Location: dealerDetails.php');
-        //exit();
-    }
     else
         $result->close();
 
@@ -65,6 +63,14 @@ else
             $badges[] = $row;
         $result->close();
     }
+
+    $result = $db->query("SELECT BadgeID FROM PurchasedBadges WHERE Year = $year AND PeopleID = " . $_SESSION["PeopleID"]);
+    if($result->num_rows > 0) {
+        $hasBadge = true;
+        $result->close();
+    }
+    else
+        $hasBadge = false;
 
     $result = $db->query("SELECT InvoiceID, Status, Sent, Fulfilled FROM Invoice WHERE InvoiceType = 'Dealer' AND RelatedRecordID = $presenceID");
     if($result->num_rows > 0)
@@ -129,7 +135,7 @@ else
             <?php if($canEdit) { ?>
             var tables = $("#tables").val();
             var tableVals = tables.split(";");
-       		var badgePrice = <?php echo $config["BadgeFee"]; ?>;
+       		var badgePrice = <?php echo $hasBadge ? "0" : $config["BadgeFee"]; ?>;
 			var total = +badgePrice + +tableVals[1];
             if($("#electricity").prop("checked")) total += <?php echo $config["ElectricFee"]; ?>;
             if($("#addlKid1").prop("checked") || $("#addlKid2").prop("checked") || $("#addlKid3").prop("checked") || $("#addlKid4").prop("checked") || $("#addlKid5").prop("checked"))
@@ -269,7 +275,17 @@ else
                     <label>My booth requires electricity (<?php echo sprintf("$%01.2f", $config["ElectricFee"]); ?> Fee) <input type="checkbox" name="electricity" id="electricity" onchange="toggleRegFormData();" <?php if($request["ElectricalNeeded"] == 1) echo "checked"; ?>/></label><br />
                     <label for="addedDetails" class="fieldLabelShort">Additional Details or Requests: </label><br />
                     <textarea id="addedDetails" name="addedDetails" maxlength="500" rows="4" placeholder="(Optional) Additional Information To Be Given To The Dealers Team" style="width: 98%;"><?php echo $request["AddedDetails"]; ?></textarea><br />
-                    <span>Badge Fee for Your Badge: <span style="font-weight: bold;"><? echo sprintf("$%01.2f", $config["BadgeFee"]); ?></span> (All badges that are added below are at the same fee.)</span><br /><br />
+                    <?php if($hasBadge) { ?>
+                    <p>You already have a badge for this convention year and do not need to buy a badge for yourself. 
+                    </p>
+                    <?php } else { ?>
+                    <p>The fee for buying Badges to be included with your table is <span style="font-weight: bold;"><? echo sprintf("$%01.2f", $config["BadgeFee"]); ?></span>. A badge for you is 
+                        automatically added as we require you to have a badge in order to have a dealer table, and we will create the badge for you using your account information.
+                    </p>
+                    <?php } ?>
+                    <p>If you need to purchase additional badges other than your badge, use the following form. You may add up to five badges, for a fee of <span style="font-weight: bold;">
+                        <? echo sprintf("$%01.2f", $config["BadgeFee"]); ?></span> each. (There is no fee for a kid-in-tow badge if you are bringing someone who is under the age of 13.)
+                    </p>
                     Extra Badge #1<br /><label>First Name: <input type="text" name="addlFName1" id="addlFName1" style="width: 100px;" onkeyup="toggleRegFormData();" value="<?php echo $badges[0]["FirstName"]; ?>"></label> 
 					<label>Last Name: <input type="text" name="addlLName1" id="addlLName1" style="width: 100px;" value="<?php echo $badges[0]["LastName"]; ?>"></label> 
 					<label>Badge Name: <input type="text" name="addlBadge1" id="addlBadge1" style="width: 160px;" placeholder="Named Used If Blank" value="<?php echo $badges[0]["BadgeName"]; ?>"></label>
@@ -293,7 +309,7 @@ else
                     <span id="kitNotice"></span>
                     <hr />
                     <p>
-                        Total Dealer Registration Fee: <span style="font-weight: bold; font-size: 1.1em">$<span id="totalFees"><?php echo sprintf("%01.2f", $startTotal); ?></span></span><br/><br/>
+                        Total Dealer Table and Badge(s) Registration Fee: <span style="font-weight: bold; font-size: 1.1em">$<span id="totalFees"><?php echo sprintf("%01.2f", $startTotal); ?></span></span><br/><br/>
                         You will receive an email (sent to both your account email as well as your business email, if provided) when your application status is updated, and an invoice (with a link to pay the invoice online) 
                         will be sent once the application has been approved. You may make changes to your application while it is in either the 'Pending' or the 'Waitlist' status.<br/><br/>Please note! Once the application 
                         is Approved or Rejected, you can no longer make changes to the application and must contact <a href="mailto:dealers@capricon.org?subject=Dealers%20Application">Capricon Dealers</a> with your request.
