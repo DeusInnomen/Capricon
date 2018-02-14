@@ -8,8 +8,8 @@
         $mailInFee = 5.00;
 
 		$year = date("n") >= 3 ? date("Y") + 1: date("Y");
-		$result = $db->query("SELECT ap.ArtistAttendingID, ad.IsEAP, ap.WaiveFees, p.IsCharity, ap.ShippingPref, ap.ArtistNumber FROM ArtistPresence ap INNER JOIN ArtistDetails ad ON " .
-			"ad.ArtistID = ap.ArtistID INNER JOIN People p ON ad.PeopleID = p.PeopleID WHERE ap.Year = $year AND PeopleID = " . $_SESSION["PeopleID"]);
+		$result = $db->query("SELECT ap.ArtistAttendingID, ad.IsEAP, ap.FeesWaived, p.IsCharity, ap.ShippingPref, ap.ArtistNumber FROM ArtistPresence ap INNER JOIN ArtistDetails ad ON " .
+			"ad.ArtistID = ap.ArtistID INNER JOIN People p ON ad.PeopleID = p.PeopleID WHERE ap.Year = $year AND ad.PeopleID = " . $_SESSION["PeopleID"]);
 		$row = $result->fetch_array();
 		$attendingID = $row["ArtistAttendingID"];
 		$isEAP = $row["IsEAP"];

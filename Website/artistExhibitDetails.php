@@ -130,8 +130,8 @@
 					<div class="headertitle">About My Artwork</div>
 					<label for="needsElectricity"><input type="checkbox" name="needsElectricity" id="needsElectricity" <?php echo ($request["NeedsElectricity"] ? "checked" : ""); ?> />Some of my work will require electricity.</label></br />
 					<label for="hasPrintShop"><input type="checkbox" name="hasPrintShop" id="hasPrintShop" <?php echo ($request["HasPrintShop"] ? "checked" : ""); ?> />I have items to sell in the Print Shop.</label></br />
-					<label for="numTables">Anticipated Number of 1.5' by 6' Tables Needed: <input type="number" name="numTables" id="numTables" min="0" max="9" value="<?php echo $request["NumTables"]; ?>" /></label></br />
-					<label for="numGrid">Anticipated Number of 4' Wide by 7' Tall Gridwall Needed: <input type="number" name="numGrid" id="numGrid" min="0" max="9" value="<?php echo $request["NumGrid"]; ?>" /></label></br />
+					<label for="numTables">Anticipated # of 1.5' by 6' Tables Needed: <input type="number" name="numTables" id="numTables" min="0" max="9" value="<?php echo $request["NumTables"]; ?>" /></label></br />
+					<label for="numGrid">Anticipated # of 4' Wide by 7' Tall Gridwall Panels Needed: <input type="number" name="numGrid" id="numGrid" min="0" max="9" value="<?php echo $request["NumGrid"]; ?>" /></label></br />
 					<span style="font-style: italic; font-size: 0.9em;">A reminder: this is a gallery-style show. You are reserving auction display space only, not vendor's space.</span>
 					<div class="headertitle">Method of Delivery and Handling</div>
 					<label for="isAttending" class="fieldLabelShort"><input type="radio" name="delivery" id="isAttending" value="isAttending" 
