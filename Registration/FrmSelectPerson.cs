@@ -42,18 +42,21 @@ namespace Registration
             {
                 TxtRecipientName.Text = ((Person)LstPeople.SelectedItems[0].Tag).Name;
                 BtnSelect.Enabled = true;
+                BtnAddChild.Enabled = ((Person)LstPeople.SelectedItems[0].Tag).ParentID == null;
                 useNewPerson = false;
             }
             else if (NewPerson != null)
             {
                 TxtRecipientName.Text = NewPerson.Name;
                 BtnSelect.Enabled = true;
+                BtnAddChild.Enabled = true;
                 useNewPerson = true;
             }
             else
             {
                 TxtRecipientName.Text = "";
                 BtnSelect.Enabled = false;
+                BtnAddChild.Enabled = false;
                 useNewPerson = false;
             }
 
@@ -131,6 +134,7 @@ namespace Registration
                 item.SubItems.Add(person.LastName);
                 item.SubItems.Add(person.Email);
                 item.SubItems.Add(person.BadgeName);
+                item.SubItems.Add(person.ParentName ?? "");
                 item.Tag = person;
                 LstPeople.Items.Add(item);
             }
@@ -148,6 +152,7 @@ namespace Registration
                 NewPerson = addForm.Person;
                 TxtRecipientName.Text = NewPerson.Name;
                 BtnSelect.Enabled = true;
+                BtnAddChild.Enabled = true;
                 useNewPerson = true;
             }
             DialogResult = DialogResult.None;
@@ -156,6 +161,26 @@ namespace Registration
         private void BtnCancel_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
+        }
+
+        private void BtnAddChild_Click(object sender, EventArgs e)
+        {
+            if (useNewPerson && NewPerson != null)
+            {
+                NewPerson.Save();
+                LstPeople.SelectedItems[0].Tag = NewPerson;
+            }
+
+            var addForm = new FrmNewRelatedPerson(null, useNewPerson ? NewPerson : (Person)LstPeople.SelectedItems[0].Tag);
+            if (addForm.ShowDialog(this) == DialogResult.OK)
+            {
+                NewPerson = addForm.Person;
+                TxtRecipientName.Text = NewPerson.Name;
+                BtnSelect.Enabled = true;
+                useNewPerson = true;
+            }
+            DialogResult = DialogResult.None;
+
         }
     }
 }

@@ -45,13 +45,15 @@
             this.TxtRecipientName = new System.Windows.Forms.TextBox();
             this.BtnSearch = new System.Windows.Forms.Button();
             this.BtnCancel = new System.Windows.Forms.Button();
+            this.BtnAddChild = new System.Windows.Forms.Button();
+            this.colParentName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SuspendLayout();
             // 
             // label6
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Lucida Console", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(9, 51);
+            this.label6.Location = new System.Drawing.Point(6, 77);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(87, 13);
             this.label6.TabIndex = 10;
@@ -60,9 +62,9 @@
             // TxtLastName
             // 
             this.TxtLastName.Font = new System.Drawing.Font("Lucida Console", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TxtLastName.Location = new System.Drawing.Point(102, 47);
+            this.TxtLastName.Location = new System.Drawing.Point(99, 73);
             this.TxtLastName.Name = "TxtLastName";
-            this.TxtLastName.Size = new System.Drawing.Size(204, 20);
+            this.TxtLastName.Size = new System.Drawing.Size(163, 20);
             this.TxtLastName.TabIndex = 11;
             this.TxtLastName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TxtLastName_KeyPress);
             // 
@@ -74,15 +76,16 @@
             this.colFirstName,
             this.colLastName,
             this.colEmail,
-            this.colBadgeName});
+            this.colBadgeName,
+            this.colParentName});
             this.LstPeople.Font = new System.Drawing.Font("Lucida Console", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LstPeople.FullRowSelect = true;
             this.LstPeople.GridLines = true;
             this.LstPeople.HideSelection = false;
-            this.LstPeople.Location = new System.Drawing.Point(6, 76);
+            this.LstPeople.Location = new System.Drawing.Point(5, 102);
             this.LstPeople.MultiSelect = false;
             this.LstPeople.Name = "LstPeople";
-            this.LstPeople.Size = new System.Drawing.Size(668, 223);
+            this.LstPeople.Size = new System.Drawing.Size(783, 242);
             this.LstPeople.SmallImageList = this.SortImages;
             this.LstPeople.TabIndex = 14;
             this.LstPeople.UseCompatibleStateImageBehavior = false;
@@ -99,12 +102,12 @@
             // colLastName
             // 
             this.colLastName.Text = "Last Name";
-            this.colLastName.Width = 159;
+            this.colLastName.Width = 152;
             // 
             // colEmail
             // 
             this.colEmail.Text = "Email Address";
-            this.colEmail.Width = 184;
+            this.colEmail.Width = 150;
             // 
             // colBadgeName
             // 
@@ -121,9 +124,8 @@
             // BtnAddPerson
             // 
             this.BtnAddPerson.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnAddPerson.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.BtnAddPerson.Font = new System.Drawing.Font("Lucida Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnAddPerson.Location = new System.Drawing.Point(550, 42);
+            this.BtnAddPerson.Location = new System.Drawing.Point(529, 69);
             this.BtnAddPerson.Name = "BtnAddPerson";
             this.BtnAddPerson.Size = new System.Drawing.Size(127, 27);
             this.BtnAddPerson.TabIndex = 13;
@@ -134,8 +136,9 @@
             // BtnSelect
             // 
             this.BtnSelect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.BtnSelect.Enabled = false;
             this.BtnSelect.Font = new System.Drawing.Font("Lucida Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnSelect.Location = new System.Drawing.Point(547, 310);
+            this.BtnSelect.Location = new System.Drawing.Point(662, 350);
             this.BtnSelect.Name = "BtnSelect";
             this.BtnSelect.Size = new System.Drawing.Size(127, 27);
             this.BtnSelect.TabIndex = 17;
@@ -148,19 +151,18 @@
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.Font = new System.Drawing.Font("Lucida Console", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(6, 9);
+            this.label1.Location = new System.Drawing.Point(12, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(668, 30);
+            this.label1.Size = new System.Drawing.Size(783, 57);
             this.label1.TabIndex = 9;
-            this.label1.Text = "Search for the person you want using the form below. If you need to add them to t" +
-    "he system, press the \"Add Person\" button.";
+            this.label1.Text = resources.GetString("label1.Text");
             // 
             // label5
             // 
             this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Lucida Console", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(5, 318);
+            this.label5.Location = new System.Drawing.Point(5, 358);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(87, 13);
             this.label5.TabIndex = 15;
@@ -170,7 +172,7 @@
             // 
             this.TxtRecipientName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.TxtRecipientName.Font = new System.Drawing.Font("Lucida Console", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TxtRecipientName.Location = new System.Drawing.Point(98, 315);
+            this.TxtRecipientName.Location = new System.Drawing.Point(98, 355);
             this.TxtRecipientName.Name = "TxtRecipientName";
             this.TxtRecipientName.ReadOnly = true;
             this.TxtRecipientName.Size = new System.Drawing.Size(247, 20);
@@ -180,7 +182,7 @@
             // 
             this.BtnSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.BtnSearch.Font = new System.Drawing.Font("Lucida Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnSearch.Location = new System.Drawing.Point(418, 42);
+            this.BtnSearch.Location = new System.Drawing.Point(397, 69);
             this.BtnSearch.Name = "BtnSearch";
             this.BtnSearch.Size = new System.Drawing.Size(126, 27);
             this.BtnSearch.TabIndex = 12;
@@ -193,7 +195,7 @@
             this.BtnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.BtnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.BtnCancel.Font = new System.Drawing.Font("Lucida Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnCancel.Location = new System.Drawing.Point(414, 310);
+            this.BtnCancel.Location = new System.Drawing.Point(529, 350);
             this.BtnCancel.Name = "BtnCancel";
             this.BtnCancel.Size = new System.Drawing.Size(127, 27);
             this.BtnCancel.TabIndex = 18;
@@ -201,12 +203,31 @@
             this.BtnCancel.UseVisualStyleBackColor = true;
             this.BtnCancel.Click += new System.EventHandler(this.BtnCancel_Click);
             // 
+            // BtnAddChild
+            // 
+            this.BtnAddChild.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.BtnAddChild.Enabled = false;
+            this.BtnAddChild.Font = new System.Drawing.Font("Lucida Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BtnAddChild.Location = new System.Drawing.Point(662, 69);
+            this.BtnAddChild.Name = "BtnAddChild";
+            this.BtnAddChild.Size = new System.Drawing.Size(127, 27);
+            this.BtnAddChild.TabIndex = 19;
+            this.BtnAddChild.Text = "Add Child";
+            this.BtnAddChild.UseVisualStyleBackColor = true;
+            this.BtnAddChild.Click += new System.EventHandler(this.BtnAddChild_Click);
+            // 
+            // colParentName
+            // 
+            this.colParentName.Text = "Parent Name";
+            this.colParentName.Width = 153;
+            // 
             // FrmSelectPerson
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(685, 344);
+            this.ClientSize = new System.Drawing.Size(800, 384);
             this.ControlBox = false;
+            this.Controls.Add(this.BtnAddChild);
             this.Controls.Add(this.BtnCancel);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.TxtLastName);
@@ -243,5 +264,7 @@
         private System.Windows.Forms.Button BtnSearch;
         private System.Windows.Forms.Button BtnCancel;
         private System.Windows.Forms.ImageList SortImages;
+        private System.Windows.Forms.ColumnHeader colParentName;
+        private System.Windows.Forms.Button BtnAddChild;
     }
 }

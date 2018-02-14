@@ -106,11 +106,12 @@
 		$heardFrom = !empty($person["HeardFrom"]) ? $db->real_escape_string($person["HeardFrom"]) : "";
 		$email = !empty($person["Email"]) ? $db->real_escape_string($person["Email"]) : "";
 		$badgeName = $db->real_escape_string($person["BadgeName"]);
+        $parentId = !empty($person["ParentID"]) ? $db->real_escape_string($person["ParentID"]) : "NULL";
 
 		if($action == "SaveNewPerson")
 		{
 			$response = array();
-			$sql = "INSERT INTO People (FirstName, LastName, Address1, Address2, City, State, ZipCode, Country, Phone1, Phone1Type, Phone2, Phone2Type, HeardFrom, Email, Password, Registered, BadgeName) VALUES ('$fName', '$lName', '$add1', $add2, '$city', $state, $zip, $country, $phone1, $phone1Type, $phone2, $phone2Type, '$heardFrom', '$email', '$password', NOW(), '$badgeName')";
+			$sql = "INSERT INTO People (FirstName, LastName, Address1, Address2, City, State, ZipCode, Country, Phone1, Phone1Type, Phone2, Phone2Type, HeardFrom, Email, Password, Registered, BadgeName, ParentID) VALUES ('$fName', '$lName', '$add1', $add2, '$city', $state, $zip, $country, $phone1, $phone1Type, $phone2, $phone2Type, '$heardFrom', '$email', '$password', NOW(), '$badgeName', $parentId)";
 			if($db->query($sql) === false)
 			{
 				$response["result"] = "Failure";

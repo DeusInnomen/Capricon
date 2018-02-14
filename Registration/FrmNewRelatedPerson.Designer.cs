@@ -54,6 +54,7 @@
             this.BtnCancel.TabIndex = 112;
             this.BtnCancel.Text = "Cancel";
             this.BtnCancel.UseVisualStyleBackColor = true;
+            this.BtnCancel.Click += new System.EventHandler(this.BtnCancel_Click);
             // 
             // BtnSave
             // 
@@ -65,6 +66,7 @@
             this.BtnSave.TabIndex = 111;
             this.BtnSave.Text = "Save Person";
             this.BtnSave.UseVisualStyleBackColor = true;
+            this.BtnSave.Click += new System.EventHandler(this.BtnSave_Click);
             // 
             // CmbPhoneType2
             // 
