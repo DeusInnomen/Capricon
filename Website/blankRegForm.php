@@ -36,7 +36,7 @@
 	$pdf->Cell(0, 5, 'https://registration.capricon.org', 0, 1, 'C');
 	$pdf->Ln(5);
 	$pdf->SetFont('Arial', '', 12);
-	$pdf->Cell(0, 6, 'To register for the Caprcion ' . $capriconYear . ' convention, please fill in the following information:', 0, 1);
+	$pdf->Cell(0, 6, 'To register for Capricon ' . $capriconYear . ', please fill in the following information:', 0, 1);
 	$pdf->Ln(3);
 	$pdf->SetFont('Arial', '', 10);
 	$pdf->Cell(0, 10, 'Name: _________________________________  Badge Name: _______________________________________________', 0, 1);
