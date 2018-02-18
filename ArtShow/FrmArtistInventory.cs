@@ -618,7 +618,7 @@ namespace ArtShow
         {
 
         }
-
+        /*
         private void BtnPrintShopLabels_Click(object sender, EventArgs e)
         {
             _currentTagPrintNumber = 0;
@@ -726,6 +726,157 @@ namespace ArtShow
             gfx.Dispose();
 
             var resized = new Bitmap(image, image.Width / 6, image.Height / 6);
+            return resized;
+        }
+
+        private List<string> WrapText(string text, double pixels, Font font)
+        {
+            string[] originalLines = text.Split(new string[] { " " }, StringSplitOptions.None);
+
+            List<string> wrappedLines = new List<string>();
+
+            StringBuilder actualLine = new StringBuilder();
+            double actualWidth = 0;
+
+            foreach (var item in originalLines)
+            {
+                int w = TextRenderer.MeasureText(item + " ", font).Width * 5; // 5x to deal with resolution.
+                actualWidth += w;
+
+                if (actualWidth > pixels)
+                {
+                    wrappedLines.Add(actualLine.ToString());
+                    actualLine.Clear();
+                    actualWidth = w;
+                }
+
+                actualLine.Append(item + " ");
+            }
+
+            if (actualLine.Length > 0)
+                wrappedLines.Add(actualLine.ToString());
+
+            return wrappedLines;
+        }
+        */
+
+        private void BtnPrintShopLabels_Click(object sender, EventArgs e)
+        {
+            _currentTagPrintNumber = 0;
+            var labelPageSize = new PaperSize("4\" by 6\" Label Sheet", 400, 600);
+            var document = new PrintDocument();
+            document.PrinterSettings.DefaultPageSettings.PaperSize = labelPageSize;
+            document.DefaultPageSettings.PaperSize = labelPageSize;
+            document.PrintPage += PrintShopDocumentOnPrintPage;
+            var dialog = new PrintDialog
+            {
+                Document = document,
+                AllowSomePages = true,
+                AllowCurrentPage = false,
+                AllowSelection = true,
+                AllowPrintToFile = true
+            };
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                _PrintShopTagsToPrint.AddRange(
+                    (from ListViewItem item in lstPrintShop.SelectedItems select (PrintShopItem)item.Tag).ToList());
+                document.PrinterSettings.DefaultPageSettings.PaperSize = labelPageSize;
+                document.DefaultPageSettings.PaperSize = labelPageSize;
+                document.Print();
+            }
+        }
+
+        private void BtnPrintShopAllLabels_Click(object sender, EventArgs e)
+        {
+            _currentTagPrintNumber = 0;
+            var labelPageSize = new PaperSize("4\" by 6\" Label Sheet", 400, 600);
+            var document = new PrintDocument();
+            document.PrinterSettings.DefaultPageSettings.PaperSize = labelPageSize;
+            document.DefaultPageSettings.PaperSize = labelPageSize;
+            document.PrintPage += PrintShopDocumentOnPrintPage;
+            var dialog = new PrintDialog
+            {
+                Document = document,
+                AllowSomePages = true,
+                AllowCurrentPage = false,
+                AllowSelection = true,
+                AllowPrintToFile = true
+            };
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                _PrintShopTagsToPrint.AddRange(
+                    (from ListViewItem item in lstPrintShop.Items select (PrintShopItem)item.Tag).ToList());
+                document.PrinterSettings.DefaultPageSettings.PaperSize = labelPageSize;
+                document.DefaultPageSettings.PaperSize = labelPageSize;
+                document.Print();
+            }
+        }
+
+        private void PrintShopDocumentOnPrintPage(object sender, PrintPageEventArgs e)
+        {
+            var leftMargin = e.PageBounds.Width / 12;
+            var topMargin = e.PageBounds.Height / 12;
+            var tagNumber = 1;
+            while (tagNumber <= 5)
+            {
+                var tag = CompressTag(DrawPrintShopLabel(_PrintShopTagsToPrint[0], e));
+                e.Graphics.DrawImage(tag,
+                    leftMargin,
+                    e.PageBounds.Top + topMargin + ((tagNumber - 1) * topMargin * 2),
+                    e.PageBounds.Width * 0.75F,
+                    e.PageBounds.Height / 6);
+                _currentTagPrintNumber++;
+                if (_PrintShopTagsToPrint[0].QuantitySent == _currentTagPrintNumber)
+                {
+                    _PrintShopTagsToPrint.RemoveAt(0);
+                    _currentTagPrintNumber = 0;
+                }
+                if (_PrintShopTagsToPrint.Count == 0) break;
+                tagNumber++;
+            }
+            if (_PrintShopTagsToPrint.Count > 0) e.HasMorePages = true;
+        }
+
+        private Bitmap DrawPrintShopLabel(PrintShopItem item, PrintPageEventArgs e)
+        {
+            //var normalFont = FontHandler.LoadFont("Hypatia Sans Pro", FontStyle.Regular);
+            //var boldFont = FontHandler.LoadFont("Hypatia San Pro", FontStyle.Bold) ?? normalFont;
+            //var fontText = new Font(normalFont, 12);
+            //var fontTextBold = new Font(boldFont, 14, FontStyle.Bold);
+            var fontText = new Font("Lucida Sans", 12);
+            var fontTextBold = new Font("Lucida Sans", 14, FontStyle.Bold);
+
+            var leftCentered = new StringFormat { LineAlignment = StringAlignment.Center, Alignment = StringAlignment.Near };
+            var rightCentered = new StringFormat { LineAlignment = StringAlignment.Center, Alignment = StringAlignment.Far };
+
+            var settings = new PrinterSettings();
+            var resX = settings.DefaultPageSettings.PrinterResolution.X;
+            var resY = settings.DefaultPageSettings.PrinterResolution.Y;
+            var imageWidth = resX * 3;
+            var imageHeight = resY;
+
+            var image = new Bitmap(imageWidth, imageHeight);
+            image.SetResolution(resX, resY);
+            var gfx = Graphics.FromImage(image);
+            var currentY = 0F;
+
+            var text = item.Title;
+            var textLines = WrapText(text, image.Width, fontTextBold);
+            foreach (string line in textLines)
+            {
+                gfx.DrawString(line, fontTextBold, Brushes.Black, new RectangleF(0, currentY, image.Width, fontTextBold.GetHeight(gfx)), leftCentered);
+                currentY += (float)(fontTextBold.GetHeight(gfx) * 1.05);
+            }
+            if (textLines.Count == 1)
+                currentY += (float)(fontTextBold.GetHeight(gfx) * 1.05);
+            text = Artist.DisplayName;
+            gfx.DrawString(text, fontText, Brushes.Black, new RectangleF(0, currentY, image.Width, fontText.GetHeight(gfx)), leftCentered);
+            text = item.Price.ToString("C");
+            gfx.DrawString(text, fontText, Brushes.Black, new RectangleF(0, currentY, image.Width, fontText.GetHeight(gfx)), rightCentered);
+
+            gfx.Dispose();
+
+            var resized = new Bitmap(image, image.Width / 4, image.Height / 4);
             return resized;
         }
 

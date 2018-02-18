@@ -3,6 +3,7 @@ using System.Net;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using Stripe;
 
 namespace ArtShow
 {
@@ -39,6 +40,8 @@ namespace ArtShow
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            StripeConfiguration.SetApiKey(Properties.Settings.Default.StripeKey);
+
 #if !DEBUG
             {  
   

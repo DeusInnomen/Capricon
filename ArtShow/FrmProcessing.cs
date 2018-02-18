@@ -39,33 +39,35 @@ namespace ArtShow
 
             var thread = new Thread(new ThreadStart(delegate
             {
-                var api = Properties.Settings.Default.StripeKey;
-                var tokenService = new StripeTokenService(api);
+                var tokenService = new StripeTokenService();
                 try
                 {
                     var description = Description + " for ";
                     var tokenData = new StripeTokenCreateOptions
                     {
-                        CardNumber = CardNumber,
-                        CardExpirationMonth = CardMonth,
-                        CardExpirationYear = CardYear,
-                        CardCvc = CardCVC
+                        Card = new StripeCreditCardOptions
+                        {
+                            Number = CardNumber,
+                            ExpirationMonth = Convert.ToInt32(CardMonth),
+                            ExpirationYear = Convert.ToInt32(CardYear),
+                            Cvc = CardCVC
+                        }
                     };
 
                     if (Person != null)
                     {
-                        tokenData.CardAddressLine1 = Person.Address1;
-                        tokenData.CardAddressLine2 = Person.Address2;
-                        tokenData.CardAddressCity = Person.City;
-                        tokenData.CardAddressState = Person.State;
-                        tokenData.CardAddressZip = Person.ZipCode;
-                        tokenData.CardAddressCountry = Person.Country;
-                        tokenData.CardName = Person.Name;
+                        tokenData.Card.AddressLine1 = Person.Address1;
+                        tokenData.Card.AddressLine2 = Person.Address2;
+                        tokenData.Card.AddressCity = Person.City;
+                        tokenData.Card.AddressState = Person.State;
+                        tokenData.Card.AddressZip = Person.ZipCode;
+                        tokenData.Card.AddressCountry = Person.Country;
+                        tokenData.Card.Name = Person.Name;
                         description += Person.Name + " (#" + Person.PeopleID + ")";
                     }
                     else
                     {
-                        tokenData.CardName = PayeeName;
+                        tokenData.Card.Name = PayeeName;
                         description += PayeeName;
                     }
 
@@ -73,25 +75,25 @@ namespace ArtShow
 
                     var chargeData = new StripeChargeCreateOptions
                     {
-                        TokenId = token.Id,
+                        SourceTokenOrExistingSourceId = token.Id,
                         Description = description,
-                        AmountInCents = Convert.ToInt32(Amount * 100),
+                        Amount = Convert.ToInt32(Amount * 100),
                         Currency = "usd"
                     };
-                    var chargeService = new StripeChargeService(api);
+                    var chargeService = new StripeChargeService();
 
                     if (!FirstTry)
                     {
                         // Double-check to see if we already have a charge recently that matches the details of this. Helps with dealing
                         // with timeout scenarios to prevent double-charges.
-                        var lastCharges = chargeService.List(20, 0, null);
+                        var lastCharges = chargeService.List(new StripeChargeListOptions() { Limit = 20 });
                         foreach (var charge in lastCharges)
                         {
-                            if (charge.StripeCard.Last4 == CardNumber.Substring(CardNumber.Length - 4) &&
-                                charge.StripeCard.ExpirationMonth.PadLeft(2, '0') == CardMonth &&
-                                charge.StripeCard.ExpirationYear.Substring(2) == CardYear &&
-                                charge.AmountInCents == Convert.ToInt32(Amount * 100) &&
-                                charge.Description == "Purchases for " + Person.Name + " (#" + Person.PeopleID + ")")
+                            if (charge.Source.Card.Last4 == CardNumber.Substring(CardNumber.Length - 3) &&
+                                charge.Source.Card.ExpirationMonth == Convert.ToInt32(CardMonth) &&
+                                charge.Source.Card.ExpirationYear == Convert.ToInt32(CardYear) &&
+                                charge.Amount == Convert.ToInt32(Amount * 100) &&
+                                charge.Description == description)
                             {
                                 Charge = charge;
                                 break;

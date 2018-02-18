@@ -38,46 +38,50 @@ namespace Registration
 
             var thread = new Thread(new ThreadStart(delegate
             {
-                var api = Properties.Settings.Default.StripeKey;
-                var tokenService = new StripeTokenService(api);
+                var tokenService = new StripeTokenService();
                 try
                 {
                     var tokenData = new StripeTokenCreateOptions
                     {
-                        CardAddressLine1 = Person.Address1,
-                        CardAddressLine2 = Person.Address2,
-                        CardAddressCity = Person.City,
-                        CardAddressState = Person.State,
-                        CardAddressZip = Person.ZipCode,
-                        CardAddressCountry = Person.Country,
-                        CardName = Person.Name,
-                        CardNumber = CardNumber,
-                        CardExpirationMonth = CardMonth,
-                        CardExpirationYear = CardYear,
-                        CardCvc = CardCVC
+                        Card = new StripeCreditCardOptions
+                        {
+                            AddressLine1 = Person.Address1,
+                            AddressLine2 = Person.Address2,
+                            AddressCity = Person.City,
+                            AddressState = Person.State,
+                            AddressZip = Person.ZipCode,
+                            AddressCountry = Person.Country,
+                            Name = Person.Name,
+                            Number = CardNumber,
+                            ExpirationMonth = Convert.ToInt32(CardMonth),
+                            ExpirationYear = Convert.ToInt32(CardYear),
+                            Cvc = CardCVC
+                        }
                     };
+                    
                     var token = tokenService.Create(tokenData);
 
                     var chargeData = new StripeChargeCreateOptions()
                     {
-                        TokenId = token.Id,
+                        SourceTokenOrExistingSourceId = token.Id,
                         Description = "Purchases for " + Person.Name + " (#" + Person.PeopleID + ")",
-                        AmountInCents = Convert.ToInt32(Amount * 100),
+                        Amount = Convert.ToInt32(Amount * 100),
                         Currency = "usd"
                     };
-                    var chargeService = new StripeChargeService(api);
+
+                    var chargeService = new StripeChargeService();
 
                     if (!FirstTry)
                     {
                         // Double-check to see if we already have a charge recently that matches the details of this. Helps with dealing
                         // with timeout scenarios to prevent double-charges.
-                        var lastCharges = chargeService.List(20, 0, null);
+                        var lastCharges = chargeService.List(new StripeChargeListOptions() { Limit = 20 });
                         foreach (var charge in lastCharges)
                         {
-                            if (charge.StripeCard.Last4 == CardNumber.Substring(CardNumber.Length - 4) &&
-                                charge.StripeCard.ExpirationMonth.PadLeft(2, '0') == CardMonth &&
-                                charge.StripeCard.ExpirationYear.Substring(2) == CardYear &&
-                                charge.AmountInCents == Convert.ToInt32(Amount * 100) &&
+                            if (charge.Source.Card.Last4 == CardNumber.Substring(CardNumber.Length - 4) &&
+                                charge.Source.Card.ExpirationMonth == Convert.ToInt32(CardMonth) &&
+                                charge.Source.Card.ExpirationYear == Convert.ToInt32(CardYear) &&
+                                charge.Amount == Convert.ToInt32(Amount * 100) &&
                                 charge.Description == "Purchases for " + Person.Name + " (#" + Person.PeopleID + ")")
                             {
                                 Charge = charge;

@@ -77,6 +77,7 @@ namespace Registration
                 request.ContentLength = data.Length;
                 request.ContentType = "application/x-www-form-urlencoded";
                 request.Method = "POST";
+                request.Timeout = 20000;
                 using (var stream = request.GetRequestStream())
                     stream.Write(data, 0, data.Length);
 
@@ -146,6 +147,7 @@ namespace Registration
             request.ContentLength = data.Length;
             request.ContentType = "application/x-www-form-urlencoded";
             request.Method = "POST";
+            request.Timeout = 20000;
             using (var stream = request.GetRequestStream())
                 stream.Write(data, 0, data.Length);
 

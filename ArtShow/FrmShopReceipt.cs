@@ -16,14 +16,16 @@ namespace ArtShow
         private List<PrintShopItem> Items { get; set; }
         private string Source { get; set; }
         private string Reference { get; set; }
+        private decimal Tax { get; set; }
         
-        public FrmShopReceipt(Person purchaser, List<PrintShopItem> items, string source, string reference)
+        public FrmShopReceipt(Person purchaser, List<PrintShopItem> items, string source, string reference, decimal taxes)
         {
             InitializeComponent();
             Purchaser = purchaser;
             Items = items;
             Source = source;
             Reference = reference;
+            Tax = taxes;
         }
 
         private void FrmShopReceipt_Load(object sender, EventArgs e)
@@ -34,6 +36,7 @@ namespace ArtShow
             RptViewer.LocalReport.SetParameters(new ReportParameter("CapriconYear", year));
             RptViewer.LocalReport.SetParameters(new ReportParameter("PaymentSource", Source));
             RptViewer.LocalReport.SetParameters(new ReportParameter("PaymentReference", Reference));
+            RptViewer.LocalReport.SetParameters(new ReportParameter("Taxes", Tax.ToString("G")));
             PrintShopItemBindingSource.DataSource = Items;
             RptViewer.RefreshReport();
         }

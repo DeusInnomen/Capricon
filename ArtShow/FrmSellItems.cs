@@ -249,7 +249,7 @@ namespace ArtShow
             {
                 MessageBox.Show("Your purchases have been recorded! Your reference number is \"" + reference + "\".",
                                 "Purchase Complete", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                var receipt = new FrmShopReceipt(Purchaser, items, source, reference);
+                var receipt = new FrmShopReceipt(Purchaser, items, source, reference, TotalTax);
                 receipt.ShowDialog();
                 DialogResult = DialogResult.OK;
             }

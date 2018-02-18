@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using DYMO.Label.Framework;
+using Stripe;
 
 namespace Registration
 {
@@ -26,6 +27,8 @@ namespace Registration
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            StripeConfiguration.SetApiKey(Properties.Settings.Default.StripeKey);
+
 #if !DEBUG
 {  
   

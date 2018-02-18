@@ -174,6 +174,8 @@
 				else
 					$response["result"] = "Success";
 			}
+            else
+                $response["result"] = "Success";
 		}
 
 		header("Content-type: application/json");
