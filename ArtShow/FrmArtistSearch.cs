@@ -21,6 +21,7 @@ namespace ArtShow
         {
             InitializeComponent();
             LstPeople.Columns[1].ImageIndex = 0;
+            ChkOnlyInventory.Checked = Program.WithInventoryOnly;
         }
 
         private void BtnSearch_Click(object sender, EventArgs e)
@@ -32,6 +33,8 @@ namespace ArtShow
                 payload += "&whereField=LastName&whereTerm=" + TxtLastName.Text + "&whereSimilar=true";
             else if (TxtEmail.TextLength > 0)
                 payload += "&whereField=Email&whereTerm=" + TxtEmail.Text + "&whereSimilar=true";
+            if (ChkOnlyInventory.Checked)
+                payload += "&withInventory=true";
 
             var data = Encoding.ASCII.GetBytes(payload);
             
@@ -152,6 +155,11 @@ namespace ArtShow
                 BtnSearch_Click(sender, new EventArgs());
                 e.Handled = true;
             }
+        }
+
+        private void ChkOnlyInventory_CheckedChanged(object sender, EventArgs e)
+        {
+            Program.WithInventoryOnly = ChkOnlyInventory.Checked;
         }
     }
 }

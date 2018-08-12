@@ -31,12 +31,18 @@ namespace ArtShow
         }
 
         /// <summary>
+        /// Saves the current state of the "Show Artists With Inventory Only" checkbox on forms with Artist searching.
+        /// </summary>
+        public static bool WithInventoryOnly { get; set; }
+
+        /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
         static void Main()
         {
             Year = DateTime.Now.Month > 4 ? DateTime.Now.Year + 1 : DateTime.Now.Year;
+            WithInventoryOnly = false;
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;

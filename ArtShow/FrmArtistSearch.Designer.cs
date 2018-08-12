@@ -32,6 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmArtistSearch));
             this.LstPeople = new System.Windows.Forms.ListView();
             this.colID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colDisplayName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colFirstName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colLastName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colEmail = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -47,7 +48,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.BtnClear = new System.Windows.Forms.Button();
             this.BtnNewAccount = new System.Windows.Forms.Button();
-            this.colDisplayName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.ChkOnlyInventory = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // LstPeople
@@ -80,6 +81,11 @@
             // 
             this.colID.Text = "#";
             this.colID.Width = 52;
+            // 
+            // colDisplayName
+            // 
+            this.colDisplayName.Text = "Display Name";
+            this.colDisplayName.Width = 166;
             // 
             // colFirstName
             // 
@@ -208,16 +214,23 @@
             this.BtnNewAccount.UseVisualStyleBackColor = true;
             this.BtnNewAccount.Click += new System.EventHandler(this.BtnNewAccount_Click);
             // 
-            // colDisplayName
+            // ChkOnlyInventory
             // 
-            this.colDisplayName.Text = "Display Name";
-            this.colDisplayName.Width = 166;
+            this.ChkOnlyInventory.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+            this.ChkOnlyInventory.Location = new System.Drawing.Point(353, 37);
+            this.ChkOnlyInventory.Name = "ChkOnlyInventory";
+            this.ChkOnlyInventory.Size = new System.Drawing.Size(133, 47);
+            this.ChkOnlyInventory.TabIndex = 11;
+            this.ChkOnlyInventory.Text = "Show Only Artists With Inventory";
+            this.ChkOnlyInventory.UseVisualStyleBackColor = true;
+            this.ChkOnlyInventory.CheckedChanged += new System.EventHandler(this.ChkOnlyInventory_CheckedChanged);
             // 
             // FrmArtistSearch
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(906, 433);
+            this.Controls.Add(this.ChkOnlyInventory);
             this.Controls.Add(this.BtnNewAccount);
             this.Controls.Add(this.BtnClear);
             this.Controls.Add(this.label5);
@@ -260,5 +273,6 @@
         private System.Windows.Forms.Button BtnClear;
         private System.Windows.Forms.Button BtnNewAccount;
         private System.Windows.Forms.ColumnHeader colDisplayName;
+        private System.Windows.Forms.CheckBox ChkOnlyInventory;
     }
 }

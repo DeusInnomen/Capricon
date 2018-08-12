@@ -76,7 +76,7 @@ namespace ArtShow
         {
             if (People == null)
             {
-                var data = Encoding.ASCII.GetBytes("action=GetUsers");
+                var data = Encoding.ASCII.GetBytes("action=GetUsers&year=" + Program.Year.ToString());
                 var request = WebRequest.Create(Program.URL + "/functions/artQuery.php");
                 request.ContentLength = data.Length;
                 request.ContentType = "application/x-www-form-urlencoded";

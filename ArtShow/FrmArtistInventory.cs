@@ -37,7 +37,7 @@ namespace ArtShow
             Text = Artist.DisplayName + " -- Art Inventory";
             Presence = presence;
 
-            var data = Encoding.ASCII.GetBytes("action=GetInventory&AttendID=" + Presence.ArtistAttendingID);
+            var data = Encoding.ASCII.GetBytes("action=GetInventory&year=" + Program.Year.ToString() + "&AttendID=" + Presence.ArtistAttendingID);
 
             var request = WebRequest.Create(Program.URL + "/functions/artQuery.php");
             request.ContentLength = data.Length;
