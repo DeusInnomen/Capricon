@@ -312,7 +312,7 @@ else
                         Total Dealer Table and Badge(s) Registration Fee: <span style="font-weight: bold; font-size: 1.1em">$<span id="totalFees"><?php echo sprintf("%01.2f", $startTotal); ?></span></span><br/><br/>
                         You will receive an email (sent to both your account email as well as your business email, if provided) when your application status is updated, and an invoice (with a link to pay the invoice online) 
                         will be sent once the application has been approved. You may make changes to your application while it is in either the 'Pending' or the 'Waitlist' status.<br/><br/>Please note! Once the application 
-                        is Approved or Rejected, you can no longer make changes to the application and must contact <a href="mailto:dealers@capricon.org?subject=Dealers%20Application">Capricon Dealers</a> with your request.
+                        is Approved or Cancelled, you can no longer make changes to the application and must contact <a href="mailto:dealers@capricon.org?subject=Dealers%20Application">Capricon Dealers</a> with your request.
                     </p>
                     <input type="hidden" name="task" value="SaveDealerApplication" />
                     <input style="float: right;" type="submit" name="save" value="Submit Application" />

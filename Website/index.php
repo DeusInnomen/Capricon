@@ -84,11 +84,13 @@ $interests = UserInterests();
                                  {
                                      echo '<hr><div class="headertitle">Dealer Staff Functions</div>' . "\r\n";
                                      if(DoesUserBelongHere("DealerLead")) {
-                                         echo '<li><a href="manageDealers.php">Manage Dealer Applications</a></li>' . "\r\n";
+                                         echo '<li><a href="manageDealers.php">Manage Dealers</a></li>' . "\r\n";
+                                         echo '<li><a href="manageDealerApps.php">Manage Dealer Applications</a></li>' . "\r\n";
                                          echo '<li><a href="dealerConfig.php">Dealer Application Configuration</a></li>' . "\r\n";
                                          echo '<li><a href="dealerTablePrices.php">Configure Dealer Table Prices</a></li>' . "\r\n";
                                      }
                                      echo '<li><a href="dealerReportApproved.php">Download Approved Dealer Report (CSV)</a></li>' . "\r\n";
+                                     echo '<li><a href="dealerReportAll.php">Download Full Dealer Report (CSV)</a></li>' . "\r\n";
                                  }
                                  if(DoesUserBelongHere("Marketing"))
                                  {

@@ -791,3 +791,13 @@ div#orderHistory {
 	text-align: left;
 	padding: 2px 2px 2px 2px;
 }
+
+.nospin input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.nospin input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
