@@ -73,6 +73,7 @@ $interests = UserInterests();
                                      }
                                      echo '<li><a href="manageArtistRequests.php">View Requests to Show Art</a></li>' . "\r\n";
                                      echo '<li><a href="artistExhibitsSummary.php">Artist Exhibits Summary</a></li>' . "\r\n";
+                                     echo '<li><a href="showArtshowSummary.php">Art Show Overall Summary</a></li>' . "\r\n";
                                  }
                                  if(DoesUserBelongHere("Dealer"))
                                  {

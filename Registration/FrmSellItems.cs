@@ -20,6 +20,7 @@ namespace Registration
         private Discount Discount { get; set; }
         private MagneticStripeScan Card { get; set; }
         private bool StripeFirstTry { get; set; }
+        private String UniqueCode { get; set; }
 
         private Dictionary<int, Person> OneTimeRecipients { get; set; }
         private Dictionary<int, Person> Recipients { get; set; } 
@@ -28,6 +29,7 @@ namespace Registration
         {
             InitializeComponent();
             StripeFirstTry = true;
+            UniqueCode = RandomString(6);
 
             OneTimeRecipients = new Dictionary<int, Person>();
             Recipients = new Dictionary<int, Person>();
@@ -252,7 +254,8 @@ namespace Registration
                         CardMonth = Card.ExpireMonth,
                         CardYear = Card.ExpireYear,
                         CardCVC = txtCVC.Text,
-                        Amount = CalculateTotal()
+                        Amount = CalculateTotal(),
+                        UniqueCode = UniqueCode
                     };
 
                 dialog.ShowDialog();
@@ -352,6 +355,13 @@ namespace Registration
             if (digits % 2 == 0)
                 return result;
             return result + Rand.Next(16).ToString("X");
+        }
+
+        private string RandomString(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[Rand.Next(s.Length)]).ToArray());
         }
 
         private void BtnCode_Click(object sender, EventArgs e)

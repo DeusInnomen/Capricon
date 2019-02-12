@@ -182,7 +182,7 @@
             $override = false;
         }
 
-        $result = $db->query("SELECT DealerPresenceID, Status, StatusReason FROM DealerPresence WHERE DealerID = $dealerID");
+        $result = $db->query("SELECT DealerPresenceID, Status, StatusReason FROM DealerPresence WHERE Year = $year AND DealerID = $dealerID");
         if($result->num_rows > 0)
         {
             $row = $result->fetch_array();
@@ -421,8 +421,7 @@
         if($reason == "''" && !$clearReason)
             $reason = "null";
         $noEmail = (isset($_POST["noEmail"]) && $_POST["noEmail"] == "true");
-        $presenceIDs = explode(", ", $requests);
-        $feesWaived = $db->real_escape_string($_POST["feesWaived"]);
+        $presenceIDs = explode(",", $requests);
 
         $result = $db->query("SELECT ElectricFee, BadgeFee FROM DealerConfig WHERE Year = $year");
         $config = $result->fetch_array();
@@ -482,7 +481,8 @@
 
         if($status == "Approved") {
             foreach($presenceIDs as $presenceID) {
-                $result = $db->query("SELECT NumTables, ElectricalNeeded, Status, StatusReason, FirstName, LastName, Email, CompanyName, ContactEmail, OnlyUseThisEmail, p.PeopleID FROM DealerPresence dp " .
+                $result = $db->query("SELECT d.PeopleID, NumTables, ElectricalNeeded, Status, StatusReason, p.Email, CompanyName, ContactEmail, OnlyUseThisEmail, p.PeopleID, " .
+                    "p.FirstName, p.LastName, p.BadgeName, d.Address1, d.Address2, d.Address3, d.City, d.State, d.ZipCode, d.Country, d.Phone, d.PhoneType FROM DealerPresence dp " .
                     "JOIN Dealer d on d.DealerID = dp.DealerID JOIN People p ON d.PeopleID = p.PeopleID WHERE DealerPresenceID = $presenceID");
                 if($result->num_rows > 0)
                 {
@@ -493,6 +493,7 @@
                     echo '{ "success": false, "message": "An unknown application ID was passed." }';
                     return;
                 }
+                $dealerPeopleID = $dealer["PeopleID"];
                 $currentReason = $dealer["StatusReason"];
                 $tables = $dealer["NumTables"];
                 $electric = $dealer["ElectricalNeeded"] == 1;
@@ -508,14 +509,13 @@
                 $result->close();
                 $tableFee = $row["Price"];
 
-                $result = $db->query("SELECT BadgeID FROM PurchasedBadges WHERE Year = $year AND PeopleID = " . $_SESSION["PeopleID"]);
+                $result = $db->query("SELECT BadgeID FROM PurchasedBadges WHERE Year = $year AND PeopleID = " . $dealerPeopleID);
                 if($result->num_rows > 0) {
                     $hasBadge = true;
                     $result->close();
                 }
                 else
                     $hasBadge = false;
-
 
                 $badges = array();
                 if($presenceID != "") {
@@ -524,9 +524,9 @@
                         $badges[] = $row;
                     $result->close();
                 }
-                if($feesWaived) {
+                if($feeSetting == "Waived") {
                     $sql = "INSERT INTO PurchaseHistory (PurchaserID, ItemTypeName, Details, PeopleID, Price, Tax, Total, Year, Purchased, PaymentSource, PaymentReference) " .
-                        "VALUES ($peopleID, 'Invoices', 'Dealer\'s Fees (Waived)', $peopleID, 0, 0, 0, $year, NOW(), 'Comp', 'NoCharge')";
+                        "VALUES ($dealerPeopleID, 'Invoices', 'Dealer\'s Fees (Waived)', $dealerPeopleID, 0, 0, 0, $year, NOW(), 'Comp', 'NoCharge')";
                     $db->query($sql);
                     $recordID = $db->insert_id;
 
@@ -540,14 +540,9 @@
 
                         $sql = "INSERT INTO PurchasedBadges (Year, PeopleID, PurchaserID, BadgeNumber, BadgeTypeID, BadgeName, Status, " .
                             "OriginalPrice, AmountPaid, PaymentSource, PaymentReference, RecordID, Created) VALUES ($year, " .
-                            "$peopleID, $peopleID, $badgeNumber, 1, '$badgeName', 'Paid', $price, 0.00, 'Comp', 'NoCharge', $recordID, NOW())";
+                            "$dealerPeopleID, $dealerPeopleID, $badgeNumber, 1, '$badgeName', 'Paid', $price, 0.00, 'Comp', 'NoCharge', $recordID, NOW())";
                         $db->query($sql);
                     }
-                    $sql = "SELECT p.FirstName, p.LastName, p.BadgeName, d.Address1, d.Address2, d.Address3, d.City, d.State, d.ZipCode, d.Country, d.Phone, d.PhoneType FROM People p "
-                        . "JOIN Dealer d ON p.PeopleID = d.PeopleID JOIN DealerPresence dp ON dp.DealerID = d.DealerID WHERE dp.DealerPresenceID = $presenceID";
-                    $result = $db->query($sql);
-                    $dealer = $result->fetch_array();
-                    $result->close();
 
                     foreach($badges as $badge) {
                         $badgeName = $badge["BadgeName"];
@@ -571,15 +566,14 @@
 
                         $sql = "INSERT INTO PurchasedBadges (Year, OneTimeID, PurchaserID, BadgeNumber, BadgeTypeID, BadgeName, Status, " .
                             "OriginalPrice, AmountPaid, PaymentSource, PaymentReference, RecordID, Created) VALUES ($year, " .
-                            "$oneTimeID, $peopleID, $badgeNumber, $badgeTypeID, '$badgeName', 'Paid', $price, 0.00, 'Comp', 'NoCharge', $recordID, NOW())";
+                            "$oneTimeID, $dealerPeopleID, $badgeNumber, $badgeTypeID, '$badgeName', 'Paid', $price, 0.00, 'Comp', 'NoCharge', $recordID, NOW())";
                         $db->query($sql);
                     }
                 }
                 else {
                     $result = $db->query("SELECT InvoiceID, Status FROM Invoice WHERE InvoiceType = 'Dealer' AND RelatedRecordID = $presenceID AND Status != 'Cancelled' ORDER BY Created DESC LIMIT 1");
                     if($result->num_rows == 0) {
-                        $peopleID = $dealer["PeopleID"];
-                        $db->query("INSERT INTO Invoice (PeopleID, InvoiceType, RelatedRecordID, Status, Created) VALUES ($peopleID, 'Dealer', $presenceID, 'Created', NOW())");
+                        $db->query("INSERT INTO Invoice (PeopleID, InvoiceType, RelatedRecordID, Status, Created) VALUES ($dealerPeopleID, 'Dealer', $presenceID, 'Created', NOW())");
                         $invoiceID = $db->insert_id;
                         $invoiceStatus = "Created";
 

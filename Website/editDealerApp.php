@@ -7,14 +7,13 @@ elseif(!DoesUserBelongHere("DealerStaff"))
     header('Location: index.php');
 else
 {
-    $id = $_GET["id"];
+    $presenceID = $_GET["id"];
     $year = isset($_GET['year']) ? $_GET['year'] : (date("n") >= 3 ? date("Y") + 1: date("Y"));
-
-    $result = $db->query("SELECT DealerPresenceID, d.CompanyName, NumTables, ElectricalNeeded, AddedDetails, Status, StatusReason FROM DealerPresence dp JOIN Dealer d ON dp.DealerID = d.DealerID " .
-        "WHERE Year = $year AND d.DealerID = $id");
+    $result = $db->query("SELECT d.DealerID, DealerPresenceID, d.CompanyName, NumTables, ElectricalNeeded, AddedDetails, Status, StatusReason FROM DealerPresence dp JOIN Dealer d ON dp.DealerID = d.DealerID " .
+        "WHERE DealerPresenceID = $presenceID");
     $request = $result->fetch_array();
     $result->close();
-    $presenceID = $request["DealerPresenceID"];
+    $id = $request["DealerID"];
 
     $result = $db->query("SELECT Quantity, Price FROM DealerTablePrices ORDER BY Quantity ASC");
     while($row = $result->fetch_array())

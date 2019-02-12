@@ -24,8 +24,8 @@ namespace Registration
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
+            System.Windows.Forms.Application.EnableVisualStyles();
+            System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             StripeConfiguration.SetApiKey(Properties.Settings.Default.StripeKey);
 
@@ -35,12 +35,12 @@ namespace Registration
             var login = new FrmLogin();
             var result = login.ShowDialog();
             if(result == DialogResult.Cancel)
-                Application.Exit();
+                System.Windows.Forms.Application.Exit();
             else
-                Application.Run(new FrmMain());
+                System.Windows.Forms.Application.Run(new FrmMain());
 }
 #else
-            Application.Run(new FrmMain());
+            System.Windows.Forms.Application.Run(new FrmMain());
 #endif
         }
     }

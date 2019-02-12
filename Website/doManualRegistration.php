@@ -3,18 +3,6 @@
 	include_once('includes/functions.php');
 	require_once("Stripe/Stripe.php");
 	
-	function GetNextBadgeNumber()
-	{
-		global $db;
-		$year = date("n") >= 3 ? date("Y") + 1: date("Y");
-		$sql = "SELECT IFNULL(MAX(BadgeNumber), 149) + 1 AS Next FROM PurchasedBadges WHERE BadgeNumber >= 150 AND Year = $year";
-		$result = $db->query($sql);
-		$row = $result->fetch_array();
-		$badgeNumber = $row["Next"];
-		$result->close();
-		return $badgeNumber;
-	}
-	
 	if($_POST["action"] == "ValidateCode")
 	{
 		$code = $db->real_escape_string($_POST["code"]);
@@ -186,7 +174,7 @@
 		$db->query($sql);
         $recordID = $db->insert_id;
 
-        $badgeNumber = GetNextBadgeNumber();
+        $badgeNumber = GetNextBadgeNumber($year);
 		$sql = "INSERT INTO PurchasedBadges (Year, PeopleID, OneTimeID, PurchaserID, OneTimePurchaserID, BadgeNumber, BadgeTypeID, BadgeName, " . 
 			"Status, OriginalPrice, AmountPaid, PaymentSource, PaymentReference, PromoCodeID, CertificateID, RecordID, Created) VALUES ($year, " .
 			"$peopleID, $oneTimePurchaserID, $peopleID, $oneTimePurchaserID, $badgeNumber, 1, '$badgeName', " . 
@@ -206,7 +194,7 @@
 			$description = isset($badges["addlKid1"]) ? $descriptionKIT : $descriptionNormal;
 			$badgePrice = isset($badges["addlKid1"]) ? 0 : $price;
 			$originalTotal += $badgePrice;
-			$badgeNumber = GetNextBadgeNumber();
+			$badgeNumber = GetNextBadgeNumber($year);
 			
 			$sql = "INSERT INTO OneTimeRegistrations (FirstName, LastName, Address1, Address2, City, State, ZipCode, Phone1, Phone1Type) " .
 				"VALUES ('$recipientFirst', '$recipientLast', '" . $db->real_escape_string($user["addAddress1"]) . "', $address2, '" . 
@@ -241,7 +229,7 @@
 			$description = isset($badges["addlKid2"]) ? $descriptionKIT : $descriptionNormal;
 			$badgePrice = isset($badges["addlKid2"]) ? 0 : $price;
 			$originalTotal += $badgePrice;
-			$badgeNumber = GetNextBadgeNumber();
+			$badgeNumber = GetNextBadgeNumber($year);
 			
 			$sql = "INSERT INTO OneTimeRegistrations (FirstName, LastName, Address1, Address2, City, State, ZipCode, Phone1, Phone1Type) " .
 				"VALUES ('$recipientFirst', '$recipientLast', '" . $db->real_escape_string($user["addAddress1"]) . "', $address2, '" . 
@@ -276,7 +264,7 @@
 			$description = isset($badges["addlKid3"]) ? $descriptionKIT : $descriptionNormal;
 			$badgePrice = isset($badges["addlKid3"]) ? 0 : $price;
 			$originalTotal += $badgePrice;
-			$badgeNumber = GetNextBadgeNumber();
+			$badgeNumber = GetNextBadgeNumber($year);
 			
 			$sql = "INSERT INTO OneTimeRegistrations (FirstName, LastName, Address1, Address2, City, State, ZipCode, Phone1, Phone1Type) " .
 				"VALUES ('$recipientFirst', '$recipientLast', '" . $db->real_escape_string($user["addAddress1"]) . "', $address2, '" . 
@@ -311,7 +299,7 @@
 			$description = isset($badges["addlKid4"]) ? $descriptionKIT : $descriptionNormal;
 			$badgePrice = isset($badges["addlKid4"]) ? 0 : $price;
 			$originalTotal += $badgePrice;
-			$badgeNumber = GetNextBadgeNumber();
+			$badgeNumber = GetNextBadgeNumber($year);
 			
 			$sql = "INSERT INTO OneTimeRegistrations (FirstName, LastName, Address1, Address2, City, State, ZipCode, Phone1, Phone1Type) " .
 				"VALUES ('$recipientFirst', '$recipientLast', '" . $db->real_escape_string($user["addAddress1"]) . "', $address2, '" . 
@@ -346,7 +334,7 @@
 			$description = isset($badges["addlKid5"]) ? $descriptionKIT : $descriptionNormal;
 			$badgePrice = isset($badges["addlKid5"]) ? 0 : $price;
 			$originalTotal += $badgePrice;
-			$badgeNumber = GetNextBadgeNumber();
+			$badgeNumber = GetNextBadgeNumber($year);
 			
 			$sql = "INSERT INTO OneTimeRegistrations (FirstName, LastName, Address1, Address2, City, State, ZipCode, Phone1, Phone1Type) " .
 				"VALUES ('$recipientFirst', '$recipientLast', '" . $db->real_escape_string($user["addAddress1"]) . "', $address2, '" . 

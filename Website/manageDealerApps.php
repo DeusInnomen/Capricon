@@ -93,12 +93,17 @@ else
 			var reason = $("#reason").val();
 			var message = $("#message").val();
 			var clearReason = $("#clearReason").is(":checked");
-			var noEmail = $("#noEmail").is(":checked");
+            var noEmail = $("#noEmail").is(":checked");
+            var feeSetting = $("#feeSetting option:selected").val();
+            var discount = $("#discount").val();
+            var discountNote = $("#discountNote").val();
 			$("#dealersForm :input").prop("readonly", true);
 			$("#clearReason").attr("disabled", "disabled");
 			$("#noEmail").attr("disabled", "disabled");
 
-			$.post("doDealerFunctions.php", { task: "UpdateDealerApplications", requests: requests, status: status, reason: reason, clearReason: clearReason, noEmail: noEmail, message: message }, function(result) {
+            $.post("doDealerFunctions.php", {
+                task: "UpdateDealerApplications", requests: requests, status: status, reason: reason, clearReason: clearReason, noEmail: noEmail, message: message,
+                                feeSetting: feeSetting, discount: discount, discountNote: discountNote }, function (result) {
 					$("#dealersForm :input").removeProp("readonly");
 					$("#clearReason").removeAttr("disabled");
 					$("#noEmail").removeAttr("disabled");
@@ -144,7 +149,7 @@ else
                             foreach($dealers as $dealer)
                             {
                                 if($dealer["Status"] == "Approved" || $dealer["Status"] == "Cancelled") {
-                                    echo "<tr class=\"masterTooltip\" title=\"Legal Name: " . $dealer["LegalName"] . "<br>Extra Badges: " . $dealer["Badges"] . "<br>Added Details:<br>" . $dealer["AddedDetails"];
+                                    echo "<tr class=\"masterTooltip\" title=\"Legal Name: " . $dealer["LegalName"] . "<br>Extra Badges: " . $dealer["Badges"] . "<br>Added Details:<br>" . str_replace('"', '\'', $dealer["AddedDetails"]);
                                     if(!empty($dealer["InvoiceStatus"])){
                                         echo "<br><br>Invoice Amount: " . sprintf("$%01.2f", $dealer["InvoiceAmount"]);
                                         if(!empty($dealer["InvoiceSent"]))
@@ -177,8 +182,8 @@ else
                     </div>
                     <hr />
                     With Selected: <select id="action" name="action" style="width: 165px;" disabled>
-                        <option value="Edit" selected>Edit Request</option>
-                        <option value="Approved">Approve Requests</option>
+                        <option value="Approved" selected>Approve Requests</option>
+                        <option value="Edit">Edit Request</option>
                         <option value="Cancelled">Cancel Requests</option>
                         <option value="Pending">Send Requests Back</option>
                         <option value="Waitlist">Waitlist Requests</option>
@@ -189,7 +194,7 @@ else
                     <label for="message" class="fieldLabelShort">Message to Send to Dealer(s): </label><br />
                     <textarea id="message" name="message" maxlength="1000" rows="4" placeholder="(Optional) Enter Message To Send To Dealers Here" style="width: 98%;"></textarea><br />
                     <label for="noEmail"><input type="checkbox" id="noEmail" name="noEmail" disabled> Do Not Send Email(s) For This Change</label><br />
-                    <div id="feeArea" style="display: none;">
+                    <div id="feeArea" style="display: block;">
                     Fees for Apps Being Approved: <select id="feeSetting" name="feeSetting" style="width: 170px;">
                         <option value="Normal" selected>Charge Normal Fees</option>
                         <option value="Waived">Waive All Fees</option>

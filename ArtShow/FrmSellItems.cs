@@ -18,6 +18,7 @@ namespace ArtShow
         private MagneticStripeScan Card { get; set; }
         private List<PrintShopItem> Items { get; set; }
         private bool StripeFirstTry { get; set; }
+        private String UniqueCode { get; set; }
         private decimal TotalPrice { get; set; }
         private decimal TotalTax { get; set; }
         private decimal TotalDue { get; set; }
@@ -32,6 +33,7 @@ namespace ArtShow
             InitializeComponent();
             Purchaser = purchaser;
             StripeFirstTry = true;
+            UniqueCode = RandomString(6);
 
             TotalPrice = 0;
             TotalTax = 0;
@@ -201,7 +203,8 @@ namespace ArtShow
                     CardMonth = Card.ExpireMonth,
                     CardYear = Card.ExpireYear,
                     CardCVC = txtCVC.Text,
-                    Amount = TotalDue
+                    Amount = TotalDue,
+                    UniqueCode = UniqueCode
                 };
 
                 dialog.ShowDialog();
@@ -270,6 +273,13 @@ namespace ArtShow
             if (digits % 2 == 0)
                 return result;
             return result + Rand.Next(16).ToString("X");
+        }
+
+        private string RandomString(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[Rand.Next(s.Length)]).ToArray());
         }
 
         private void LstCart_DoubleClick(object sender, EventArgs e)

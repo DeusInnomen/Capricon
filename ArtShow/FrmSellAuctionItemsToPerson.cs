@@ -21,6 +21,7 @@ namespace ArtShow
         private PersonPickup Person { get; set; }
         private MagneticStripeScan Card { get; set; }
         private bool StripeFirstTry { get; set; }
+        private String UniqueCode { get; set; }
 
         private int SortColumn = 0;
         private bool SortAscend = true;
@@ -30,6 +31,8 @@ namespace ArtShow
             InitializeComponent();
             Person = person;
             StripeFirstTry = true;
+            UniqueCode = RandomString(6);
+
             Text = "Items Won by " + Person.Name;
             LblTaxes.Text = "Taxes @ " + decimal.Round(Program.TaxRate * 100, 1) + "%";
 
@@ -105,7 +108,8 @@ namespace ArtShow
                     CardMonth = Card.ExpireMonth,
                     CardYear = Card.ExpireYear,
                     CardCVC = txtCVC.Text,
-                    Amount = TotalDue
+                    Amount = TotalDue,
+                    UniqueCode = UniqueCode
                 };
 
                 dialog.ShowDialog();
@@ -174,6 +178,13 @@ namespace ArtShow
             if (digits % 2 == 0)
                 return result;
             return result + Rand.Next(16).ToString("X");
+        }
+
+        private string RandomString(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[Rand.Next(s.Length)]).ToArray());
         }
 
         private void BtnPrintSummary_Click(object sender, EventArgs e)

@@ -13,17 +13,6 @@
 		return;
 	}
 
-    function GetNextBadgeNumber($year)
-    {
-        global $db;
-        $sql = "SELECT CASE WHEN EXISTS (SELECT BadgeNumber FROM PurchasedBadges WHERE BadgeNumber = 150 AND Year = $year) THEN 99999 ELSE 150 END AS Next UNION SELECT (p1.BadgeNumber + 1) as Next FROM PurchasedBadges p1 WHERE NOT EXISTS (SELECT p2.BadgeNumber FROM PurchasedBadges p2 WHERE p2.BadgeNumber = p1.BadgeNumber + 1 AND p2.Year = $year) AND p1.Year = $year HAVING Next >= 150 ORDER BY Next";
-        $result = $db->query($sql);
-        $row = $result->fetch_array();
-        $badgeNumber = $row["Next"];
-        $result->close();
-        return $badgeNumber;
-    }
-
 	$task = $_POST["task"];
 	$year = date("n") >= 3 ? date("Y") + 1: date("Y");
 
@@ -34,8 +23,14 @@
         $message = "";
         $year = date("n") >= 3 ? date("Y") + 1: date("Y");
         $capriconYear = $year - 1980;
-        $source = "Check";
-        $ref = strtoupper(uniqid()) . "_$checkNum";
+        $ref = strtoupper(uniqid());
+        if($checkNum == "Cash") {
+            $source = "Cash";
+        }
+        else {
+            $source = "Check";
+            $ref .= "_$checkNum";
+        }
         $peopleID = "";
 
         $result = $db->query("SELECT i.InvoiceID, i.InvoiceType, i.PeopleID, i.RelatedRecordID, i.Status, ils.SubTotal, ils.Taxes, ils.TotalDue, i.Created, i.Sent, i.Fulfilled, i.Cancelled, il.LineNumber, "

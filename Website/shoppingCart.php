@@ -219,7 +219,7 @@
 				</form>
 			</div>
 <?php
-} else { ?>
+      } else { ?>
 			<div class="payments clearfix">
 				<h2>Payment Options</h2>
 				<div id="paymentMethods">
@@ -255,11 +255,13 @@
 								<img src="includes/card_logos.gif" class="masterTooltip" title="We accept Visa, Mastercard, American Express, Discover, JCB and Diner's Club.">
 							</div>
 						</div>
+                        <?php if(IsTestSite()) echo "<p style='font-weight: bold;'>NO ACTUAL CHARGES WILL BE MADE, THIS USES TEST MODE PAYMENTS!</p>"; ?>
 						<button type="submit">Submit Payment</button><span class="payment-errors"></span>
 					</form>
 				</div>
 				<div id="paymentPaypal">
 					<p>To pay using PayPal, press the "Check out with PayPal" button below. You will be redirected to the PayPal website to finalize your purchase.</p>
+                    <?php if(IsTestSite()) echo "<p style='font-weight: bold;'>NO ACTUAL CHARGES WILL BE MADE, THIS USES TEST MODE PAYMENTS!</p>"; ?>
 					<form action="transferToPayPal.php" method="POST" id="paypal-payment">
 						<input type="hidden" name="method" value="Paypal" />
 						<button type="submit"><img src="https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif" style="float: none; margin: 0px 3px 0px 3px;"></button>

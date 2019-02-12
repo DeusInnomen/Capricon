@@ -12,6 +12,7 @@ else
 {
     $message = isset($_POST["message"]) ? $_POST["message"] : "";
     $id = $_GET["id"];
+    $return = isset($_GET["return"]) ? $_GET["return"] . ".php" : "index.php";
     
     $result = $db->query("SELECT pb.PeopleID, pb.OneTimeID, pb.BadgeID, pb.BadgeNumber, CASE WHEN pb.PeopleID IS NULL THEN CONCAT(ot.FirstName, ' ', ot.LastName) ELSE CONCAT(p.FirstName, ' ', p.LastName) END AS Name, pb.BadgeName, pb.Created AS Purchased, CASE WHEN pb.PeopleID IS NULL THEN ot.LastName ELSE p.LastName END AS LastName, CASE WHEN pb.PeopleID IS NULL THEN ot.FirstName ELSE p.FirstName END AS FirstName, pb.Department, pb.PaymentSource, pb.PaymentReference, pc.Code, pb.BadgeTypeID, pb.AmountPaid, pb.Status FROM PurchasedBadges pb LEFT OUTER JOIN People p ON p.PeopleID = pb.PeopleID LEFT OUTER JOIN OneTimeRegistrations ot ON ot.OneTimeID = pb.OneTimeID LEFT OUTER JOIN PromoCodes pc ON pc.CodeID = pb.PromoCodeID WHERE pb.BadgeID = $id UNION SELECT pb.PeopleID, pb.OneTimeID, pb.BadgeID, pb.BadgeNumber, CASE WHEN pb.PeopleID IS NULL THEN CONCAT(ot.FirstName, ' ', ot.LastName) ELSE CONCAT(p.FirstName, ' ', p.LastName) END AS Name, pb.BadgeName, pb.Created AS Purchased, CASE WHEN pb.PeopleID IS NULL THEN ot.LastName ELSE p.LastName END AS LastName, CASE WHEN pb.PeopleID IS NULL THEN ot.FirstName ELSE p.FirstName END AS FirstName, pb.Department, pb.PaymentSource, pb.PaymentReference, pc.Code, pb.BadgeTypeID, pb.AmountPaid, pb.Status FROM PurchasedBadges pb LEFT OUTER JOIN People p ON p.PeopleID = pb.PeopleID LEFT OUTER JOIN OneTimeRegistrations ot ON ot.OneTimeID = pb.OneTimeID LEFT OUTER JOIN PromoCodes pc ON pc.CodeID = pb.PromoCodeID JOIN PurchasedBadges pb2 ON pb2.PaymentReference = pb.PaymentReference WHERE pb2.BadgeID = $id and pb2.PaymentSource IN ('Stripe', 'PayPal', 'Cash', 'Check')");
     
@@ -312,7 +313,7 @@ if(isset($badge))
 			<div class="noticeSection" id="badgeActionNotice"><?php echo $message; ?></div>
 			<div class="clearfix"></div>
 			<div class="goback">
-				<a href="index.php">Return to the Main Menu</a>
+				<a href="<?php echo $return; ?>">Return to the Previous Page</a>
 			</div>
 		</div>
 	</div>

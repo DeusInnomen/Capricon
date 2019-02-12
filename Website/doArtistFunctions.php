@@ -178,14 +178,18 @@
 				$result->close();
 			}
 
-			$db->query("INSERT INTO ArtistPresence (ArtistID, Year, ArtistNumber, IsAttending, AgentName, AgentContact, " .
-				"ShippingPref, ShippingAddress, NeedsElectricity, NumTables, NumGrid, HasPrintShop, Notes) VALUES ($artistID, $year, $number, $isAttending, $agentName, $agentContact, $shippingPref, $shippingAddress, $needsElectricity, $numTables, $numGrid, $hasPrintShop, '$notes')");
-			echo '{ "success": true, "message": "Your request has been successfully submitted." }';
+			if($db->query("INSERT INTO ArtistPresence (ArtistID, Year, ArtistNumber, IsAttending, AgentName, AgentContact, " .
+				"ShippingPref, ShippingAddress, NeedsElectricity, NumTables, NumGrid, HasPrintShop, Notes) VALUES ($artistID, $year, $number, $isAttending, $agentName, $agentContact, $shippingPref, $shippingAddress, $needsElectricity, $numTables, $numGrid, $hasPrintShop, '$notes')"))
+				echo '{ "success": true, "message": "Your request has been successfully submitted." }';
+			else
+				echo '{ "success": false, "message": "Failed to save your request: ' . $db->real_escape_string($db->error) . '" }';
 		}
 		else
 		{
-			$db->query("UPDATE ArtistPresence SET IsAttending = $isAttending, AgentName = $agentName, AgentContact = $agentContact, ShippingPref = $shippingPref, ShippingAddress = $shippingAddress, NeedsElectricity = $needsElectricity, NumTables = $numTables, NumGrid = $numGrid, HasPrintShop = $hasPrintShop, Notes = '$notes' WHERE ArtistAttendingID = $attendingID");
-		echo '{ "success": true, "message": "Your request has been updated successfully." }';
+			if($db->query("UPDATE ArtistPresence SET IsAttending = $isAttending, AgentName = $agentName, AgentContact = $agentContact, ShippingPref = $shippingPref, ShippingAddress = $shippingAddress, NeedsElectricity = $needsElectricity, NumTables = $numTables, NumGrid = $numGrid, HasPrintShop = $hasPrintShop, Notes = '$notes' WHERE ArtistAttendingID = $attendingID"))
+				echo '{ "success": true, "message": "Your request has been updated successfully." }';
+			else
+				echo '{ "success": false, "message": "Failed to update your request: ' . $db->real_escape_string($db->error) . '" }';
 		}
 	}
 	elseif($task == "AddFees")

@@ -18,12 +18,15 @@ namespace ArtShow
         private MagneticStripeScan Card { get; set; }
         private ArtistPresence Presence { get; set; }
         private bool StripeFirstTry { get; set; }
+        private String UniqueCode { get; set; }
 
         public FrmHangingFees(ArtistPresence presence, Artist artist, decimal fees)
         {
             InitializeComponent();
             Presence = presence;
             StripeFirstTry = true;
+            UniqueCode = RandomString(6);
+
             CmbPayee.Items.Add(artist.LegalName);
             if (!string.IsNullOrEmpty(Presence.AgentName))
                 CmbPayee.Items.Add(Presence.AgentName);
@@ -59,8 +62,9 @@ namespace ArtShow
                         CardMonth = Card.ExpireMonth,
                         CardYear = Card.ExpireYear,
                         CardCVC = txtCVC.Text,
-                        Amount = FeesDue
-                    };
+                        Amount = FeesDue,
+                        UniqueCode = UniqueCode
+                };
 
                 dialog.ShowDialog();
 
@@ -128,6 +132,13 @@ namespace ArtShow
             if (digits % 2 == 0)
                 return result;
             return result + Rand.Next(16).ToString("X");
+        }
+
+        private string RandomString(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[Rand.Next(s.Length)]).ToArray());
         }
 
         private void SetSubmitButton(object sender, EventArgs e)

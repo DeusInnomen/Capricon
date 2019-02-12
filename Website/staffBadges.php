@@ -207,7 +207,7 @@ else
                 echo "<thead><tr><th>Name</th><th>Badge Name</th><th>Badge #</th><th>Department</th><th>Badge Type</th></tr></thead>\r\n";
                 echo "<tbody>\r\n";
                 foreach($badges as $badge)
-                    echo "<tr><td>" . $badge["Name"] . "</td><td>" . $badge["BadgeName"] . "</td><td>" . $badge["BadgeNumber"] . "</td><td>" . $badge["Department"] . "</td><td>" . $badge["BadgeType"] . "</td></tr>\r\n";
+                    echo "<tr><td>" . $badge["Name"] . "</td><td><a href=\"editBadge.php?id=" . $badge["BadgeID"] . "&return=staffBadges\">" . $badge["BadgeName"] . "</a></td><td>" . $badge["BadgeNumber"] . "</td><td>" . $badge["Department"] . "</td><td>" . $badge["BadgeType"] . "</td></tr>\r\n";
                 echo "</tbody>\r\n";
                 echo "</table>\r\n";
             }

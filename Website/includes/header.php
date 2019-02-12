@@ -32,5 +32,6 @@
 ?>
 	<div class="header">
 		<div class="posLeft"><a class="linkedImage" href="index.php"><img src="includes/CapReg.png" /></a></div>
+        <?php if(IsTestSite()) echo "<div style='position: absolute; right: 20%; top: 30px; font-size: 22px; font-weight: bold; clear: none;'><span>REGISTRATION TEST SITE</span></div>"; ?>
 		<div class="posRight"><a class="linkedImage" href="index.php"><img src="includes/capricious.png" /></a></div>
 	</div>

@@ -33,7 +33,7 @@
 		{
 			if($showLinks)
 			{
-				$link1 = "<a href=\"editBadge.php?id=" . $row["BadgeID"] . "\">";
+				$link1 = "<a href=\"editBadge.php?id=" . $row["BadgeID"] . "&return=viewRegistrations\">";
 				if(empty($row["BadgeName"])) $link1 .= "[Blank Badge]";
 				$link2 = "</a>";
 			}

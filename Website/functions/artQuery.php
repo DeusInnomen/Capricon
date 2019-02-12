@@ -558,15 +558,19 @@
 	elseif($action == "MarkArtistPickup")
 	{
 		$id = !empty($_POST["id"]) ? $db->real_escape_string($_POST["id"]) : null;
-		$mode = !empty($_POST["mode"]) ? $db->real_escape_string($_POST["mode"]) : 0;
-
-		$sql = "UPDATE ArtSubmissions SET Claimed = 1 WHERE ArtistAttendingID = $id AND Claimed = 0";
-		if($mode == 0) $sql .= " AND PurchaserBadgeID IS NULL";
-		$db->query($sql);
-		$response = array();
-		$response["Result"] = "Success";
-		header("Content-type: application/json");
-		echo json_encode($response);
+        $values = !empty($_POST["values"]) ? $db->real_escape_string($_POST["values"]) : null;
+        if(!empty($id) && !empty($values))  {
+            $toUpdate = explode(";", $values);
+            foreach($toUpdate as $value) {
+                $values = explode("~", $value);
+                $sql = "UPDATE ArtSubmissions SET Claimed = " . $values[1] . " WHERE ArtId = " . $values[0];
+                $db->query($sql);
+            }
+        }
+        $response = array();
+        $response["Result"] = "Success";
+        header("Content-type: application/json");
+        echo json_encode($response);
 	}
 	elseif($action == "GetInventoryList")
 	{

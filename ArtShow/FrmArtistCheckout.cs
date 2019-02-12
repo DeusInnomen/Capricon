@@ -28,7 +28,7 @@ namespace ArtShow
             InitializeComponent();
             Presence = presence;
             Artist = artist;
-            CmbMarkMode.SelectedIndex = 0;
+            CmbSelectedOption.SelectedIndex = 0;
 
             var data = Encoding.ASCII.GetBytes("action=GetArtistCheckout&id=" + Presence.ArtistAttendingID + "&year=" + Program.Year.ToString());
             var request = WebRequest.Create(Program.URL + "/functions/artQuery.php");
@@ -63,7 +63,7 @@ namespace ArtShow
                 }
                 else
                     item.SubItems.Add("Not Sold");
-                item.SubItems.Add(piece.Claimed ? "Yes" : "No");
+                item.SubItems.Add(piece.Claimed == 1 ? "Yes" : "No");
                 item.Tag = piece;
                 LstShowItems.Items.Add(item);
                 if (piece.FeesPaid || piece.IsEAP || Artist.IsCharity) continue;
@@ -84,7 +84,7 @@ namespace ArtShow
                 item.SubItems.Add(piece.Media);
                 item.SubItems.Add((piece.QuantitySent - piece.QuantitySold).ToString());
                 item.SubItems.Add(((decimal)(piece.QuantitySold * piece.QuickSalePrice)).ToString("C"));
-                item.SubItems.Add(piece.Claimed ? "Yes" : "No");
+                item.SubItems.Add(piece.Claimed.ToString());
                 item.Tag = piece;
                 LstShopItems.Items.Add(item);
                 shopTotal += (decimal)piece.QuantitySold * (decimal)piece.QuickSalePrice;
@@ -111,44 +111,6 @@ namespace ArtShow
             LblConShare.Text = conShare.ToString("C");
             LblHangingFees.Text = feesDue.ToString("C");
             LblTotalOwed.Text = (showTotal + shopTotal - conShare - feesDue - shippingCost).ToString("C");
-        }
-
-        private void FrmArtistCheckout_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void BtnMarkClaimed_Click(object sender, EventArgs e)
-        {
-            var mode = CmbMarkMode.SelectedIndex;
-            var data = Encoding.ASCII.GetBytes("action=MarkArtistPickup&id=" + Presence.ArtistAttendingID + "&mode=" + mode);
-
-            var request = WebRequest.Create(Program.URL + "/functions/artQuery.php");
-            request.ContentLength = data.Length;
-            request.ContentType = "application/x-www-form-urlencoded";
-            request.Method = "POST";
-            using (var stream = request.GetRequestStream())
-                stream.Write(data, 0, data.Length);
-
-            var response = (HttpWebResponse)request.GetResponse();
-            var resultsJson = new StreamReader(response.GetResponseStream()).ReadToEnd();
-            var results = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(resultsJson);
-
-            foreach (ListViewItem item in LstShowItems.Items)
-            {
-                var shopItem = (CheckoutItems) item.Tag;
-                if (mode == 1 || (mode == 0 && shopItem.PurchaserID == null))
-                {
-                    shopItem.Claimed = true;
-                    item.SubItems[5].Text = "Yes";
-                }
-            }
-            foreach (ListViewItem item in LstShopItems.Items)
-            {
-                var shopItem = (CheckoutItems)item.Tag;
-                shopItem.Claimed = true;
-                item.SubItems[6].Text = "Yes";
-            }
         }
 
         private void BtnPrintCheckout_Click(object sender, EventArgs e)
@@ -201,6 +163,102 @@ namespace ArtShow
             LstShopItems.ListViewItemSorter = new ListViewItemComparer(e.Column, PrintShopSortAscend);
             LstShopItems.Sort();
             LstShopItems.EndUpdate();
+        }
+
+
+        private void BtnMarkAllClaimed_Click(object sender, EventArgs e)
+        {
+            foreach (ListViewItem item in LstShowItems.Items)
+            {
+                var shopItem = (CheckoutItems)item.Tag;
+                if (shopItem.PurchaserID == null)
+                {
+                    shopItem.Claimed = 1;
+                    item.SubItems[5].Text = "Yes";
+                }
+                item.SubItems[5].Text = "Yes";
+            }
+            foreach (ListViewItem item in LstShopItems.Items)
+            {
+                var shopItem = (CheckoutItems)item.Tag;
+                shopItem.Claimed = shopItem.QuantitySent - shopItem.QuantitySold;
+                item.SubItems[6].Text = shopItem.Claimed.ToString();
+            }
+        }
+
+        private void BtnMarkUnsoldClaimed_Click(object sender, EventArgs e)
+        {
+            foreach (ListViewItem item in LstShowItems.Items)
+            {
+                var shopItem = (CheckoutItems)item.Tag;
+                if (shopItem.PurchaserID == null)
+                {
+                    shopItem.Claimed = 1;
+                    item.SubItems[5].Text = "Yes";
+                }
+            }
+            foreach (ListViewItem item in LstShopItems.Items)
+            {
+                var shopItem = (CheckoutItems)item.Tag;
+                shopItem.Claimed = shopItem.QuantitySent - shopItem.QuantitySold;
+                item.SubItems[6].Text = shopItem.Claimed.ToString();
+            }
+        }
+
+        private void BtnMarkSelected_Click(object sender, EventArgs e)
+        {
+            foreach (ListViewItem item in LstShowItems.SelectedItems)
+            {
+                var shopItem = (CheckoutItems)item.Tag;
+                shopItem.Claimed = (CmbSelectedOption.SelectedIndex == 0 || CmbSelectedOption.SelectedIndex == 1 ? 1 : 0);
+                item.SubItems[5].Text = shopItem.Claimed == 1 ? "Yes" : "No";
+            }
+            foreach (ListViewItem item in LstShopItems.SelectedItems)
+            {
+                var shopItem = (CheckoutItems)item.Tag;
+                var remaining = shopItem.QuantitySent - shopItem.QuantitySold;
+                if (CmbSelectedOption.SelectedIndex == 0)
+                    shopItem.Claimed = remaining;
+                if (CmbSelectedOption.SelectedIndex == 1) 
+                    shopItem.Claimed += (shopItem.Claimed < remaining ? 1 : 0);
+                if (CmbSelectedOption.SelectedIndex == 2)
+                    shopItem.Claimed -= (shopItem.Claimed > 0 ? 1 : 0);
+                if (CmbSelectedOption.SelectedIndex == 3)
+                    shopItem.Claimed = 0;
+                item.SubItems[6].Text = shopItem.Claimed.ToString();
+            }
+        }
+
+        private void BtnSaveClaims_Click(object sender, EventArgs e)
+        {
+            this.Enabled = false;
+            Cursor = Cursors.WaitCursor;
+            Application.DoEvents();
+
+            var payload = "action=MarkArtistPickup&id=" + Presence.ArtistAttendingID + "&values=";
+            var ids = "";
+            foreach (ListViewItem item in LstShowItems.Items)
+                ids += ";" + ((CheckoutItems)item.Tag).ArtID.ToString() + "~" + ((CheckoutItems)item.Tag).Claimed.ToString();
+            foreach (ListViewItem item in LstShopItems.Items)
+                ids += ";" + ((CheckoutItems)item.Tag).ArtID.ToString() + "~" + ((CheckoutItems)item.Tag).Claimed.ToString();
+            payload += ids.Substring(1);
+
+            var data = Encoding.ASCII.GetBytes(payload);
+            var request = WebRequest.Create(Program.URL + "/functions/artQuery.php");
+            request.ContentLength = data.Length;
+            request.ContentType = "application/x-www-form-urlencoded";
+            request.Method = "POST";
+            using (var stream = request.GetRequestStream())
+                stream.Write(data, 0, data.Length);
+
+            var response = (HttpWebResponse)request.GetResponse();
+            var resultsJson = new StreamReader(response.GetResponseStream()).ReadToEnd();
+            var results = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(resultsJson);
+
+            LstShowItems.SelectedItems.Clear();
+            LstShopItems.SelectedItems.Clear();
+            this.Enabled = true;
+            Cursor = Cursors.Default;
         }
     }
 }

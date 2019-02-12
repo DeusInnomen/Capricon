@@ -471,8 +471,8 @@ namespace ArtShow
         public bool Auctioned { get; set; }
         [JsonProperty("CheckedIn"), JsonConverter(typeof(BoolConverter))]
         public bool CheckedIn { get; set; }
-        [JsonProperty("Claimed"), JsonConverter(typeof(BoolConverter))]
-        public bool Claimed { get; set; }
+        [JsonProperty("Claimed")]
+        public int? Claimed { get; set; }
         [JsonProperty("ShippingCost")]
         public decimal? ShippingCost { get; set; }
         [JsonProperty("ShippingPrepaid")]

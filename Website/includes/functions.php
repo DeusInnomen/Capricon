@@ -8,6 +8,10 @@
 		exit();
 	}
 
+    function IsTestSite() {
+        return strtolower(substr($_SERVER["HTTP_HOST"], 0, 17)) == "registration.test";
+    }
+
     $path = $_SERVER["DOCUMENT_ROOT"];
 
     include_once("$path/includes/dsn.inc");
@@ -24,7 +28,7 @@
 		$db->query("DELETE FROM PendingAccounts WHERE Expires < NOW()");
 
 		// Delete expired shopping cart entries.
-		$db->query("DELETE FROM ShoppingCart WHERE DATE_ADD(Created, INTERVAL 24 HOUR) < NOW()");
+		$db->query("DELETE FROM ShoppingCart WHERE DATE_ADD(Created, INTERVAL 72 HOUR) < NOW()");
 
 		// Delete gift certificates 3 months after they were used up. (Maybe not yet.)
 		//$db->query("DELETE FROM GiftCertificates WHERE CurrentValue = 0 AND Badges = 0 AND " .
@@ -594,4 +598,14 @@
         return $pdf;
     }
 
+    function GetNextBadgeNumber($year)
+    {
+        global $db;
+        $sql = "SELECT CASE WHEN EXISTS (SELECT BadgeNumber FROM PurchasedBadges WHERE BadgeNumber = 150 AND Year = $year) THEN 99999 ELSE 150 END AS Next UNION SELECT (p1.BadgeNumber + 1) as Next FROM PurchasedBadges p1 WHERE NOT EXISTS (SELECT p2.BadgeNumber FROM PurchasedBadges p2 WHERE p2.BadgeNumber = p1.BadgeNumber + 1 AND p2.Year = $year) AND p1.Year = $year HAVING Next >= 150 ORDER BY Next";
+        $result = $db->query($sql);
+        $row = $result->fetch_array();
+        $badgeNumber = $row["Next"];
+        $result->close();
+        return $badgeNumber;
+    }
 ?>

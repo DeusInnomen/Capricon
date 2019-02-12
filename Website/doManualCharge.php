@@ -4,17 +4,6 @@ include_once('includes/functions.php');
 require_once("Stripe/Stripe.php");
 include_once('includes/paypal.php');
 
-function GetNextBadgeNumber($year)
-{
-    global $db;
-    $sql = "SELECT CASE WHEN EXISTS (SELECT BadgeNumber FROM PurchasedBadges WHERE BadgeNumber = 150 AND Year = $year) THEN 99999 ELSE 150 END AS Next UNION SELECT (p1.BadgeNumber + 1) as Next FROM PurchasedBadges p1 WHERE NOT EXISTS (SELECT p2.BadgeNumber FROM PurchasedBadges p2 WHERE p2.BadgeNumber = p1.BadgeNumber + 1 AND p2.Year = $year) AND p1.Year = $year HAVING Next >= 150 ORDER BY Next";
-    $result = $db->query($sql);
-    $row = $result->fetch_array();
-    $badgeNumber = $row["Next"];
-    $result->close();
-    return $badgeNumber;
-}
-
 function HandleCart()
 {
     global $db, $stripeKey, $smtpPass;
@@ -378,17 +367,6 @@ session_start();
 include_once('includes/functions.php');
 require_once("Stripe/Stripe.php");
 include_once('includes/paypal.php');
-
-function GetNextBadgeNumber($year)
-{
-    global $db;
-    $sql = "SELECT CASE WHEN EXISTS (SELECT BadgeNumber FROM PurchasedBadges WHERE BadgeNumber = 150 AND Year = $year) THEN 99999 ELSE 150 END AS Next UNION SELECT (p1.BadgeNumber + 1) as Next FROM PurchasedBadges p1 WHERE NOT EXISTS (SELECT p2.BadgeNumber FROM PurchasedBadges p2 WHERE p2.BadgeNumber = p1.BadgeNumber + 1 AND p2.Year = $year) AND p1.Year = $year HAVING Next >= 150 ORDER BY Next";
-    $result = $db->query($sql);
-    $row = $result->fetch_array();
-    $badgeNumber = $row["Next"];
-    $result->close();
-    return $badgeNumber;
-}
 
 function HandleCart()
 {

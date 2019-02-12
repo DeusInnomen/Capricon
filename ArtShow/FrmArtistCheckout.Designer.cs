@@ -56,13 +56,17 @@
             this.LblConShare = new System.Windows.Forms.Label();
             this.LblTotalOwed = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.BtnMarkClaimed = new System.Windows.Forms.Button();
-            this.CmbMarkMode = new System.Windows.Forms.ComboBox();
+            this.BtnMarkAllClaimed = new System.Windows.Forms.Button();
             this.BtnPrintCheckout = new System.Windows.Forms.Button();
             this.LblShippingCost = new System.Windows.Forms.Label();
             this.LblShippingCostText = new System.Windows.Forms.Label();
             this.LblHangingFees = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
+            this.BtnMarkUnsoldClaimed = new System.Windows.Forms.Button();
+            this.BtnMarkSelected = new System.Windows.Forms.Button();
+            this.CmbSelectedOption = new System.Windows.Forms.ComboBox();
+            this.BtnSaveClaims = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // LstShowItems
@@ -288,29 +292,17 @@
             this.label5.Text = "Amount Owed:";
             this.label5.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
-            // BtnMarkClaimed
+            // BtnMarkAllClaimed
             // 
-            this.BtnMarkClaimed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnMarkClaimed.Font = new System.Drawing.Font("Lucida Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnMarkClaimed.Location = new System.Drawing.Point(618, 308);
-            this.BtnMarkClaimed.Name = "BtnMarkClaimed";
-            this.BtnMarkClaimed.Size = new System.Drawing.Size(140, 27);
-            this.BtnMarkClaimed.TabIndex = 80;
-            this.BtnMarkClaimed.Text = "Mark as Claimed:";
-            this.BtnMarkClaimed.UseVisualStyleBackColor = true;
-            this.BtnMarkClaimed.Click += new System.EventHandler(this.BtnMarkClaimed_Click);
-            // 
-            // CmbMarkMode
-            // 
-            this.CmbMarkMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.CmbMarkMode.FormattingEnabled = true;
-            this.CmbMarkMode.Items.AddRange(new object[] {
-            "Unsold",
-            "Everything"});
-            this.CmbMarkMode.Location = new System.Drawing.Point(764, 312);
-            this.CmbMarkMode.Name = "CmbMarkMode";
-            this.CmbMarkMode.Size = new System.Drawing.Size(97, 21);
-            this.CmbMarkMode.TabIndex = 81;
+            this.BtnMarkAllClaimed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.BtnMarkAllClaimed.Font = new System.Drawing.Font("Lucida Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BtnMarkAllClaimed.Location = new System.Drawing.Point(615, 308);
+            this.BtnMarkAllClaimed.Name = "BtnMarkAllClaimed";
+            this.BtnMarkAllClaimed.Size = new System.Drawing.Size(246, 27);
+            this.BtnMarkAllClaimed.TabIndex = 80;
+            this.BtnMarkAllClaimed.Text = "Mark Everything as Claimed";
+            this.BtnMarkAllClaimed.UseVisualStyleBackColor = true;
+            this.BtnMarkAllClaimed.Click += new System.EventHandler(this.BtnMarkAllClaimed_Click);
             // 
             // BtnPrintCheckout
             // 
@@ -368,18 +360,83 @@
             this.label7.Text = "Hanging Fees Due:";
             this.label7.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
+            // BtnMarkUnsoldClaimed
+            // 
+            this.BtnMarkUnsoldClaimed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.BtnMarkUnsoldClaimed.Font = new System.Drawing.Font("Lucida Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BtnMarkUnsoldClaimed.Location = new System.Drawing.Point(615, 351);
+            this.BtnMarkUnsoldClaimed.Name = "BtnMarkUnsoldClaimed";
+            this.BtnMarkUnsoldClaimed.Size = new System.Drawing.Size(246, 27);
+            this.BtnMarkUnsoldClaimed.TabIndex = 87;
+            this.BtnMarkUnsoldClaimed.Text = "Mark Unsold as Claimed";
+            this.BtnMarkUnsoldClaimed.UseVisualStyleBackColor = true;
+            this.BtnMarkUnsoldClaimed.Click += new System.EventHandler(this.BtnMarkUnsoldClaimed_Click);
+            // 
+            // BtnMarkSelected
+            // 
+            this.BtnMarkSelected.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.BtnMarkSelected.Font = new System.Drawing.Font("Lucida Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BtnMarkSelected.Location = new System.Drawing.Point(615, 392);
+            this.BtnMarkSelected.Name = "BtnMarkSelected";
+            this.BtnMarkSelected.Size = new System.Drawing.Size(110, 27);
+            this.BtnMarkSelected.TabIndex = 88;
+            this.BtnMarkSelected.Text = "For Selected:";
+            this.BtnMarkSelected.UseVisualStyleBackColor = true;
+            this.BtnMarkSelected.Click += new System.EventHandler(this.BtnMarkSelected_Click);
+            // 
+            // CmbSelectedOption
+            // 
+            this.CmbSelectedOption.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.CmbSelectedOption.FormattingEnabled = true;
+            this.CmbSelectedOption.Items.AddRange(new object[] {
+            "Claim All",
+            "Claim One",
+            "Remove One Claim",
+            "Claim None"});
+            this.CmbSelectedOption.Location = new System.Drawing.Point(731, 396);
+            this.CmbSelectedOption.Name = "CmbSelectedOption";
+            this.CmbSelectedOption.Size = new System.Drawing.Size(130, 21);
+            this.CmbSelectedOption.TabIndex = 89;
+            // 
+            // BtnSaveClaims
+            // 
+            this.BtnSaveClaims.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.BtnSaveClaims.Font = new System.Drawing.Font("Lucida Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BtnSaveClaims.Location = new System.Drawing.Point(615, 475);
+            this.BtnSaveClaims.Name = "BtnSaveClaims";
+            this.BtnSaveClaims.Size = new System.Drawing.Size(246, 27);
+            this.BtnSaveClaims.TabIndex = 90;
+            this.BtnSaveClaims.Text = "Save Changes to Claim Counts";
+            this.BtnSaveClaims.UseVisualStyleBackColor = true;
+            this.BtnSaveClaims.Click += new System.EventHandler(this.BtnSaveClaims_Click);
+            // 
+            // label4
+            // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(615, 456);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(246, 16);
+            this.label4.TabIndex = 91;
+            this.label4.Text = "When all claims are done:";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
             // FrmArtistCheckout
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(872, 514);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.BtnSaveClaims);
+            this.Controls.Add(this.CmbSelectedOption);
+            this.Controls.Add(this.BtnMarkSelected);
+            this.Controls.Add(this.BtnMarkUnsoldClaimed);
             this.Controls.Add(this.LblHangingFees);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.LblShippingCost);
             this.Controls.Add(this.LblShippingCostText);
             this.Controls.Add(this.BtnPrintCheckout);
-            this.Controls.Add(this.CmbMarkMode);
-            this.Controls.Add(this.BtnMarkClaimed);
+            this.Controls.Add(this.BtnMarkAllClaimed);
             this.Controls.Add(this.LblTotalOwed);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.LblConShare);
@@ -396,7 +453,6 @@
             this.Name = "FrmArtistCheckout";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Artist Checkout";
-            this.Load += new System.EventHandler(this.FrmArtistCheckout_Load);
             this.ResumeLayout(false);
 
         }
@@ -426,15 +482,19 @@
         private System.Windows.Forms.Label LblConShare;
         private System.Windows.Forms.Label LblTotalOwed;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Button BtnMarkClaimed;
+        private System.Windows.Forms.Button BtnMarkAllClaimed;
         private System.Windows.Forms.ColumnHeader colShowClaimed;
         private System.Windows.Forms.ColumnHeader colShopClaimed;
-        private System.Windows.Forms.ComboBox CmbMarkMode;
         private System.Windows.Forms.Button BtnPrintCheckout;
         private System.Windows.Forms.ImageList SortImages;
         private System.Windows.Forms.Label LblShippingCost;
         private System.Windows.Forms.Label LblShippingCostText;
         private System.Windows.Forms.Label LblHangingFees;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Button BtnMarkUnsoldClaimed;
+        private System.Windows.Forms.Button BtnMarkSelected;
+        private System.Windows.Forms.ComboBox CmbSelectedOption;
+        private System.Windows.Forms.Button BtnSaveClaims;
+        private System.Windows.Forms.Label label4;
     }
 }

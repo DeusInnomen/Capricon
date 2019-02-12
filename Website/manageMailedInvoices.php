@@ -59,21 +59,28 @@ else
 			$("#updateInvoices table :input:checkbox").click(function () {
 				if($("#updateInvoices table :input:checkbox:checked").length > 0)
 				{
-					$("#approve").removeAttr("disabled");
-					$("#checkNum").removeAttr("disabled");
+                	$("#approveCheck").removeAttr("disabled");
+				    $("#checkNum").removeAttr("disabled");
+        			$("#approveCash").removeAttr("disabled");
 				}
 				else
 				{
-					$("#approve").attr("disabled", "disabled");
+        			$("#approveCheck").attr("disabled", "disabled");
 					$("#checkNum").attr("disabled", "disabled");
+                	$("#approveCash").attr("disabled", "disabled");
 				}
             });
+            var buttonPressed;            
+            $("#approveCash").click(function () { buttonPressed = $(this).attr("name"); });
+            $("#approveCheck").click(function () { buttonPressed = $(this).attr("name"); });
 			$("#updateInvoices").submit(function () {
 				var checkNum = $("#updateInvoices input#checkNum").val();
-                if (checkNum == "") {
+                if (buttonPressed == "approveCheck" && checkNum == "") {
                     $("#notice").html("No check number was provided.");
                     return false;
                 }
+                if (buttonPressed == "approveCash")
+                    checkNum = "Cash";
         		var invoices = "";
 			    $("#updateInvoices :input[name=select]:checkbox:checked").each(function() {
 				    invoices += "," + $(this).attr("invoiceID");
@@ -87,11 +94,13 @@ else
 			        $("#updateInvoicesForm :input").prop("readonly", true);
                     invoices = invoices.substring(1);
                     $.post("doInvoiceFunctions.php", { task: "MarkInvoicesAsPaid", ids: invoices, checkNumber: checkNum }, function (result) {
-        				$("#updateInvoicesForm :input").removeProp("readonly");
-		                if (result.success)
-		                    location.reload();
-		                else
-		                    $("#notice").html(result.message);
+                        $("#updateInvoicesForm :input").removeProp("readonly");
+                        if (result.success)
+                            location.reload();
+                        else {
+                            $("#notice").html(result.message);
+                            $("#updateInvoicesForm :input").removeProp("readonly");
+                        }
                     }, 'json');
                 }
 				return false;
@@ -144,8 +153,9 @@ else
                         echo "</tr>\r\n";
                     }
                     echo "</table><br>\r\n";
-                    echo "<input type=\"submit\" id=\"approve\" name=\"approve\" value=\"Approve With Check #\" disabled>\r\n";
+                    echo "<input type=\"submit\" id=\"approveCheck\" name=\"approveCheck\" value=\"Approve With Check #\" disabled>\r\n";
                     echo "<input type=\"text\" id=\"checkNum\" name=\"checkNum\" style=\"width: 75px;\" disabled />\r\n";
+                    echo "<input type=\"submit\" id=\"approveCash\" name=\"approveCash\" value=\"Approve With Cash Received\" disabled>\r\n";
                     echo "</form>\r\n";
                     echo "<span id=\"notice\" style=\"font-size: 1.05em; font-weight: bold;\">&nbsp;</span>\r\n";
                 }

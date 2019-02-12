@@ -469,6 +469,7 @@
     <Compile Include="manageDealerApps.php" />
     <Compile Include="processInvoices.php" />
     <Compile Include="promoCodesUsed.php" />
+    <Compile Include="showArtshowSummary.php" />
     <Compile Include="showInvoice.php" />
     <Compile Include="stripeWebhook.php" />
     <None Include="Stripe\data\ca-certificates.crt">
