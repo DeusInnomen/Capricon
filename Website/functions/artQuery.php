@@ -627,4 +627,51 @@
 		header("Content-type: application/json");
 		echo json_encode($records);
     }
+    elseif($action == "EnterFinalBid")
+    {
+        $year = !empty($_POST["year"]) ? $db->real_escape_string($_POST["year"]) : (date("n") >= 3 ? date("Y") + 1: date("Y"));
+        $pieceNum = $db->real_escape_string($_POST["pieceNum"]);
+        $badgeNum = $db->real_escape_string($_POST["badgeNum"]);
+        $amount = $db->real_escape_string($_POST["amount"]);
+        $auction = $db->real_escape_string($_POST["auction"]);
+
+		$result = $db->query("SELECT s.ArtID FROM ArtSubmissions s JOIN ArtistPresence ap ON s.ArtistAttendingID = ap.ArtistAttendingID WHERE ap.Year = $year AND s.ShowNumber = $pieceNum");
+		if($result->num_rows == 0)
+		{
+            echo '{ "success": false, "message": "Piece number ' . $pieceNum . ' not recognized." }';
+            return;
+        }
+        $row = $result->fetch_array();
+		$id = $row["ArtID"];
+		$result->close();
+
+        if(empty($badgeNum) || empty($amount)) {
+            $db->query("UPDATE ArtSubmissions SET FinalSalePrice = NULL, PurchaserBadgeID = NULL, Auctioned = 0 WHERE ArtID = $id");
+            echo '{ "success": true, "message": "Piece ' . $pieceNum . ' has had its bid information cleared." }';
+        }
+		else {
+            $result = $db->query("SELECT BadgeID, BadgeName FROM PurchasedBadges WHERE BadgeNumber = $badgeNum AND Year = $year");
+            if($result->num_rows == 0)
+            {
+                echo '{ "success": false, "message": "Badge number ' . $badgeNum . ' not recognized." }';
+                return;
+            }
+            $row = $result->fetch_array();
+            $purchaser = $row["BadgeID"];
+            $name = $row["BadgeName"];
+            $result->close();
+
+            if($db->query("UPDATE ArtSubmissions SET FinalSalePrice = $amount, PurchaserBadgeID = $purchaser, Auctioned = $auction WHERE ArtID = $id"))
+            {
+                if($auction == 1)
+                    echo '{ "success": true, "message": "Piece ' . $pieceNum . ' went to Auction for $' . $amount . ', final bid by Badge ' . $badgeNum . ' ' . $name . '." }';
+                else
+                    echo '{ "success": true, "message": "Piece ' . $pieceNum . ' sold to Badge ' . $badgeNum . ' ' . $name . ' for $' . $amount . '." }';
+            }
+            else
+            {
+                echo '{ "success": false, "message": "Failed to write to database!" }';
+            }
+        }
+	}
 ?>

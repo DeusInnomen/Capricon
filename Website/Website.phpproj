@@ -29,6 +29,7 @@
     <Compile Include="artistSalesTotal.php" />
     <Compile Include="artistSalesWithoutPrintShop.php" />
     <Compile Include="artistSalesWithPrintShop.php" />
+    <Compile Include="artShowEnterFinalBids.php" />
     <Compile Include="artShowSales.php" />
     <Compile Include="artShowSalesSummary.php" />
     <Compile Include="dealerApplication.php" />

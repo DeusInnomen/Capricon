@@ -4,7 +4,7 @@ include_once('includes/functions.php');
 require_once("Stripe/Stripe.php");
 include_once('includes/paypal.php');
 
-function HandleCart()
+function HandleCartManual()
 {
     global $db, $stripeKey, $smtpPass;
     Stripe::setApiKey($stripeKey);
@@ -339,7 +339,7 @@ function HandleCart()
     return array("success" => true, "message" => $postMessage);
 }
 
-$results = handleCart();
+$results = handleCartManual();
 $success = $results["success"];
 $message = str_replace("\"", "'", $results["message"]);
 ?>
