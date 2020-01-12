@@ -73,6 +73,7 @@
             this.BtnCheckout = new System.Windows.Forms.Button();
             this.BtnPrintShopAllLabels = new System.Windows.Forms.Button();
             this.BtnPrintShopLabels = new System.Windows.Forms.Button();
+            this.BtnUnsold = new System.Windows.Forms.Button();
             this.MnuArtShow.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -456,11 +457,23 @@
             this.BtnPrintShopLabels.UseVisualStyleBackColor = true;
             this.BtnPrintShopLabels.Click += new System.EventHandler(this.BtnPrintShopLabels_Click);
             // 
+            // BtnUnsold
+            // 
+            this.BtnUnsold.Font = new System.Drawing.Font("Lucida Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BtnUnsold.Location = new System.Drawing.Point(429, 226);
+            this.BtnUnsold.Name = "BtnUnsold";
+            this.BtnUnsold.Size = new System.Drawing.Size(130, 27);
+            this.BtnUnsold.TabIndex = 85;
+            this.BtnUnsold.Text = "Mark as Unsold";
+            this.BtnUnsold.UseVisualStyleBackColor = true;
+            this.BtnUnsold.Click += new System.EventHandler(this.BtnUnsold_Click);
+            // 
             // FrmArtistInventory
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(917, 527);
+            this.Controls.Add(this.BtnUnsold);
             this.Controls.Add(this.BtnPrintShopAllLabels);
             this.Controls.Add(this.BtnPrintShopLabels);
             this.Controls.Add(this.BtnCheckout);
@@ -541,5 +554,6 @@
         private System.Windows.Forms.ImageList SortImages;
         private System.Windows.Forms.Button BtnPrintShopAllLabels;
         private System.Windows.Forms.Button BtnPrintShopLabels;
+        private System.Windows.Forms.Button BtnUnsold;
     }
 }

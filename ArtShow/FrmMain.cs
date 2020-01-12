@@ -270,5 +270,21 @@ namespace ArtShow
                         record.EndDate.ToShortDateString() + "\",\"" + record.Location + "\"");
             }
         }
+
+        private void BtnUnsoldAuction_Click(object sender, EventArgs e)
+        {
+            var showPieces = GetAllInventory();
+            var unsoldPieces = showPieces.FindAll(p => !p.Auctioned && !p.Claimed);
+            if (unsoldPieces.Count == 0)
+            {
+                MessageBox.Show("All inventory has been accounted for.", "Nothing to Do",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Information);
+                return;
+            }
+            var report = new FrmAuctionSweep(unsoldPieces);
+            report.ShowDialog();
+
+        }
     }
 }

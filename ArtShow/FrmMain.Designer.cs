@@ -43,6 +43,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.BtnExportArtistSummary = new System.Windows.Forms.Button();
+            this.BtnUnsoldAuction = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // BtnSellItems
@@ -116,7 +117,7 @@
             this.BtnAuctionResults.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BtnAuctionResults.Location = new System.Drawing.Point(292, 332);
             this.BtnAuctionResults.Name = "BtnAuctionResults";
-            this.BtnAuctionResults.Size = new System.Drawing.Size(247, 62);
+            this.BtnAuctionResults.Size = new System.Drawing.Size(247, 60);
             this.BtnAuctionResults.TabIndex = 8;
             this.BtnAuctionResults.Text = "Print Public Auction Results Sheets";
             this.BtnAuctionResults.UseVisualStyleBackColor = true;
@@ -136,7 +137,7 @@
             // BtnExportInventory
             // 
             this.BtnExportInventory.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnExportInventory.Location = new System.Drawing.Point(292, 468);
+            this.BtnExportInventory.Location = new System.Drawing.Point(292, 464);
             this.BtnExportInventory.Name = "BtnExportInventory";
             this.BtnExportInventory.Size = new System.Drawing.Size(247, 60);
             this.BtnExportInventory.TabIndex = 10;
@@ -147,9 +148,9 @@
             // BtnAuctionPrivateResults
             // 
             this.BtnAuctionPrivateResults.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnAuctionPrivateResults.Location = new System.Drawing.Point(292, 400);
+            this.BtnAuctionPrivateResults.Location = new System.Drawing.Point(292, 398);
             this.BtnAuctionPrivateResults.Name = "BtnAuctionPrivateResults";
-            this.BtnAuctionPrivateResults.Size = new System.Drawing.Size(247, 62);
+            this.BtnAuctionPrivateResults.Size = new System.Drawing.Size(247, 60);
             this.BtnAuctionPrivateResults.TabIndex = 11;
             this.BtnAuctionPrivateResults.Text = "Print Private Auction Results Sheets";
             this.BtnAuctionPrivateResults.UseVisualStyleBackColor = true;
@@ -158,7 +159,7 @@
             // BtnWaivedFeesReport
             // 
             this.BtnWaivedFeesReport.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnWaivedFeesReport.Location = new System.Drawing.Point(39, 399);
+            this.BtnWaivedFeesReport.Location = new System.Drawing.Point(39, 398);
             this.BtnWaivedFeesReport.Name = "BtnWaivedFeesReport";
             this.BtnWaivedFeesReport.Size = new System.Drawing.Size(247, 60);
             this.BtnWaivedFeesReport.TabIndex = 12;
@@ -189,7 +190,7 @@
             // BtnExportArtistSummary
             // 
             this.BtnExportArtistSummary.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnExportArtistSummary.Location = new System.Drawing.Point(39, 468);
+            this.BtnExportArtistSummary.Location = new System.Drawing.Point(39, 465);
             this.BtnExportArtistSummary.Name = "BtnExportArtistSummary";
             this.BtnExportArtistSummary.Size = new System.Drawing.Size(247, 60);
             this.BtnExportArtistSummary.TabIndex = 15;
@@ -197,11 +198,23 @@
             this.BtnExportArtistSummary.UseVisualStyleBackColor = true;
             this.BtnExportArtistSummary.Click += new System.EventHandler(this.BtnExportArtistSummary_Click);
             // 
+            // BtnUnsoldAuction
+            // 
+            this.BtnUnsoldAuction.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BtnUnsoldAuction.Location = new System.Drawing.Point(39, 532);
+            this.BtnUnsoldAuction.Name = "BtnUnsoldAuction";
+            this.BtnUnsoldAuction.Size = new System.Drawing.Size(247, 60);
+            this.BtnUnsoldAuction.TabIndex = 16;
+            this.BtnUnsoldAuction.Text = "Auction Unsold Inventory Report";
+            this.BtnUnsoldAuction.UseVisualStyleBackColor = true;
+            this.BtnUnsoldAuction.Click += new System.EventHandler(this.BtnUnsoldAuction_Click);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(593, 549);
+            this.ClientSize = new System.Drawing.Size(593, 608);
+            this.Controls.Add(this.BtnUnsoldAuction);
             this.Controls.Add(this.BtnExportArtistSummary);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -242,6 +255,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button BtnExportArtistSummary;
+        private System.Windows.Forms.Button BtnUnsoldAuction;
     }
 }
 

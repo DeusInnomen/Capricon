@@ -909,5 +909,24 @@ namespace ArtShow
 
             return wrappedLines;
         }
+
+        private void BtnUnsold_Click(object sender, EventArgs e)
+        {
+            foreach (ListViewItem item in lstArtShow.SelectedItems)
+            {
+                var showItem = (ArtShowItem)item.Tag;
+                if(showItem.Auctioned)
+                {
+                    showItem.Auctioned = false;
+                    showItem.FinalSalePrice = null;
+                    showItem.Claimed = false;
+                    showItem.PurchaserID = null;
+                    showItem.Category = "Not Sold";
+                    showItem.Save();
+                    item.SubItems[6].Text = "Not Sold";
+                }
+            }
+
+        }
     }
 }

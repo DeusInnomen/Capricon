@@ -94,6 +94,12 @@
     <Compile Include="FrmArtistsWithWaivedFees.Designer.cs">
       <DependentUpon>FrmArtistsWithWaivedFees.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmAuctionSweep.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmAuctionSweep.Designer.cs">
+      <DependentUpon>FrmAuctionSweep.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmAuctionReport.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -250,6 +256,7 @@
     <EmbeddedResource Include="ArtShowControlSheet.rdlc">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="AuctionUnsoldInventory.rdlc" />
     <EmbeddedResource Include="AuctionControlSheet.rdlc" />
     <EmbeddedResource Include="AuctionSalesReceipt.rdlc" />
     <EmbeddedResource Include="ArtShowCheckoutSheet.rdlc" />
@@ -260,6 +267,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmArtistsWithWaivedFees.resx">
       <DependentUpon>FrmArtistsWithWaivedFees.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmAuctionSweep.resx">
+      <DependentUpon>FrmAuctionSweep.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmAuctionReport.resx">
       <DependentUpon>FrmAuctionReport.cs</DependentUpon>
