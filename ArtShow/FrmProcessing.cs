@@ -57,18 +57,21 @@ namespace ArtShow
 
                     if (Person != null)
                     {
-                        tokenData.Card.AddressLine1 = Person.Address1;
-                        tokenData.Card.AddressLine2 = Person.Address2;
-                        tokenData.Card.AddressCity = Person.City;
-                        tokenData.Card.AddressState = Person.State;
-                        tokenData.Card.AddressZip = Person.ZipCode;
-                        tokenData.Card.AddressCountry = Person.Country;
-                        tokenData.Card.Name = Person.Name;
+                        tokenData.Card = new CreditCardOptions
+                        {
+                            AddressLine1 = Person.Address1,
+                            AddressLine2 = Person.Address2,
+                            AddressCity = Person.City,
+                            AddressState = Person.State,
+                            AddressZip = Person.ZipCode,
+                            AddressCountry = Person.Country,
+                            Name = Person.Name
+                        };
                         description += Person.Name + " (#" + Person.PeopleID + ")";
                     }
                     else
                     {
-                        tokenData.Card.Name = PayeeName;
+                        tokenData.Card = new CreditCardOptions { Name = PayeeName };
                         description += PayeeName;
                     }
 
@@ -76,39 +79,14 @@ namespace ArtShow
 
                     var chargeData = new ChargeCreateOptions
                     {
-                        SourceId = token.Id,
+                        Source = token.Id,
                         Description = description,
                         Amount = Convert.ToInt32(Amount * 100),
                         Currency = "usd"
                     };
-                    chargeData.Metadata = new Dictionary<string, string> { { "Code", UniqueCode } };
 
                     var chargeService = new ChargeService();
-
-                    if (!FirstTry)
-                    {
-                        // Double-check to see if we already have a charge recently that matches the details of this. Helps with dealing
-                        // with timeout scenarios to prevent double-charges.
-                        var lastCharges = chargeService.List(new ChargeListOptions() { Limit = 20 });
-                        foreach (var charge in lastCharges)
-                        {
-                            if (charge.Metadata.ContainsKey("Code") && charge.Metadata["Code"] == UniqueCode)
-                            {
-                                Charge = charge;
-                                break;
-                            }
-                            if (((Card)charge.Source).Last4 == CardNumber.Substring(CardNumber.Length - 3) &&
-                                charge.Amount == Convert.ToInt32(Amount * 100) &&
-                                charge.Description == description)
-                            {
-                                Charge = charge;
-                                break;
-                            }
-                        }
-                    }
-
-                    if (Charge == null)
-                        Charge = chargeService.Create(chargeData);
+                    Charge = chargeService.Create(chargeData, new RequestOptions { IdempotencyKey = UniqueCode });
                 }
                 catch (StripeException ex)
                 {

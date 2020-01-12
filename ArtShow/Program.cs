@@ -46,7 +46,8 @@ namespace ArtShow
             System.Windows.Forms.Application.EnableVisualStyles();
             System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            StripeConfiguration.SetApiKey(Properties.Settings.Default.StripeKey);
+            StripeConfiguration.ApiKey = Properties.Settings.Default.StripeKey;
+            StripeConfiguration.MaxNetworkRetries = 3;
 
 #if !DEBUG
             {  

@@ -29,7 +29,7 @@ namespace Registration
         {
             InitializeComponent();
             StripeFirstTry = true;
-            UniqueCode = RandomString(6);
+            UniqueCode = RandomString(12);
 
             OneTimeRecipients = new Dictionary<int, Person>();
             Recipients = new Dictionary<int, Person>();
@@ -248,7 +248,6 @@ namespace Registration
                 source = "Stripe";
                 var dialog = new FrmProcessing
                     {
-                        FirstTry = StripeFirstTry,
                         Person = Purchaser,
                         CardNumber = Card.CardNumber,
                         CardMonth = Card.ExpireMonth,

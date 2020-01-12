@@ -21,7 +21,6 @@ namespace Registration
         public decimal Amount { get; set; }
         public Charge Charge { get; private set; }
         public StripeException Error { get; private set; }
-        public bool FirstTry { get; set; }
         public string UniqueCode { get; set; }
         
         private bool _processingDone = false;
@@ -64,39 +63,14 @@ namespace Registration
 
                     var chargeData = new ChargeCreateOptions()
                     {                        
-                        SourceId = token.Id,
+                        Source = token.Id,
                         Description = "Purchases for " + Person.Name + " (#" + Person.PeopleID + ")",
                         Amount = Convert.ToInt32(Amount * 100),                        
                         Currency = "usd"
                     };
-                    chargeData.Metadata = new Dictionary<string, string> { { "Code", UniqueCode } };
 
                     var chargeService = new ChargeService();
-
-                    if (!FirstTry)
-                    {
-                        // Double-check to see if we already have a charge recently that matches the details of this. Helps with dealing
-                        // with timeout scenarios to prevent double-charges.
-                        var lastCharges = chargeService.List(new ChargeListOptions() { Limit = 20 });
-                        foreach (var charge in lastCharges)
-                        {
-                            if(charge.Metadata.ContainsKey("Code") && charge.Metadata["Code"] == UniqueCode)
-                            {
-                                Charge = charge;
-                                break;
-                            }
-                            if (((Card)charge.Source).Last4 == CardNumber.Substring(CardNumber.Length - 4) &&
-                                charge.Amount == Convert.ToInt32(Amount * 100) &&
-                                charge.Description == "Purchases for " + Person.Name + " (#" + Person.PeopleID + ")")
-                            {
-                                Charge = charge;
-                                break;
-                            }
-                        }
-                    }
-
-                    if (Charge == null)
-                        Charge = chargeService.Create(chargeData);
+                    Charge = chargeService.Create(chargeData, new RequestOptions { IdempotencyKey = UniqueCode });
                 }
                 catch (StripeException ex)
                 {

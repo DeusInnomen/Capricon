@@ -48,6 +48,7 @@
             this.RptViewer.LocalReport.ReportEmbeddedResource = "ArtShow.FeeWaiverReasonsSheet.rdlc";
             this.RptViewer.Location = new System.Drawing.Point(0, 0);
             this.RptViewer.Name = "RptViewer";
+            this.RptViewer.ServerReport.BearerToken = null;
             this.RptViewer.ShowBackButton = false;
             this.RptViewer.ShowCredentialPrompts = false;
             this.RptViewer.ShowFindControls = false;
