@@ -32,8 +32,6 @@
             this.BtnLookup = new System.Windows.Forms.Button();
             this.BtnSellItems = new System.Windows.Forms.Button();
             this.BtnPrintBadges = new System.Windows.Forms.Button();
-            this.BtnPrintSheetsAttendees = new System.Windows.Forms.Button();
-            this.BtnPrintSheetsStaff = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // BtnLookup
@@ -69,35 +67,11 @@
             this.BtnPrintBadges.UseVisualStyleBackColor = true;
             this.BtnPrintBadges.Click += new System.EventHandler(this.BtnPrintBadges_Click);
             // 
-            // BtnPrintSheetsAttendees
-            // 
-            this.BtnPrintSheetsAttendees.Font = new System.Drawing.Font("Lucida Console", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnPrintSheetsAttendees.Location = new System.Drawing.Point(44, 246);
-            this.BtnPrintSheetsAttendees.Name = "BtnPrintSheetsAttendees";
-            this.BtnPrintSheetsAttendees.Size = new System.Drawing.Size(247, 52);
-            this.BtnPrintSheetsAttendees.TabIndex = 3;
-            this.BtnPrintSheetsAttendees.Text = "Print Sign-In Sheets for Attendees";
-            this.BtnPrintSheetsAttendees.UseVisualStyleBackColor = true;
-            this.BtnPrintSheetsAttendees.Click += new System.EventHandler(this.BtnPrintSheetsAttendees_Click);
-            // 
-            // BtnPrintSheetsStaff
-            // 
-            this.BtnPrintSheetsStaff.Font = new System.Drawing.Font("Lucida Console", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnPrintSheetsStaff.Location = new System.Drawing.Point(44, 318);
-            this.BtnPrintSheetsStaff.Name = "BtnPrintSheetsStaff";
-            this.BtnPrintSheetsStaff.Size = new System.Drawing.Size(247, 52);
-            this.BtnPrintSheetsStaff.TabIndex = 4;
-            this.BtnPrintSheetsStaff.Text = "Print Sign-In Sheets for Staff";
-            this.BtnPrintSheetsStaff.UseVisualStyleBackColor = true;
-            this.BtnPrintSheetsStaff.Click += new System.EventHandler(this.BtnPrintSheetsStaff_Click);
-            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(335, 398);
-            this.Controls.Add(this.BtnPrintSheetsStaff);
-            this.Controls.Add(this.BtnPrintSheetsAttendees);
+            this.ClientSize = new System.Drawing.Size(335, 265);
             this.Controls.Add(this.BtnPrintBadges);
             this.Controls.Add(this.BtnSellItems);
             this.Controls.Add(this.BtnLookup);
@@ -115,8 +89,6 @@
         private System.Windows.Forms.Button BtnLookup;
         private System.Windows.Forms.Button BtnSellItems;
         private System.Windows.Forms.Button BtnPrintBadges;
-        private System.Windows.Forms.Button BtnPrintSheetsAttendees;
-        private System.Windows.Forms.Button BtnPrintSheetsStaff;
     }
 }
 

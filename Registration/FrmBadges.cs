@@ -60,7 +60,7 @@ namespace Registration
                             LblStatus.Invoke(new MethodInvoker(delegate
                                 {
                                     LblStatus.ForeColor = System.Drawing.Color.Red;
-                                    LblStatus.Text = "Disconnected";
+                                    LblStatus.Text = "Not Found";
                                 }));
                         }
                     }
