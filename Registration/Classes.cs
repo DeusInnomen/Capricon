@@ -170,7 +170,12 @@ namespace Registration
         public string ParentContact { get; set; }
         [JsonProperty("Status")]
         public string Status { get; set; }
-
+        [JsonProperty("PickedUp"), JsonConverter(typeof(BoolConverter))]
+        public bool PickedUp { get; set; }
+        [JsonProperty("PickUpTime")] 
+        public DateTime PickUpTime { get; set; }
+        [JsonProperty("PickupSignature")] 
+        public string PickupSignature { get; set; }
         public string Name { get { return (FirstName + " " + LastName).Trim(); } }
 
         public override string ToString()
@@ -274,6 +279,12 @@ namespace Registration
         public int BadgeNumber { get; set; }
         [JsonProperty("Email")]
         public string Email { get; set; }
+        [JsonProperty("PickedUp"), JsonConverter(typeof(BoolConverter))]
+        public bool PickedUp { get; set; }
+        [JsonProperty("PickUpTime")]
+        public DateTime PickUpTime { get; set; }
+        [JsonProperty("PickupSignature")]
+        public string PickupSignature { get; set; }
 
         public string LastError { get; set; }
 

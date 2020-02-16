@@ -44,34 +44,42 @@ namespace ArtShow
                 try
                 {
                     var description = Description + " for ";
-                    var tokenData = new TokenCreateOptions
-                    {
-                        Card = new CreditCardOptions
-                        {
-                            Number = CardNumber,
-                            ExpMonth = Convert.ToInt32(CardMonth),
-                            ExpYear = Convert.ToInt32(CardYear),
-                            Cvc = CardCVC
-                        }
-                    };
+                    TokenCreateOptions tokenData;
 
                     if (Person != null)
                     {
-                        tokenData.Card = new CreditCardOptions
+                        tokenData = new TokenCreateOptions
                         {
-                            AddressLine1 = Person.Address1,
-                            AddressLine2 = Person.Address2,
-                            AddressCity = Person.City,
-                            AddressState = Person.State,
-                            AddressZip = Person.ZipCode,
-                            AddressCountry = Person.Country,
-                            Name = Person.Name
+                            Card = new CreditCardOptions
+                            {
+                                AddressLine1 = Person.Address1,
+                                AddressLine2 = Person.Address2,
+                                AddressCity = Person.City,
+                                AddressState = Person.State,
+                                AddressZip = Person.ZipCode,
+                                AddressCountry = Person.Country,
+                                Name = Person.Name,
+                                Number = CardNumber,
+                                ExpMonth = Convert.ToInt32(CardMonth),
+                                ExpYear = Convert.ToInt32(CardYear),
+                                Cvc = CardCVC
+                            }
                         };
                         description += Person.Name + " (#" + Person.PeopleID + ")";
                     }
                     else
                     {
-                        tokenData.Card = new CreditCardOptions { Name = PayeeName };
+                        tokenData = new TokenCreateOptions
+                        {
+                            Card = new CreditCardOptions
+                            {
+                                Name = PayeeName,
+                                Number = CardNumber,
+                                ExpMonth = Convert.ToInt32(CardMonth),
+                                ExpYear = Convert.ToInt32(CardYear),
+                                Cvc = CardCVC
+                            }
+                        };
                         description += PayeeName;
                     }
 

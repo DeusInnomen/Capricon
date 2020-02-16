@@ -325,7 +325,9 @@ namespace Registration
                                     FirstName = recipient.FirstName,
                                     LastName = recipient.LastName,
                                     ParentName = recipient.ParentName,
-                                    ParentContact = recipient.ParentContact
+                                    ParentContact = recipient.ParentContact,
+                                    PickedUp = true,
+                                    PickUpTime = DateTime.Now
                                 };
                             Badge.PrintBadge(badge);
                         }
