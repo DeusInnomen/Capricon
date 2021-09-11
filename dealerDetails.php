@@ -170,9 +170,9 @@ else
                         <option value="Work">Work</option>
                         <option value="Other">Other</option>
                     </select><br />
-                    <label for="taxNumber" class="fieldLabelShort">Illinois State Tax Number: </label>
+                    <label for="taxNumber" class="fieldLabelShort">IL State Tax Account ID #: </label>
                     <br />
-                    <input type="text" name="taxNumber" id="taxNumber" style="width: 40%;" value="<?php echo $info["TaxNumber"]; ?>" />
+                    <input type="text" name="taxNumber" id="taxNumber" style="width: 40%;" placeholder="9999-9999" value="<?php echo $info["TaxNumber"]; ?>" />
                     <br />
                     <br />
                     <input type="hidden" name="task" value="SaveDealerDetails" />
