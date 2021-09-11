@@ -99,8 +99,8 @@ else
                     <input type="text" name="address1" id="address1" style="width: 70%;" placeholder="Required" value="<?php echo $info["Address1"]; ?>" /><br />
                     <label>Address (Line 2): </label><br />
                     <input type="text" name="address2" id="address2" style="width: 70%;" value="<?php echo $info["Address2"]; ?>" /><br />
-                    <label>Address (Line 3): </label><br />
-                    <input type="text" name="address3" id="address3" style="width: 70%;" value="<?php echo $info["Address3"]; ?>" /><br />
+                    <!-- <label>Address (Line 3): </label><br />
+                    <input type="text" name="address3" id="address3" style="width: 70%;" value="<?php echo $info["Address3"]; ?>" /><br /> -->
                     <label for="city" class="fieldLabelShort"><span class="requiredField">*</span>City: </label><br />
                     <input type="text" name="city" id="city" placeholder="Required" style="width: 40%;" value="<?php echo $info["City"]; ?>" /><br />
                     <label for="state" class="fieldLabelShort">State: </label><br />
