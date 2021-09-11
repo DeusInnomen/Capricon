@@ -84,8 +84,8 @@ else
                     has been saved, you may place an application to present at the upcoming Capricon when the application period is open.</p>
                     <label for="companyName" class="fieldLabelShort"><span class="requiredField">*</span>Company Name: </label><br />
                     <input type="text" name="companyName" id="displayName" placeholder="Required" style="width: 98%;" value="<?php echo $info["CompanyName"]; ?>" /><br />
-                    <label for="legalName" class="fieldLabelShort">Legal Name (if different than Company Name, for Capricon internal use only): </label><br />
-                    <input type="text" name="legalName" id="legalName" placeholder="If Blank, Company Name Will Be Used" style="width: 98%;" value="<?php echo $info["LegalName"]; ?>" /><br />
+                    <label for="legalName" class="fieldLabelShort"><span class="requiredField">*</span>Legal Name: </label><br />
+                    <input type="text" name="legalName" id="legalName" placeholder="Required" style="width: 98%;" value="<?php echo $info["LegalName"]; ?>" /><br />
                     <label for="url" class="fieldLabelShort">Website URL: </label><br />
                     <input type="text" name="url" id="url" placeholder="Will Be Linked On Our Website" style="width: 98%;" value="<?php echo $info["URL"]; ?>" /><br />
                     <label for="contactEmail" class="fieldLabelShort">Business Contact Email: </label><br />
