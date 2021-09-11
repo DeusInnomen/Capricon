@@ -1,0 +1,287 @@
+<?php
+	session_start();
+	include_once('includes/functions.php');
+	if(!DoesUserBelongHere("RegLead"))
+		header('Location: /index.php');
+	require_once("Stripe/Stripe.php");
+	include_once('includes/paypal.php');
+
+	if(isset($_POST["action"]))
+	{
+		if($_POST["action"] == "SetBadgeName")
+		{
+			$id = $db->real_escape_string($_POST["id"]);
+			$badgeName = $db->real_escape_string($_POST["value"]);
+			
+			$result = $db->query("SELECT BadgeName FROM PurchasedBadges WHERE BadgeID = $id");
+			if($result->num_rows == 0)
+			{
+				echo "<span class=\"requiredField\">Invalid badge ID.</span>";
+				return;
+			}
+			$result->close();
+			$db->query("UPDATE PurchasedBadges SET BadgeName = '$badgeName' WHERE BadgeID = $id");
+			echo "<span>Badge Name has been updated to \"" . $_POST["value"] . "\".</span>";
+		}
+		else if($_POST["action"] == "SetDepartment")
+		{
+			$id = $db->real_escape_string($_POST["id"]);
+			$department = $db->real_escape_string($_POST["value"]);
+			
+			$result = $db->query("SELECT BadgeName FROM PurchasedBadges WHERE BadgeID = $id");
+			if($result->num_rows == 0)
+			{
+				echo "<span class=\"requiredField\">Invalid badge ID.</span>";
+				return;
+			}
+			$result->close();
+			$db->query("UPDATE PurchasedBadges SET Department = '$department' WHERE BadgeID = $id");
+			echo "<span>Department has been updated to \"" . $_POST["value"] . "\".</span>";
+		}
+		else if($_POST["action"] == "SetType")
+		{
+			$id = $db->real_escape_string($_POST["id"]);
+			$type = $db->real_escape_string($_POST["value"]);
+			$source = $type == 1 ? "Comp" : "Generated";
+			$result = $db->query("SELECT BadgeName FROM PurchasedBadges WHERE BadgeID = $id");
+			if($result->num_rows == 0)
+			{
+				echo "<span class=\"requiredField\">Invalid badge ID.</span>";
+				return;
+			}
+			$result->close();
+			$db->query("UPDATE PurchasedBadges SET BadgeTypeID = $type, PaymentSource = '$source' WHERE BadgeID = $id");
+			echo "<span>Badge Type has been updated.</span>";
+		}
+		else if ($_POST["action"] == "CheckPromoCode")
+		{
+			$id = $db->real_escape_string($_POST["id"]);
+			$code = $db->real_escape_string($_POST["value"]);
+			$result = $db->query("SELECT PromoCodeID FROM PurchasedBadges WHERE BadgeID = $id");
+			$row = $result->fetch_array();
+			$result->close();
+			if($row["PromoCodeID"] != null)
+			{
+				echo "<span class=\"requiredField\">This badge has already used a promo code.</span>";
+				return;
+			}
+			
+			echo "<span class=\"requiredField\">Has promo code.</span>";
+		}
+		else if($_POST["action"] == "DeleteBadge")
+		{
+			$id = $db->real_escape_string($_POST["id"]);
+			
+			$result = $db->query("SELECT PurchaserID, OneTimePurchaserID, PeopleID, OneTimeID, PaymentReference FROM PurchasedBadges WHERE BadgeID = $id");
+			if($result->num_rows == 0)
+			{
+				echo "<span class=\"requiredField\">Invalid badge ID.</span>";
+				return;
+			}
+			$row = $result->fetch_array();
+			$result->close();
+			
+			$purchaser = !is_null($row["PurchaserID"]) ? "= " + $row["PurchaserID"] : "IS NULL";
+			$purchaserOneTime = !is_null($row["OneTimePurchaserID"]) ? "= " + $row["OneTimePurchaserID"] : "IS NULL";
+			$person = !is_null($row["PeopleID"]) ? "= " + $row["PeopleID"] : "IS NULL";
+			$oneTime = !is_null($row["OneTimeID"]) ? "= " + $row["OneTimeID"] : "IS NULL";
+			$ref = $row["PaymentReference"];
+			
+			$db->query("DELETE FROM PurchasedBadges WHERE BadgeID = $id");
+			$db->query("DELETE FROM PurchaseHistory WHERE PurchaserID $purchaser AND PurchaserOneTimeID $purchaserOneTime AND PeopleID $people AND OneTimeID $oneTime AND PaymentReference = '$ref'");
+			
+			echo "<span>Badge has been deleted.</span>";
+		}
+		else if($_POST["action"] == "ApproveBadge")
+		{
+			$badgeID = $db->real_escape_string($_POST["id"]);
+			$checkNum = $db->real_escape_string($_POST["checkNumber"]);
+			
+			$result = $db->query("SELECT PaymentReference FROM PurchasedBadges WHERE BadgeID = $badgeID");
+			$row = $result->fetch_array();
+			$ref = $row["PaymentReference"];			
+			$result->close();
+			$newRef = $ref . "_#" . $checkNum;
+			
+			$db->query("UPDATE PurchasedBadges SET Status = 'Paid', PaymentReference = '$newRef' WHERE BadgeID = $badgeID");
+			$db->query("UPDATE PurchaseHistory SET PaymentReference = '$newRef' WHERE PaymentReference = '$ref'");
+			$result = $db->query("SELECT PurchaserID FROM PurchasedBadges WHERE BadgeID = $badgeID");
+			$row = $result->fetch_array();
+			$peopleID = $row["PurchaserID"];
+			$result->close();
+			if(!is_null($peopleID))
+			{		
+				$result = $db->query("SELECT CONCAT(FirstName, ' ', LastName) AS Name, Email FROM People WHERE PeopleID = $peopleID");
+				$row = $result->fetch_array();
+				$email = $row["Email"];
+				$name = $row["Name"];
+				$result->close();
+				
+				if(!empty($email))
+				{
+					$mail = new PHPMailer;
+					$mail->IsSendmail();
+					$mail->From = "registration@capricon.org";
+					$mail->FromName = "Capricon Registration";
+					$mail->AddAddress($email, $name);
+					$mail->WordWrap = 70;
+					$mail->Subject = "Check for Capricon Registration Received!";
+					$mail->Body = "Hello! This email is to let you know that we have received your check, numbered $checkNum, that you mailed in to " . 
+						"pay for your convention registration. We've marked your purchase as paid, and we will see you at Capricon!\r\n\r\n" . 
+						"Sincerely,\r\nThe Capricon Registration Team";
+					$mail->Send();
+				}
+			}
+			echo "<span>Badge has been approved.</span>";
+		}
+		else if($_POST["action"] == "RefundBadge")
+		{
+			$id = $db->real_escape_string($_POST["id"]);
+			$result = $db->query("SELECT PurchaserID, OneTimePurchaserID, PeopleID, OneTimeID, BadgeName, AmountPaid, PaymentSource, PaymentReference FROM PurchasedBadges WHERE BadgeID = $id");
+			if($result->num_rows == 0)
+			{
+				echo "<span class=\"requiredField\">Invalid badge ID.</span>";
+				return;
+			}
+			$row = $result->fetch_array();
+			$result->close();
+			
+			$peopleID = $row["PurchaserID"];
+			$purchaser = !is_null($row["PurchaserID"]) ? "= " + $row["PurchaserID"] : "IS NULL";
+			$purchaserOneTime = !is_null($row["OneTimePurchaserID"]) ? "= " + $row["OneTimePurchaserID"] : "IS NULL";
+			$person = !is_null($row["PeopleID"]) ? "= " + $row["PeopleID"] : "IS NULL";
+			$oneTime = !is_null($row["OneTimeID"]) ? "= " + $row["OneTimeID"] : "IS NULL";
+			$badgeName = $row["BadgeName"];		
+			$amount = $row["AmountPaid"];
+			$source = $row["PaymentSource"];
+			$ref = $row["PaymentReference"];
+			
+			if($source == "Stripe")
+			{
+				try
+				{
+					// Perform the refund.
+					Stripe::setApiKey($stripeKey);
+					$charge = Stripe_Charge::retrieve($ref);
+					$refund = $charge->refund(array(
+						"amount" => $amount * 100,
+						"reason" => "requested_by_customer",
+						));
+					$destination = "credit card";
+				}
+				catch(Stripe_CardError $e)
+				{
+					$obj = $e->getJsonBody();
+					$err = $obj['error'];
+					echo "<span class=\"requiredField\">The refund attempt failed: " . $err['message'] . "</span>";
+					return;
+				}
+			}
+			elseif($source == "PayPal")
+			{
+				$padata =	'&TRANSACTION=' . urlencode($ref) .
+						'&REFUNDTYPE=Partial' .
+						'&AMT=' . urlencode($amount) .
+						'&CURRENCYCODE=USD' .
+						'&NOTE=' . urlencode("Refund for badge '$badgeName'.");
+											
+				$paypal = new MyPayPal();
+				$response = $paypal->PPHttpPost('RefundTransaction', $padata);
+				if(!("SUCCESS" == strtoupper($response["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($response["ACK"])))
+				{
+					echo "<span class=\"requiredField\">The refund attempt failed: " . urldecode($response["L_LONGMESSAGE0"]) . "</span>";
+					return;
+				}
+				$destination = "PayPal account";							
+			}
+			else
+			{
+				echo "<span class=\"requiredField\">Unable to refund badges that were not paid by Stripe or Paypal.</span>";
+				return;			
+			}
+			
+			$db->query("DELETE FROM PurchasedBadges WHERE BadgeID = $id");
+			$db->query("DELETE FROM PurchaseHistory WHERE PurchaserID $purchaser AND PurchaserOneTimeID $purchaserOneTime AND PeopleID $people AND OneTimeID $oneTime AND PaymentReference = '$ref'");
+			if(!is_null($peopleID))
+			{		
+				$result = $db->query("SELECT CONCAT(FirstName, ' ', LastName) AS Name, Email FROM People WHERE PeopleID = $peopleID");
+				$row = $result->fetch_array();
+				$email = $row["Email"];
+				$name = $row["Name"];
+				$result->close();
+				
+				if(!empty($email))
+				{
+					$mail = new PHPMailer;
+					$mail->IsSendmail();
+					$mail->From = "registration@capricon.org";
+					$mail->FromName = "Capricon Registration";
+					$mail->AddAddress($email, $name);
+					$mail->WordWrap = 70;
+					$mail->Subject = "Badge Refund Issued";
+					$mail->Body = "Hello! This email is to let you know that we have received a request to refund badge '$badgeName' that you " . 
+						"have purchased. The amount of " . sprintf("$%01.2f", $amount) . " was refunded to your $destination. Please allow up " . 
+						"to 3 to 5 business days for this to appear in your account.\r\n\r\nIf you have any questions, please contact " . 
+						"registration@capricon.org.\r\nSincerely,\r\nThe Capricon Registration Team";
+					$mail->Send();
+				}
+				echo "<span>Badge has been successfully refunded. An email has been sent to $name at $email.</span>";
+			}
+			else
+				echo "<span>Badge has been successfully refunded.</span>";
+		}
+		elseif($_POST["action"] == "TransferBadge")
+		{
+			$id = $db->real_escape_string($_POST["id"]);
+			$result = $db->query("SELECT BadgeName, PurchaserID, OneTimePurchaserID, PeopleID, OneTimeID, PaymentReference FROM PurchasedBadges WHERE BadgeID = $id");
+			if($result->num_rows == 0)
+			{
+				echo "<span class=\"requiredField\">Invalid badge ID.</span>";
+				return;
+			}
+			$row = $result->fetch_array();
+			$originalPurchaser = !is_null($row["PurchaserID"]) ? "= " + $row["PurchaserID"] : "IS NULL";
+			$originalPurchaserOneTime = !is_null($row["OneTimePurchaserID"]) ? "= " + $row["OneTimePurchaserID"] : "IS NULL";
+			$originalPerson = !is_null($row["PeopleID"]) ? "= " + $row["PeopleID"] : "IS NULL";
+			$originalOneTime = !is_null($row["OneTimeID"]) ? "= " + $row["OneTimeID"] : "IS NULL";
+			$ref = $row["PaymentReference"];
+
+			$result->close();
+
+			if(isset($_POST["peopleID"]))
+			{
+				$peopleID = $db->real_escape_string($_POST["peopleID"]);
+				$result = $db->query("SELECT BadgeName, ParentID FROM People WHERE PeopleID = $peopleID");
+				$row = $result->fetch_array();
+				$badgename = $row["BadgeName"];
+				$oneTimeID = "NULL";
+				$purchaserID = is_null($row["ParentID"]) ? $peopleID : $row["ParentID"];
+				$oneTimePurchaserID = "NULL";
+				$result->close();		
+			}
+			else
+			{
+				$peopleID = "NULL";
+				$purchaserID = "NULL";
+				$first = $db->real_escape_string($_POST["firstname"]);
+				$last = $db->real_escape_string($_POST["lastname"]);
+				$sql = "INSERT INTO OneTimeRegistrations (FirstName, LastName, Address1, City) VALUES ('$first', '$last', 'TRANSFER BADGE', '')";
+				$db->query($sql);
+				$oneTimeID = $db->insert_id;
+				$oneTimePurchaserID = $oneTimeID;
+				$badgename = $db->real_escape_string($_POST["badgename"]);
+				if(trim($badgename) == "") $badgename = $first . " " . $last;
+			}
+			
+			$sql = "UPDATE PurchasedBadges SET PeopleID = $peopleID, OneTimeID = $oneTimeID, PurchaserID = $purchaserID, OneTimePurchaserID = $oneTimePurchaserID, BadgeName = '$badgename' WHERE BadgeID = $id";
+			$db->query($sql);
+			$sql = "UPDATE PurchaseHistory SET PeopleID = $peopleID, OneTimeID = $oneTimeID, PurchaserID = $purchaserID, PurchaserOneTimeID = $oneTimePurchaserID, Details = '$badgename' WHERE PeopleID $originalPerson AND OneTimeID $originalOneTime AND PurchaserID $originalPurchaser AND PurchaserOneTimeID $originalPurchaserOneTime AND PaymentReference = '$ref'";
+			$db->query($sql);
+			echo "<span>Badge has been successfully transferred.</span>";
+		}
+		else
+			echo "<span class=\"requiredField\">Invalid action request.</span>";
+	}
+	else
+		echo "<span class=\"requiredField\">Invalid action request.</span>";
+?>
