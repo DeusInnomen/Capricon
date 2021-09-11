@@ -93,7 +93,7 @@ else
                     <label for="onlyThisEmail">Please Contact Me Only At The Above Address <input type="checkbox" name="onlyThisEmail" id="onlyThisEmail" <?php if($request["OnlyUseThisEmail"] == 1) echo "checked"; ?>/></label><br />
                     <span style="font-style: italic; font-size: 0.8em;">If the above checkbox is not checked, we will send emails related to your application to the above email address (if provided)
                     and to your profile's email address.</span><br />
-                    <label for="description" class="fieldLabelShort">Company Description: </label><br />
+                    <label for="description" class="fieldLabelShort">Company Description (500 character limit): </label><br />
                     <textarea id="description" name="description" maxlength="500" rows="4" placeholder="To Be Shared On Our Website And Program Book, If Provided" style="width: 98%;"><?php echo $info["Description"]; ?></textarea>
                     <label><span class="requiredField">*</span>Address (Line 1): </label><br />
                     <input type="text" name="address1" id="address1" style="width: 70%;" placeholder="Required" value="<?php echo $info["Address1"]; ?>" /><br />
