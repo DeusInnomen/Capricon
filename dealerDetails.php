@@ -88,8 +88,8 @@ else
                     <input type="text" name="legalName" id="legalName" placeholder="Required" style="width: 98%;" value="<?php echo $info["LegalName"]; ?>" /><br />
                     <label for="url" class="fieldLabelShort">Website URL: </label><br />
                     <input type="text" name="url" id="url" placeholder="Will Be Linked On Our Website" style="width: 98%;" value="<?php echo $info["URL"]; ?>" /><br />
-                    <label for="contactEmail" class="fieldLabelShort">Business Contact Email: </label><br />
-                    <input type="email" name="contactEmail" id="contactEmail" placeholder="Only If Different Than Login Email" style="width: 70%;" value="<?php echo $info["ContactEmail"]; ?>" /><br />
+                    <label for="contactEmail" class="fieldLabelShort"><span class="requiredField">*</span>Business Contact Email: </label><br />
+                    <input type="email" name="contactEmail" id="contactEmail" placeholder="Required" style="width: 70%;" value="<?php echo $info["ContactEmail"]; ?>" /><br />
                     <label for="onlyThisEmail">Please Contact Me Only At The Above Address <input type="checkbox" name="onlyThisEmail" id="onlyThisEmail" <?php if($request["OnlyUseThisEmail"] == 1) echo "checked"; ?>/></label><br />
                     <span style="font-style: italic; font-size: 0.8em;">If the above checkbox is not checked, we will send emails related to your application to the above email address (if provided)
                     and to your profile's email address.</span><br />
