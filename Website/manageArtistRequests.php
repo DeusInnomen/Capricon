@@ -2,12 +2,14 @@
 	session_start();
 	include_once('includes/functions.php');
 	if(!isset($_SESSION["PeopleID"]))
-		header('Location: /login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
+		header('Location: login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
 	elseif(!DoesUserBelongHere("ArtShowStaff"))
-		header('Location: /index.php');
+		header('Location: index.php');
 		
 	$year = date("n") >= 3 ? date("Y") + 1: date("Y");
-	$result = $db->query("SELECT ap.ArtistAttendingID, ad.DisplayName, p.Email, ad.LegalName, ad.IsPro, ad.ArtType, ap.IsAttending, ap.AgentName, ap.AgentContact, ap.ShippingPref, ap.ShippingAddress, ap.NeedsElectricity, ap.NumTables, ap.NumGrid, ap.HasPrintShop, ap.Notes, ap.Status, ap.StatusReason, ad.IsEAP FROM ArtistPresence ap INNER JOIN ArtistDetails ad ON ap.ArtistID = ad.ArtistID INNER JOIN People p ON ad.PeopleID = p.PeopleID WHERE ap.Year = $year ORDER BY ad.DisplayName");
+	$result = $db->query("SELECT ap.ArtistAttendingID, ad.DisplayName, p.Email, ad.LegalName, ad.IsPro, ad.ArtType, ap.IsAttending, ap.AgentName, ap.AgentContact, ap.ShippingPref, " 
+        . "ap.ShippingAddress, ap.NeedsElectricity, ap.NumTables, ap.NumGrid, ap.HasPrintShop, ap.Notes, ap.Status, ap.StatusReason, ad.IsEAP, ap.FeesWaived FROM ArtistPresence ap " 
+        . "INNER JOIN ArtistDetails ad ON ap.ArtistID = ad.ArtistID INNER JOIN People p ON ad.PeopleID = p.PeopleID WHERE ap.Year = $year ORDER BY ad.DisplayName");
 	
 	$requests = array();
 	while($row = $result->fetch_array())
@@ -19,13 +21,22 @@
 	while($row = $result->fetch_array())
 		$pieces[$row["ArtistAttendingID"]] = $row["Pieces"];
 	$result->close();
+
+    $result = $db->query("SELECT ArtistAttendingID FROM ArtistPresence WHERE Year = $year AND ArtistNumber = 1");
+    if($result->num_rows > 0) {
+        $hasGOH = true;
+        $result->close();
+    }
+    else
+        $hasGOH = false;
+
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
 	<title>Capricon Registration System -- Manage Artist Requests</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<link rel="stylesheet" type="text/css" href="includes/style.css" />
+	<link rel="stylesheet" type="text/css" href="includes/style.css?<?php echo filemtime("includes/style.css"); ?>" />
 	<link rel="icon" href="includes/favicon.png" />
 	<link rel="shortcut icon" href="includes/favicon.ico" />
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
@@ -36,16 +47,20 @@
 				if(e.target.type !== "checkbox")
 					$(":checkbox", this).trigger("click");
 			});
-			$("#artistRequestForm table :input:checkbox").click(function () {
-				if($("#artistRequestForm table :input:checkbox:checked").length > 0)
+			$("#artistRequestForm table :input[name=select]:checkbox").click(function () {
+				if($("#artistRequestForm table :input[name=select]:checkbox:checked").length > 0)
 				{
 					$("#artistRequestForm :input[type!='checkbox']").removeAttr("disabled");
 					$("#clearReason").removeAttr("disabled");
+					$("#waiveFees").removeAttr("disabled");
+					$("#isGOH").removeAttr("disabled");
 				}
 				else
 				{
 					$("#artistRequestForm :input[type!='checkbox']").attr("disabled", "disabled");
 					$("#clearReason").attr("disabled", "disabled");
+					$("#waiveFees").attr("disabled", "disabled");
+					$("#isGOH").attr("disabled", "disabled");
 				}
 			});
 			$("#showPendingOnly").click(function(e) {
@@ -58,25 +73,35 @@
 				});
 			});
 		});
-		
+
 		function doUpdate() {
 			var requests = "";
 			$("#artistRequestForm :input[name=select]:checkbox:checked").each(function() {
 				requests += ", " + $(this).attr("id");
 			});
 			if(requests.length > 0) requests = requests.substring(2);
-			
+
 			var action = $("#action").val();
 			if(action == "Delete")
 				if(!confirm("Are you sure you wish to delete these requests? All submitted art will also be deleted."))
 					return;
-			
+
 			var reason = $("#reason").val();
 			var clearReason = $("#clearReason").is(":checked");
+			var waiveFees = $("#waiveFees").is(":checked");
 			var sendEmail = $("#sendEmail").is(":checked");
+            <?php if(!$hasGOH) { ?>
+            var isGOH = $("#isGOH").is(":checked");
+            if ($("#artistRequestForm table :input[name=select]:checkbox:checked").length > 1 && isGOH) {
+                $("#updateMessage").html("You should only have one box checked when declaring who the GOH is.");
+                return false;
+            }
+            <?php } else { ?>
+            var isGOH = false;
+            <?php } ?>
 			$("#artistRequestForm :input").prop("readonly", true);
 
-			$.post("doArtistFunctions.php", { task: "UpdateStatus", requests: requests, action: action, reason: reason, clearReason: clearReason, sendEmail: sendEmail }, function(result) {
+			$.post("doArtistFunctions.php", { task: "UpdateStatus", requests: requests, action: action, reason: reason, clearReason: clearReason, sendEmail: sendEmail, waiveFees: waiveFees, isGOH: isGOH }, function(result) {
 					$("#artistRequestForm :input").removeProp("readonly");
 					if(result.success)
 						location.reload();
@@ -109,7 +134,10 @@
 							echo "<br>Shipping Address: " . $request["ShippingAddress"];
 						if(!empty($request["StatusReason"]))
 							echo "<br>Status Reason: " . $request["StatusReason"];
-						echo "<br>Notes: " . $request["Notes"] . "\" status=\"" . $request["Status"] . "\" " . 
+						echo "<br>Notes: " . $request["Notes"]; 
+                        if($request["FeesWaived"] == 1)
+                            echo "<br>Note: Fees Have Been Waived For This Exhibit";
+                        echo "\" status=\"" . $request["Status"] . "\" " . 
 							($request["Status"] == "Pending" ? "" : "style=\"display: none;\"") . ">";
 						echo "<td style=\"text-align: center;\"><input type=\"checkbox\" name=\"select\" id=\"" . 
 							$request["ArtistAttendingID"] . "\"/></td><td>" . $request["DisplayName"] . "</td><td>";
@@ -130,6 +158,9 @@
 					<option value="Delete">Delete Requests</option>
 				</select><label for="reason" style=" margin-left: 15px;">Reason: <input type="text" id="reason" name="reason" style="width: 40%;" maxlength="100" placeholder="Optional" disabled></label>
 				<label for="clearReason"><input type="checkbox" id="clearReason" name="clearReason" disabled> Clear Reason</label><br />
+                <label for="waiveFees"><input type="checkbox" id="waiveFees" name="waiveFees" disabled>Waive Fees for Checked Requests</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                <?php if(!$hasGOH) { ?><label for="isGOH"><input type="checkbox" id="isGOH" name="isGOH" disabled>This is the GOH (Set as Artist #1)</label><?php } ?><br />
+                <br />
 				<input type="submit" id="updateStatus" name="updateStatus" value="Apply Action to Requests" onclick="doUpdate(); return false;" disabled><br />
 				<span id="updateMessage" style="font-size: 1.05em; font-weight: bold;">&nbsp;</span>
 				<p style="font-style:italic;">Hover over any entry above to see additional information.</p>
@@ -137,7 +168,7 @@
 				</form>
 			</div>			
 			<div class="goback">
-				<a href="/index.php">Return to the Main Menu</a>
+				<a href="index.php">Return to the Main Menu</a>
 			</div>
 		</div>
 	</div>

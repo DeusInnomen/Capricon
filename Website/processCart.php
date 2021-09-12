@@ -4,9 +4,13 @@
 	require_once("Stripe/Stripe.php");
 	include_once('includes/paypal.php');
 
+	use PHPMailer\PHPMailer\PHPMailer;
+	use PHPMailer\PHPMailer\SMTP;
+	use PHPMailer\PHPMailer\Exception;
+
 	function HandleCart()
 	{
-		global $db, $stripeKey, $smtpPass;
+		global $db, $stripeKey, $smtpServer, $smtpUser, $smtpPass;
 		Stripe::setApiKey($stripeKey);
 		
 		$token = isset($_POST["stripeToken"]) ? $_POST["stripeToken"] : "";
@@ -253,8 +257,8 @@
 						$mail->isSMTP();
 						$mail->SMTPAuth = true;
 						$mail->Port = 587;
-						$mail->Host = "mail.capricon.org";
-						$mail->Username = "outgoing@capricon.org";
+						$mail->Host = $smtpServer;
+						$mail->Username = $smtpUser;
 						$mail->Password = $smtpPass;
 						$mail->From = "registration@capricon.org";
 						$mail->FromName = "Capricon Registration";
@@ -291,8 +295,8 @@
 						$mail->isSMTP();
 						$mail->SMTPAuth = true;
 						$mail->Port = 587;
-						$mail->Host = "mail.capricon.org";
-						$mail->Username = "outgoing@capricon.org";
+						$mail->Host = $smtpServer;
+						$mail->Username = $smtpUser;
 						$mail->Password = $smtpPass;
 						$mail->From = "registration@capricon.org";
 						$mail->FromName = "Capricon Registration";
@@ -376,8 +380,8 @@
 		$mail->isSMTP();
 		$mail->SMTPAuth = true;
 		$mail->Port = 587;
-		$mail->Host = "mail.capricon.org";
-		$mail->Username = "outgoing@capricon.org";
+		$mail->Host = $smtpServer;
+		$mail->Username = $smtpUser;
 		$mail->Password = $smtpPass;
 		$mail->From = "registration@capricon.org";
 		$mail->FromName = "Capricon Registration";
@@ -432,3 +436,6 @@
 	</script>
 </body>
 </html>
+
+processCart.php
+Displaying processCart.php.

@@ -4,6 +4,10 @@
 	
 	DoCleanup();
 	
+	use PHPMailer\PHPMailer\PHPMailer;
+	use PHPMailer\PHPMailer\SMTP;
+	use PHPMailer\PHPMailer\Exception;
+
 	if(isset($_POST["action"]) && $_POST["action"] == "MarkPaid")
 	{
 		$ids = $db->real_escape_string($_POST["badges"]);
@@ -48,8 +52,8 @@
 				$mail->isSMTP();
 				$mail->SMTPAuth = true;
 				$mail->Port = 587;
-				$mail->Host = "mail.capricon.org";
-				$mail->Username = "outgoing@capricon.org";
+				$mail->Host = $smtpServer;
+				$mail->Username = $smtpUser;
 				$mail->Password = $smtpPass;
 				$mail->From = "registration@capricon.org";
 				$mail->FromName = "Capricon Registration";

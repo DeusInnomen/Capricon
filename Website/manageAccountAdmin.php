@@ -2,11 +2,11 @@
 	session_start();
 	include_once('includes/functions.php');
 	if(!isset($_SESSION["PeopleID"]))
-		header('Location: /login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
+		header('Location: login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
 	elseif(!DoesUserBelongHere("RegLead") && !DoesUserBelongHere("Ops"))
-		header('Location: /index.php');
+		header('Location: index.php');
 	elseif(!isset($_GET["id"]))
-		header('Location: /manageAllAccounts.php');
+		header('Location: manageAllAccounts.php');
 	else
 	{
 		$result = $db->query("SELECT FirstName, LastName, Address1, Address2, City, State, ZipCode, Country, " .
@@ -31,7 +31,7 @@
 <head>
 	<title>Capricon Registration System -- Manage Account (Admin)</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<link rel="stylesheet" type="text/css" href="includes/style.css" />
+	<link rel="stylesheet" type="text/css" href="includes/style.css?<?php echo filemtime("includes/style.css"); ?>" />
 	<link rel="stylesheet" type="text/css" href="includes/jquery.validate.password.css" />
 	<link rel="icon" href="includes/favicon.png" />
 	<link rel="shortcut icon" href="includes/favicon.ico" />
@@ -185,13 +185,10 @@
 				<label>How Did You Hear About Capricon?<input type="text" name="heardFrom" id="heardFrom" style="width: 90%; margin-bottom: 40px;" value="<?php echo $info["HeardFrom"]; ?>" /></label><br />
 				<?php
 				if(DoesUserBelongHere("SuperAdmin"))
-					echo '<a href="adminSwitchAccount.php?id=' . $_GET["id"] . '">!! Log In To This Account !!</a><br />';
-				if(DoesUserBelongHere("Treasurer"))
-					echo '<a href="adminShowPurchases.php?id=' . $_GET["id"] . '">Show Purchases For This Account</a><br />';
-				?>
+					echo '<a href="adminSwitchAccount.php?id=' . $_GET["id"] . '">!! Log In To This Account !!</a><br />' ?>
 			</div>
 			<div class="goback">
-				<a href="/index.php">Return to the Main Menu</a>
+				<a href="index.php">Return to the Main Menu</a>
 			</div>
 			<div style="float: left; width: 50%; margin-bottom: 60px">
 				<div class="headertitle">Your Badge Name</div>

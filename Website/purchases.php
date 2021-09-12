@@ -2,35 +2,11 @@
 	session_start();
 	include_once('includes/functions.php');
 	if(!isset($_SESSION["PeopleID"]))
-		header('Location: /login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
+		header('Location: login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
 	else
 	{		
 		$orders = array();
-		$peopleID = $_SESSION["PeopleID"];
-		$query = <<<EOD
-SELECT 
-ph.ItemTypeName AS Item, 
-ph.PeopleID, 
-CONCAT(p.FirstName, ' ', p.LastName) AS Name, 
-CASE WHEN ph.ItemTypeName = 'Badge' THEN 
-   CONCAT(ph.Year, ' ', bt.Description, ' ',
-      CASE WHEN pb.Status = 'Paid' THEN '' ELSE pb.Status END,
-      ' - Note:', ph.PaymentSource) 
-   ELSE CONCAT(ph.Details, ' - Note:', ph.PaymentSource)
-END AS Details, 
-ph.Total, 
-ph.Purchased 
-FROM 
-PurchaseHistory ph 
-LEFT OUTER JOIN AvailableBadges ab ON ab.AvailableBadgeID = ph.ItemTypeID 
-LEFT OUTER JOIN BadgeTypes bt ON bt.BadgeTypeID = ab.BadgeTypeID 
-LEFT OUTER JOIN PurchasedBadges pb ON pb.RecordID = ph.RecordID
-INNER JOIN People p ON p.PeopleID = ph.PeopleID 
-WHERE (ph.PeopleID = $peopleID OR ph.PurchaserID = $peopleID) 
-ORDER BY ph.Purchased DESC
-EOD;
-		//$result = $db->query("SELECT ph.ItemTypeName AS Item, ph.PeopleID, CONCAT(p.FirstName, ' ', p.LastName) AS Name, CASE WHEN ph.ItemTypeName = 'Badge' THEN CONCAT(ph.Year, ' ', bt.Description) ELSE ph.Details END AS Details, ph.Total, ph.Purchased FROM PurchaseHistory ph LEFT OUTER JOIN AvailableBadges ab ON ab.AvailableBadgeID = ph.ItemTypeID LEFT OUTER JOIN BadgeTypes bt ON bt.BadgeTypeID = ab.BadgeTypeID INNER JOIN People p ON p.PeopleID = ph.PeopleID WHERE (ph.PeopleID = " . $_SESSION["PeopleID"] . " OR ph.PurchaserID = " . $_SESSION["PeopleID"] . ") ORDER BY ph.Purchased DESC");
-		$result = $db->query($query);
+		$result = $db->query("SELECT ph.ItemTypeName AS Item, ph.PeopleID, CONCAT(p.FirstName, ' ', p.LastName) AS Name, CASE WHEN ph.ItemTypeName = 'Badge' THEN CONCAT(ph.Year, ' ', bt.Description) ELSE ph.Details END AS Details, ph.Total, ph.Purchased FROM PurchaseHistory ph LEFT OUTER JOIN AvailableBadges ab ON ab.AvailableBadgeID = ph.ItemTypeID LEFT OUTER JOIN BadgeTypes bt ON bt.BadgeTypeID = ab.BadgeTypeID INNER JOIN People p ON p.PeopleID = ph.PeopleID WHERE (ph.PeopleID = " . $_SESSION["PeopleID"] . " OR ph.PurchaserID = " . $_SESSION["PeopleID"] . ") ORDER BY ph.Purchased DESC");
 		while($row = $result->fetch_array())
 			$orders[] = $row;
 		$result->close();
@@ -41,7 +17,7 @@ EOD;
 <head>
 	<title>Capricon Registration System -- Purchase History</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<link rel="stylesheet" type="text/css" href="includes/style.css" />
+	<link rel="stylesheet" type="text/css" href="includes/style.css?<?php echo filemtime("includes/style.css"); ?>" />
 	<link rel="icon" href="includes/favicon.png" />
 	<link rel="shortcut icon" href="includes/favicon.ico" />
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
@@ -82,7 +58,7 @@ EOD;
 			</div>
 			<div class="clearfix"></div>
 			<div class="goback">
-				<a href="/index.php">Return to the Main Menu</a>
+				<a href="index.php">Return to the Main Menu</a>
 			</div>
 		</div>
 	</div>

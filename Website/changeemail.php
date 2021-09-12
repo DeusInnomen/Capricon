@@ -2,7 +2,7 @@
 	session_start();
 	include_once('includes/functions.php');
 	if(!isset($_GET['id']))
-		header('Location: /index.php');
+		header('Location: index.php');
 	else
 	{
 		$result = $db->query("SELECT PeopleID, Data FROM ConfirmationLinks WHERE Code = '" .
@@ -28,14 +28,14 @@
 <head>
 	<title>Capricon Registration System -- Change Email</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<link rel="stylesheet" type="text/css" href="includes/style.css" />
+	<link rel="stylesheet" type="text/css" href="includes/style.css?<?php echo filemtime("includes/style.css"); ?>" />
 	<link rel="icon" href="includes/favicon.png" />
 	<link rel="shortcut icon" href="includes/favicon.ico" />
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 	<script type="text/javascript" src="includes/global.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			setTimeout(function() { window.location = "/index.php"; }, 5000);
+			setTimeout(function() { window.location = "index.php"; }, 5000);
 		});
 	</script>
 </head>

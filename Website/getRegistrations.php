@@ -2,7 +2,7 @@
 	session_start();
 	include_once('includes/functions.php');
 	if(!DoesUserBelongHere("RegStaff"))
-		header('Location: /index.php');
+		header('Location: index.php');
 	
 	$showLinks = DoesUserBelongHere("RegLead");
 	$step = 20;
@@ -33,7 +33,7 @@
 		{
 			if($showLinks)
 			{
-				$link1 = "<a href=\"editBadge.php?id=" . $row["BadgeID"] . "\">";
+				$link1 = "<a href=\"editBadge.php?id=" . $row["BadgeID"] . "&return=viewRegistrations\">";
 				if(empty($row["BadgeName"])) $link1 .= "[Blank Badge]";
 				$link2 = "</a>";
 			}

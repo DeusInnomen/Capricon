@@ -551,7 +551,7 @@ $result->close();
 <head>
 	<title>Capricon Registration System -- Registration Sales Summary</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<link rel="stylesheet" type="text/css" href="includes/style.css" />
+	<link rel="stylesheet" type="text/css" href="includes/style.css?<?php echo filemtime("includes/style.css"); ?>" />
 	<link rel="stylesheet" type="text/css" href="includes/jquery-ui-1.10.3/themes/redmond/jquery-ui.css" />
 	<link rel="icon" href="includes/favicon.png" />
 	<link rel="shortcut icon" href="includes/favicon.ico" />

@@ -1,7 +1,7 @@
 <?php
 	session_start();
 	include_once('includes/functions.php');
-	$return = isset($_GET["return"]) ? urldecode($_GET["return"]) : "/index.php";
+	$return = isset($_GET["return"]) ? urldecode($_GET["return"]) : "index.php";
 	$message = "Please enter your email address and password to log in.";
 	if(isset($_GET["resend"]))
 	{
@@ -17,7 +17,7 @@
 <head>
 	<title>Capricon Registration System -- Login</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<link rel="stylesheet" type="text/css" href="includes/style.css" />
+	<link rel="stylesheet" type="text/css" href="includes/style.css?<?php echo filemtime("includes/style.css"); ?>" />
 	<link rel="icon" href="includes/favicon.png" />
 	<link rel="shortcut icon" href="includes/favicon.ico" />
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>

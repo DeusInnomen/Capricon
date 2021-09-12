@@ -5,16 +5,16 @@
 	$printShopPieces = array();
 
 	if(!isset($_SESSION["PeopleID"]))
-		header('Location: /login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
+		header('Location: login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
 	elseif(!DoesUserBelongHere("Artist"))
-		header('Location: /main.php');
+		header('Location: index.php');
 	else
 	{
 		$year = date("n") >= 3 ? date("Y") + 1: date("Y");
 		$capriconYear = $year - 1980;
 		if(!empty($_GET["attendID"])) {
             if(!DoesUserBelongHere("ArtShowLead"))
-                header('Location: /main.php');
+                header('Location: index.php');
             $attendID = $_GET["attendID"];
         }
         else
@@ -25,7 +25,7 @@
 			"MinimumBid, QuantitySent, QuickSalePrice, FeesPaid FROM ArtSubmissions WHERE ArtID = $id");
 
 		if($result->num_rows == 0)
-		    header('Location: /artistSubmissions.php' . ($attendID != 0 ? "?attendID=$attendID" : ""));
+		    header('Location: artistSubmissions.php' . ($attendID != 0 ? "?attendID=$attendID" : ""));
 
         $art = $result->fetch_array();
         $result->close();
@@ -38,7 +38,7 @@
 <head>
     <title>Capricon Registration System -- Edit Art Show Entry</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <link rel="stylesheet" type="text/css" href="includes/style.css" />
+    <link rel="stylesheet" type="text/css" href="includes/style.css?<?php echo filemtime("includes/style.css"); ?>" />
     <link rel="icon" href="includes/favicon.png" />
     <link rel="shortcut icon" href="includes/favicon.ico" />
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
@@ -47,7 +47,7 @@
 		function saveArtChanges() {
 		    $.post("doArtistFunctions.php", $("#editArtItem").serialize(), function (result) {
 		        if (result.success) {
-		            var url = '/artistSubmissions.php<?php echo ($attendID != 0 ? "?attendID=$attendID" : ""); ?>';
+		            var url = 'artistSubmissions.php<?php echo ($attendID != 0 ? "?attendID=$attendID" : ""); ?>';
 		            window.location.href = url;
 		        }
 		        else
@@ -55,7 +55,7 @@
 		    }, 'json');
 		}
         function cancelArtChanges() {
-            var url = '/artistSubmissions.php<?php echo ($attendID != 0 ? "?attendID=$attendID" : ""); ?>';
+            var url = 'artistSubmissions.php<?php echo ($attendID != 0 ? "?attendID=$attendID" : ""); ?>';
             window.location.href = url;
         }
     </script>
@@ -125,7 +125,7 @@
             <span id="noticeSave" style="font-size: 1.05em; font-weight: bold;">&nbsp;</span>
             <br /><br />
             <div class="goback">
-                <a href="/index.php">Return to the Main Menu</a>
+                <a href="index.php">Return to the Main Menu</a>
             </div>
         </div>
     </div>

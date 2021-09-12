@@ -234,11 +234,11 @@ input[type="submit"][disabled] {
 }
 
 .goback {
-	position: absolute;
 	height: 25px;
 	bottom: 5px;
 	left: 10px;
 	text-align: left;
+	margin-top: 25px;
 }
 
 #loginMessage p {
@@ -776,7 +776,7 @@ div#orderHistory {
 
 #interestsTable table tr {
 	border: 0px;
-	width: 45%
+	width: 45%;
 	text-align: left;
 	padding: 2px 2px 2px 2px;
 }
@@ -787,7 +787,64 @@ div#orderHistory {
 
 #expertiseTable table tr {
 	border: 0px;
-	width: 30%
+	width: 30%;
 	text-align: left;
 	padding: 2px 2px 2px 2px;
+}
+
+.nospin input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.nospin input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.signatureBox {
+	display: inline-block;
+	position: relative;
+	border: 2px groove #3953A4;
+	border-radius: 10px;
+	height: 250px;
+	width: 750px;
+	margin: 25px auto;
+	padding: 10px;
+	text-align: left;
+	background: #C5DDE0;
+}
+
+.checkinForm {
+	font-size: 1.5em;
+}
+
+.checkinForm input {
+	font-size: 1.2em;
+	margin-bottom: 10px;
+}
+
+#checkinList table {
+	display: inline-block;
+	text-align: center;
+	border-collapse:collapse;
+}
+
+#checkinList table tr td {
+	font-size:1.75em;
+	border:1px solid #98bf21;
+	padding:4px 15px 4px 15px;
+}
+
+#checkinList table tr th {
+	font-size:1.85em;
+	text-align:left;
+	border:1px solid #98bf21;
+	padding: 5px 16px 5px 16px;
+	background-color:#A7C942;
+	color:#061B61;
+}
+
+#checkinList table tr:hover {
+	background: #FFFFFF;
 }

@@ -1,7 +1,7 @@
 <?php
 	session_start();
 	if(!isset($_GET['id']))
-		header('Location: /index.php');
+		header('Location: index.php');
 	else
 	{
 		include_once('includes/functions.php');
@@ -9,7 +9,7 @@
 		$result = PostToURL("https://registration.capricon.org/reminders.php", array ('id' => $id, 'type' => 'Password'));
 		$values = json_decode($result, true);
 		if(!$values["success"])
-			header('Location: /index.php');		
+			header('Location: index.php');		
 	}
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
@@ -17,7 +17,7 @@
 <head>
 	<title>Capricon Registration System -- Reset Password</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<link rel="stylesheet" type="text/css" href="includes/style.css" />
+	<link rel="stylesheet" type="text/css" href="includes/style.css?<?php echo filemtime("includes/style.css"); ?>" />
 	<link rel="stylesheet" type="text/css" href="includes/jquery.validate.password.css" />
 	<link rel="icon" href="includes/favicon.png" />
 	<link rel="shortcut icon" href="includes/favicon.ico" />
@@ -48,7 +48,7 @@
 							$("#statusMessage p").html("Your password has been successfully reset. For security reasons, " + 
 								"you have been automatically logged out. You will be returned to the main menu in 5 seconds.");
 							$("#reset_form").fadeOut(500);						
-							setTimeout(function() { window.location = "/index.php"; }, 5000);
+							setTimeout(function() { window.location = "index.php"; }, 5000);
 						}
 						else
 						{

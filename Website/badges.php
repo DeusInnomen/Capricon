@@ -2,7 +2,7 @@
 	session_start();
 	include_once('includes/functions.php');
 	if(!isset($_SESSION["PeopleID"]))
-		header('Location: /login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
+		header('Location: login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
 	else
 	{
 		$id = $_SESSION["PeopleID"];
@@ -31,7 +31,9 @@
 		}
 		
 		$badges = array();
-		$result = $db->query("SELECT ab.AvailableBadgeID, bt.Description, bt.CategoryID, ab.Year, ab.Price, ab.AvailableTo, ab.BadgeTypeID FROM AvailableBadges ab INNER JOIN BadgeTypes bt ON bt.BadgeTypeID = ab.BadgeTypeID WHERE ab.AvailableFrom <= CURDATE() AND ab.AvailableTo >= CURDATE() AND ab.AvailableOnline = 1");
+		$result = $db->query("SELECT ab.AvailableBadgeID, bt.Description, bt.CategoryID, ab.Year, ab.Price, ab.AvailableTo, ab.BadgeTypeID FROM AvailableBadges ab 
+			INNER JOIN BadgeTypes bt ON bt.BadgeTypeID = ab.BadgeTypeID WHERE ab.AvailableFrom <= CURDATE() AND ab.AvailableTo >= CURDATE() AND ab.AvailableOnline = 1
+			ORDER BY ab.BadgeTypeID ASC, ab.Price ASC");
 		if($result->num_rows > 0)
 		{
 			while($row = $result->fetch_array())
@@ -45,7 +47,7 @@
 <head>
 	<title>Capricon Registration System -- Items</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<link rel="stylesheet" type="text/css" href="includes/style.css" />
+	<link rel="stylesheet" type="text/css" href="includes/style.css?<?php echo filemtime("includes/style.css"); ?>" />
 	<link rel="stylesheet" type="text/css" href="includes/jquery-ui-1.10.3/themes/redmond/jquery-ui.css" />
 	<link rel="icon" href="includes/favicon.png" />
 	<link rel="shortcut icon" href="includes/favicon.ico" />
@@ -222,7 +224,7 @@
 						echo '<p class="noneFound">You have not purchased any items.</p>' . "\r\n"; ?>
 			</div>
 			<div class="goback">
-				<a href="/index.php">Return to the Main Menu</a>
+				<a href="index.php">Return to the Main Menu</a>
 			</div>
 		</div>
 	</div>

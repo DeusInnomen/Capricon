@@ -1,7 +1,7 @@
 <?php
 	include_once('includes/functions.php');
-	
-	$result = $db->query("SELECT ab.Price, ab.AvailableTo FROM AvailableBadges ab INNER JOIN BadgeTypes bt ON bt.BadgeTypeID = " . 
+
+	$result = $db->query("SELECT ab.Price, ab.AvailableTo FROM AvailableBadges ab INNER JOIN BadgeTypes bt ON bt.BadgeTypeID = " .
 		"ab.BadgeTypeID WHERE ab.AvailableFrom <= CURDATE() AND ab.AvailableTo >= CURDATE() AND ab.BadgeTypeID = 1");
 	if($result->num_rows == 0)
 	{
@@ -19,14 +19,16 @@
 		$row = $result->fetch_array();
 		$result->close();
 		$price = sprintf("$%01.2f", $row["Price"]);
-		$until = date("F jS, Y", strtotime($row["AvailableTo"]));	
+		$until = date("F jS, Y", strtotime($row["AvailableTo"]));
 		$thisYear = date("n") >= 3 ? date("Y") + 1: date("Y");
 	}
 	$capriconYear = $thisYear - 1980;
-	
+
 	$pdf = new FPDF('P', 'mm', 'Letter');
 	$pdf->AddPage();
 	$pdf->SetFont('Arial', '', 32);
+    $pdf->Image('includes/capricious_clear.png', 10, 5);
+    $pdf->Image('includes/capricious_clear.png', 165, 5);
 	$pdf->Cell(0, 8, 'Capricon ' . $capriconYear, 0, 1, 'C');
 	$pdf->SetFont('Arial', '', 24);
 	$pdf->Cell(0, 12, 'Registration Form', 0, 1, 'C');
@@ -34,7 +36,7 @@
 	$pdf->Cell(0, 5, 'https://registration.capricon.org', 0, 1, 'C');
 	$pdf->Ln(5);
 	$pdf->SetFont('Arial', '', 12);
-	$pdf->Cell(0, 6, 'To register for the Caprcion ' . $capriconYear . ' convention, please fill in the following information:', 0, 1);
+	$pdf->Cell(0, 6, 'To register for Capricon ' . $capriconYear . ', please fill in the following information:', 0, 1);
 	$pdf->Ln(3);
 	$pdf->SetFont('Arial', '', 10);
 	$pdf->Cell(0, 10, 'Name: _________________________________  Badge Name: _______________________________________________', 0, 1);
@@ -71,6 +73,6 @@
 	$pdf->SetFont('Arial', '', 12);
 	$pdf->Cell(0, 6, 'Capricon ' . $capriconYear, 0, 1, 'C');
 	$pdf->Cell(0, 6, '126 E. Wing Street, #244', 0, 1, 'C');
-	$pdf->Cell(0, 6, 'Arlington Heights, IL 60004', 0, 1, 'C');	
-	$pdf->Output();	
+	$pdf->Cell(0, 6, 'Arlington Heights, IL 60004', 0, 1, 'C');
+	$pdf->Output();
 ?>

@@ -2,8 +2,8 @@
 	session_start();
 	include_once('includes/functions.php');
 	
-	if(isset($_SESSION["PeopleID"]) && strtolower($_SERVER["PHP_SELF"]) != "/shoppingcart.php"
-		&& strtolower($_SERVER["PHP_SELF"]) != "/transfertopaypal.php")
+	if(isset($_SESSION["PeopleID"]) && strtolower($_SERVER["PHP_SELF"]) != "shoppingcart.php"
+		&& strtolower($_SERVER["PHP_SELF"]) != "transfertopaypal.php")
 	{
 		$result = $db->query("SELECT COUNT(CartID) AS Count, SUM(Price) AS Total FROM ShoppingCart Where PurchaserID = " . 
 			$_SESSION["PeopleID"]);
@@ -31,6 +31,7 @@
 	}
 ?>
 	<div class="header">
-		<div class="posLeft"><a class="linkedImage" href="/index.php"><img src="includes/CapReg.png" /></a></div>
-		<div class="posRight"><a class="linkedImage" href="/index.php"><img src="includes/capricious.png" /></a></div>
+		<div class="posLeft"><a class="linkedImage" href="index.php"><img src="includes/CapReg.png" /></a></div>
+        <?php if(IsTestSite()) echo "<div style='position: absolute; right: 20%; top: 30px; font-size: 22px; font-weight: bold; clear: none;'><span>REGISTRATION TEST SITE</span></div>"; ?>
+		<div class="posRight"><a class="linkedImage" href="index.php"><img src="includes/capricious.png" /></a></div>
 	</div>

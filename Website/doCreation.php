@@ -3,6 +3,10 @@
 	include_once('includes/functions.php');
 	
 	DoCleanup();
+
+	use PHPMailer\PHPMailer\PHPMailer;
+	use PHPMailer\PHPMailer\SMTP;
+	use PHPMailer\PHPMailer\Exception;
 		
 	if(isset($_POST['email']))
 	{
@@ -68,8 +72,8 @@
 		$mail->isSMTP();
 		$mail->SMTPAuth = true;
 		$mail->Port = 587;
-		$mail->Host = "mail.capricon.org";
-		$mail->Username = "outgoing@capricon.org";
+		$mail->Host = $smtpServer;
+		$mail->Username = $smtpUser;
 		$mail->Password = $smtpPass;
 		$mail->From = "registration@capricon.org";
 		$mail->FromName = "Capricon Registration";

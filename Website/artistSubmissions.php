@@ -5,23 +5,23 @@
 	$printShopPieces = array();
 
 	if(!isset($_SESSION["PeopleID"]))
-		header('Location: /login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
+		header('Location: login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
 	elseif(!DoesUserBelongHere("Artist"))
-		header('Location: /main.php');
+		header('Location: index.php');
 	else
 	{
 		$year = date("n") >= 3 ? date("Y") + 1: date("Y");
 		$capriconYear = $year - 1980;
 		if(!empty($_GET["attendID"])) {
             if(!DoesUserBelongHere("ArtShowLead"))
-                header('Location: /main.php');
+                header('Location: index.php');
             $attendID = $_GET["attendID"];
 		    $result = $db->query("SELECT ap.ArtistAttendingID, ap.Status, ap.StatusReason, ad.IsEAP, ad.DisplayName, p.IsCharity " .
     			"FROM ArtistPresence ap INNER JOIN ArtistDetails ad ON ad.ArtistID = ap.ArtistID INNER JOIN People p ON ad.peopleID = p.PeopleID WHERE ap.ArtistAttendingID = $attendID");
         }
         else {
             $attendID = 0;
-		    $result = $db->query("SELECT ap.ArtistAttendingID, ap.Status, ap.StatusReason, ad.IsEAP, ad.DisplayName, p.IsCharity " .
+		    $result = $db->query("SELECT ap.ArtistAttendingID, ap.Status, ap.StatusReason, ad.IsEAP, ad.DisplayName, p.IsCharity, ap.FeesWaived " .
     			"FROM ArtistPresence ap INNER JOIN ArtistDetails ad ON ad.ArtistID = ap.ArtistID INNER JOIN People p ON ad.peopleID = p.PeopleID WHERE ap.Year = $year AND ad.PeopleID = " . $_SESSION["PeopleID"]);
         }
 			
@@ -30,8 +30,9 @@
 			$request = $result->fetch_array();
 			$result->close();
 			$id = $request["ArtistAttendingID"];
-			$isEAP = $request["IsEAP"];
-            $isCharity = $request["IsCharity"];
+			$isEAP = ($request["IsEAP"] == 1);
+            $isCharity = ($request["IsCharity"] == 1);
+            $feesWaived = ($request["FeesWaived"] == 1 || $isEAP || $isCharity);
             if(DoesUserBelongHere("ArtShowLead"))
                 $pieceLimit = 9999999;
             else
@@ -65,7 +66,7 @@
 				}
 				
 				$perms = UserPermissions();
-				if($isEAP || in_array("artistgoh", $perms))
+				if($feesWaived || in_array("artistgoh", $perms))
 					$feesToPay = false;
 				
 				$result = $db->query("SELECT ArtID, ShowNumber, Title, Notes, OriginalMedia, QuantitySent, QuickSalePrice " . 
@@ -91,7 +92,7 @@
 <head>
 	<title>Capricon Registration System -- Enter Art for Showing</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<link rel="stylesheet" type="text/css" href="includes/style.css" />
+	<link rel="stylesheet" type="text/css" href="includes/style.css?<?php echo filemtime("includes/style.css"); ?>" />
 	<link rel="stylesheet" type="text/css" href="includes/jquery-ui-1.10.3/themes/redmond/jquery-ui.css" />
 		<link rel="icon" href="includes/favicon.png" />
 	<link rel="shortcut icon" href="includes/favicon.ico" />
@@ -177,7 +178,7 @@
 
         function editArtShowPiece() {
 		    var id = $("#artShowForm input[type=radio]:checked").val();
-            var url = '/editArtItem.php?artID=' + id<?php echo ($attendID > 0 ? " + \"&attendID=$attendID\"" : ""); ?>;
+            var url = 'editArtItem.php?artID=' + id<?php echo ($attendID > 0 ? " + \"&attendID=$attendID\"" : ""); ?>;
 		    window.location.href = url;
 		}
 
@@ -214,7 +215,7 @@
 		}
 
 		function printInventoryReport() {
-			window.location = "/artistInventory.php";
+			window.location = "artistInventory.php";
 		}
 
 	</script>
@@ -329,7 +330,7 @@
 			<input type="submit" id="printReport" onclick="printInventoryReport(); return false;" value="Produce Printable Inventory Report" style="margin-bottom: 30px;"><br />
 		<?php } ?>
 			<div class="goback">
-				<a href="/index.php">Return to the Main Menu</a>
+				<a href="index.php">Return to the Main Menu</a>
 			</div>
 		</div>
 	</div>

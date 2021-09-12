@@ -2,9 +2,9 @@
 session_start();
 include_once('includes/functions.php');
 if(!isset($_SESSION["PeopleID"]))
-    header('Location: /login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
+    header('Location: login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
 elseif(!DoesUserBelongHere("RegLead"))
-    header('Location: /index.php');
+    header('Location: index.php');
 
 $year = isset($_GET["year"]) ? $_GET["year"] : (date("n") >= 3 ? date("Y") + 1: date("Y"));
 $order = isset($_GET["OrderByDepartment"]) ? "Department, LastName" : "BadgeNumber";
@@ -35,7 +35,7 @@ else
 <head>
 	<title>Capricon Registration System -- Staff Badges</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<link rel="stylesheet" type="text/css" href="includes/style.css" />
+	<link rel="stylesheet" type="text/css" href="includes/style.css?<?php echo filemtime("includes/style.css"); ?>" />
 	<link rel="stylesheet" type="text/css" href="includes/jquery-ui-1.10.3/themes/redmond/jquery-ui.css" />
 	<link rel="icon" href="includes/favicon.png" />
 	<link rel="shortcut icon" href="includes/favicon.ico" />
@@ -159,19 +159,21 @@ else
 		<li>The Board President is always badge #2.</li>
 		<li>The rest of the Board Members and Board Staff follow the Board President.</li>
 		<li>The Guests of Honor and their guests follow the Board Members.</li>
-		<li>The Concom (department heads and seconds) follows the Guests of Honor.</li>
-		<li>The Staff (and anyone added late) follows the Concom.</li>
+		<li>Any Special Guests follow the Guests of Honor..</li>
+		<li>The Concom (department heads and seconds) follows the Special Guests.</li>
+		<li>The Staff (and anyone added late) follows the Concom.</li>		
 		</ul>
-		<p>If there are any questions about this process at any time, or you need help with something, do not hesitate
-		to reach out to the IT Director or Treasurer for assistance.</p>
+		<p>To ensure proper order, use the "Update All Staff Badge Numbers" link to automatically reassign badge numbers. If there are any questions about this process at any time, 
+		or you need help with something, do not hesitate to reach out to the IT Director or Treasurer for assistance.</p>
 	</div>
 	<div class="content">
 		<div class="centerboxwide">
 			<h1>Staff Badges</h1>
 			<div class="headertitle">Tools</div>
 			<p><a href="#" onClick="$('#moreInfo').dialog('open');">More Information</a>&nbsp;&nbsp;--&nbsp;&nbsp;<a href="staffBadges.php<?php echo isset($_GET["OrderByDepartment"]) ? "" : "?OrderByDepartment=1"; ?>">Show By <?php echo isset($_GET["OrderByDepartment"]) ? "Badge Number" : "Department"; ?></a>&nbsp;&nbsp;--&nbsp;&nbsp;<a href="getStaffBadgeCSV.php">Download Full List</a>&nbsp;&nbsp;--&nbsp;&nbsp;<a href="getStaffBadgeCSV.php?engravedOnly=1">Download Engraving List</a></p>
+			<p><a href="doUpdateStaffBadgeNumbers.php">Update All Staff Badge Numbers</a></p>
 			<div class="headertitle">Issue Staff Badges</div>
-			<p>To issue a badge, select the type of badge then search for the Recipient below. NOTE: This page issues badges in the 1-150 badge number range. Do not use this page for regular attendee comp badges.</p>
+			<p>To issue a badge, select the type of badge then search for the Recipient below. NOTE: This page issues badges in the 1-149 badge number range. Do not use this page for regular attendee comp badges.</p>
 			<form id="badgeTypeForm" method="post">
 				<span style="font-weight: bold;">Badge Type: </span>
 				<label for="badgeConcom" class="fieldLabelShort"><input type="radio" id="badgeConcom" name="badgeTypeID" value="3"<?php echo ($lastBadgeTypeID == 3 ? " checked" : ""); ?>>Concom and Board</label>
@@ -207,7 +209,7 @@ else
                 echo "<thead><tr><th>Name</th><th>Badge Name</th><th>Badge #</th><th>Department</th><th>Badge Type</th></tr></thead>\r\n";
                 echo "<tbody>\r\n";
                 foreach($badges as $badge)
-                    echo "<tr><td>" . $badge["Name"] . "</td><td>" . $badge["BadgeName"] . "</td><td>" . $badge["BadgeNumber"] . "</td><td>" . $badge["Department"] . "</td><td>" . $badge["BadgeType"] . "</td></tr>\r\n";
+                    echo "<tr><td>" . $badge["Name"] . "</td><td><a href=\"editBadge.php?id=" . $badge["BadgeID"] . "&return=staffBadges\">" . $badge["BadgeName"] . "</a></td><td>" . $badge["BadgeNumber"] . "</td><td>" . $badge["Department"] . "</td><td>" . $badge["BadgeType"] . "</td></tr>\r\n";
                 echo "</tbody>\r\n";
                 echo "</table>\r\n";
             }
@@ -216,7 +218,7 @@ else
 			</div>
 			<div class="clearfix"></div>
 			<div class="goback">
-				<a href="/index.php">Return to the Main Menu</a>
+				<a href="index.php">Return to the Main Menu</a>
 			</div>
 		</div>
 	</div>

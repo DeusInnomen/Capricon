@@ -7,7 +7,7 @@
 <head>
 	<title>Capricon Registration System -- Forgot Password</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<link rel="stylesheet" type="text/css" href="includes/style.css" />
+	<link rel="stylesheet" type="text/css" href="includes/style.css?<?php echo filemtime("includes/style.css"); ?>" />
 	<link rel="icon" href="includes/favicon.png" />
 	<link rel="shortcut icon" href="includes/favicon.ico" />
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
@@ -47,7 +47,7 @@
 				<input type="submit" value="Submit" />
 			</form>
 			<hr />
-			<p>Return to the <a href="/index.php">Main Menu</a>.</p>
+			<p>Return to the <a href="index.php">Main Menu</a>.</p>
 		</div>
 	</div>
 	<?php include('includes/footer.php'); ?>

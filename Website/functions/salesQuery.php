@@ -5,6 +5,10 @@
 	$path = $_SERVER["DOCUMENT_ROOT"];
 	include_once("$path/includes/functions.php");
 
+	use PHPMailer\PHPMailer\PHPMailer;
+	use PHPMailer\PHPMailer\SMTP;
+	use PHPMailer\PHPMailer\Exception;
+
 	// Add authentication handler here.
 	
 	if(empty($_POST["action"])) exit();
@@ -218,7 +222,7 @@
 					$badgeNumber = $row["Next"];
 					$result->close();
 					
-					$sql = "INSERT INTO PurchasedBadges (Year, PeopleID, OneTimeID, PurchaserID, OneTimePurchaserID, BadgeNumber, BadgeTypeID, BadgeName, Status, OriginalPrice, AmountPaid, PaymentSource, PaymentReference, PromoCodeID, CertificateID, RecordID, Created) VALUES ($year, $recipientPeopleID, $recipientOneTimeID, $purchaser, $onetime, $badgeNumber, $badgeTypeID, '$badgeName', 'Paid', $originalPrice, $price, '$source', '$ref', $promoID, $certID, $recordID, NOW())";
+					$sql = "INSERT INTO PurchasedBadges (Year, PeopleID, OneTimeID, PurchaserID, OneTimePurchaserID, BadgeNumber, BadgeTypeID, BadgeName, Status, OriginalPrice, AmountPaid, PaymentSource, PaymentReference, PromoCodeID, CertificateID, RecordID, Created, PickedUp, PickUpTime) VALUES ($year, $recipientPeopleID, $recipientOneTimeID, $purchaser, $onetime, $badgeNumber, $badgeTypeID, '$badgeName', 'Paid', $originalPrice, $price, '$source', '$ref', $promoID, $certID, $recordID, NOW(), 1, NOW())";
 					if($db->query($sql) === false)
 					{
 						$response["Result"] = "Failure";
@@ -265,7 +269,7 @@
 					$originalTotal += $price;
 					
 					$sql = "INSERT INTO PurchaseHistory (PurchaserID, PurchaserOneTimeID, ItemTypeName, PeopleID, OneTimeID, Details, Price, Total, Year, Purchased, PaymentSource, PaymentReference) " . 
-                        "VALUES ($purchaser, $onetime, 'Miscellaneous Charge', $purchaser, $onetime, '$details', $price, $total, $year, NOW(), '$source', '$ref')";
+                        "VALUES ($purchaser, $onetime, 'Miscellaneous Charge', $purchaser, $onetime, '$details', $price, $price, $year, NOW(), '$source', '$ref')";
 					if($db->query($sql) === false)
 					{
 						$response["Result"] = "Failure";

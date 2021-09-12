@@ -2,9 +2,9 @@
 session_start();
 include_once('includes/functions.php');
 if(!isset($_SESSION["PeopleID"]))
-    header('Location: /login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
+    header('Location: login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
 elseif(!DoesUserBelongHere("Treasurer"))
-    header('Location: /index.php');
+    header('Location: index.php');
 
 $year = isset($_GET['year']) ? $_GET['year'] : (date("n") >= 3 ? date("Y") + 1: date("Y"));
 
@@ -53,7 +53,7 @@ FROM
 	LEFT OUTER JOIN PurchasedBadges pbp ON ph.PeopleID = pbp.PeopleID AND ph.Year = pbp.Year
 	LEFT OUTER JOIN PurchasedBadges pbo ON ph.OneTimeID = pbo.OneTimeID AND ph.Year = pbo.Year
 WHERE
-	ph.ItemTypeName IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop', 'HangingFees')
+	ph.ItemTypeName IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop')
 	AND (ph.AmountRefunded IS null OR ph.AmountRefunded = '')
 	AND ph.Year = $year
 	AND date(ph.Purchased) < '$day1'
@@ -76,7 +76,7 @@ SELECT
 FROM
 		PurchaseHistory ph
 WHERE
-	ph.ItemTypeName IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop', 'HangingFees')
+	ph.ItemTypeName IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop')
 	AND (ph.AmountRefunded IS null OR ph.AmountRefunded = '')
 	AND ph.Year = $year
 	AND date(ph.Purchased) < '$day1'
@@ -117,7 +117,7 @@ FROM
 	LEFT OUTER JOIN PurchasedBadges pbp ON ph.PeopleID = pbp.PeopleID AND ph.Year = pbp.Year
 	LEFT OUTER JOIN PurchasedBadges pbo ON ph.OneTimeID = pbo.OneTimeID AND ph.Year = pbo.Year
 WHERE
-	ph.ItemTypeName IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop', 'HangingFees')
+	ph.ItemTypeName IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop')
 	AND (ph.AmountRefunded IS null OR ph.AmountRefunded = '')
 	AND ph.Year = $year
 	AND date(ph.Purchased) = '$day1'
@@ -140,7 +140,7 @@ SELECT
 FROM
 		PurchaseHistory ph
 WHERE
-	ph.ItemTypeName IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop', 'HangingFees')
+	ph.ItemTypeName IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop')
 	AND (ph.AmountRefunded IS null OR ph.AmountRefunded = '')
 	AND ph.Year = $year
 	AND date(ph.Purchased) = '$day1'
@@ -181,7 +181,7 @@ FROM
 	LEFT OUTER JOIN PurchasedBadges pbp ON ph.PeopleID = pbp.PeopleID AND ph.Year = pbp.Year
 	LEFT OUTER JOIN PurchasedBadges pbo ON ph.OneTimeID = pbo.OneTimeID AND ph.Year = pbo.Year
 WHERE
-	ph.ItemTypeName IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop', 'HangingFees')
+	ph.ItemTypeName IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop')
 	AND (ph.AmountRefunded IS null OR ph.AmountRefunded = '')
 	AND ph.Year = $year
 	AND date(ph.Purchased) = '$day2'
@@ -204,7 +204,7 @@ SELECT
 FROM
 		PurchaseHistory ph
 WHERE
-	ph.ItemTypeName IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop', 'HangingFees')
+	ph.ItemTypeName IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop')
 	AND (ph.AmountRefunded IS null OR ph.AmountRefunded = '')
 	AND ph.Year = $year
 	AND date(ph.Purchased) = '$day2'
@@ -245,7 +245,7 @@ FROM
 	LEFT OUTER JOIN PurchasedBadges pbp ON ph.PeopleID = pbp.PeopleID AND ph.Year = pbp.Year
 	LEFT OUTER JOIN PurchasedBadges pbo ON ph.OneTimeID = pbo.OneTimeID AND ph.Year = pbo.Year
 WHERE
-	ph.ItemTypeName IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop', 'HangingFees')
+	ph.ItemTypeName IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop')
 	AND (ph.AmountRefunded IS null OR ph.AmountRefunded = '')
 	AND ph.Year = $year
 	AND date(ph.Purchased) = '$day3'
@@ -268,7 +268,7 @@ SELECT
 FROM
 		PurchaseHistory ph
 WHERE
-	ph.ItemTypeName IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop', 'HangingFees')
+	ph.ItemTypeName IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop')
 	AND (ph.AmountRefunded IS null OR ph.AmountRefunded = '')
 	AND ph.Year = $year
 	AND date(ph.Purchased) = '$day3'
@@ -309,7 +309,7 @@ FROM
 	LEFT OUTER JOIN PurchasedBadges pbp ON ph.PeopleID = pbp.PeopleID AND ph.Year = pbp.Year
 	LEFT OUTER JOIN PurchasedBadges pbo ON ph.OneTimeID = pbo.OneTimeID AND ph.Year = pbo.Year
 WHERE
-	ph.ItemTypeName IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop', 'HangingFees')
+	ph.ItemTypeName IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop')
 	AND (ph.AmountRefunded IS null OR ph.AmountRefunded = '')
 	AND ph.Year = $year
 	AND date(ph.Purchased) = '$day4'
@@ -332,7 +332,7 @@ SELECT
 FROM
 		PurchaseHistory ph
 WHERE
-	ph.ItemTypeName IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop', 'HangingFees')
+	ph.ItemTypeName IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop')
 	AND (ph.AmountRefunded IS null OR ph.AmountRefunded = '')
 	AND ph.Year = $year
 	AND date(ph.Purchased) = '$day4'
@@ -373,7 +373,7 @@ FROM
 	LEFT OUTER JOIN PurchasedBadges pbp ON ph.PeopleID = pbp.PeopleID AND ph.Year = pbp.Year
 	LEFT OUTER JOIN PurchasedBadges pbo ON ph.OneTimeID = pbo.OneTimeID AND ph.Year = pbo.Year
 WHERE
-	ph.ItemTypeName IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop', 'HangingFees')
+	ph.ItemTypeName IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop')
 	AND (ph.AmountRefunded IS null OR ph.AmountRefunded = '')
 	AND ph.Year = $year
 	AND date(ph.Purchased) > '$day4'
@@ -396,7 +396,7 @@ SELECT
 FROM
 		PurchaseHistory ph
 WHERE
-	ph.ItemTypeName IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop', 'HangingFees')
+	ph.ItemTypeName IN ('Print Shop', 'Auction Sales', 'Hanging Fees', 'PrintShop')
 	AND (ph.AmountRefunded IS null OR ph.AmountRefunded = '')
 	AND ph.Year = $year
 	AND date(ph.Purchased) > '$day4'
@@ -418,7 +418,7 @@ $result->close();
 <head>
     <title>Capricon Registration System -- Art Show Sales Summary</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <link rel="stylesheet" type="text/css" href="includes/style.css" />
+    <link rel="stylesheet" type="text/css" href="includes/style.css?<?php echo filemtime("includes/style.css"); ?>" />
     <link rel="stylesheet" type="text/css" href="includes/jquery-ui-1.10.3/themes/redmond/jquery-ui.css" />
     <link rel="icon" href="includes/favicon.png" />
     <link rel="shortcut icon" href="includes/favicon.ico" />
@@ -695,7 +695,7 @@ $result->close();
 
             <div class="clearfix"></div>
             <div class="goback">
-                <a href="/index.php">Return to the Main Menu</a>
+                <a href="index.php">Return to the Main Menu</a>
             </div>
         </div>
     </div>

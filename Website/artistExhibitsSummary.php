@@ -2,9 +2,9 @@
 	session_start();
 	include_once('includes/functions.php');
 	if(!isset($_SESSION["PeopleID"]))
-		header('Location: /login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
+		header('Location: login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
 	elseif(!DoesUserBelongHere("ArtShowStaff"))
-		header('Location: /index.php');
+		header('Location: index.php');
 		
 	$year = date("n") >= 3 ? date("Y") + 1: date("Y");
 	$result = $db->query("SELECT ap.ArtistAttendingID, p.Email, ad.DisplayName, ad.LegalName, ad.IsPro, ad.ArtType, ap.IsAttending, ap.AgentName, ap.AgentContact, ap.ShippingPref, ap.ShippingAddress, ap.NeedsElectricity, ap.NumTables, ap.NumGrid, ap.Notes, ap.Status, ap.StatusReason FROM ArtistPresence ap INNER JOIN ArtistDetails ad ON ap.ArtistID = ad.ArtistID INNER JOIN People p ON ad.PeopleID = p.PeopleID WHERE ap.Year = $year AND ad.IsEAP = 1");
@@ -54,7 +54,7 @@
 <head>
 	<title>Capricon Registration System -- Artist Exhibits Summary</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<link rel="stylesheet" type="text/css" href="includes/style.css" />
+	<link rel="stylesheet" type="text/css" href="includes/style.css?<?php echo filemtime("includes/style.css"); ?>" />
 	<link rel="stylesheet" type="text/css" href="includes/jquery-ui-1.10.3/themes/redmond/jquery-ui.css" />
 	<link rel="icon" href="includes/favicon.png" />
 	<link rel="shortcut icon" href="includes/favicon.ico" />
@@ -188,7 +188,7 @@
 			</div>
 			<div class="clearfix"></div>
 			<div class="goback">
-				<a href="/index.php">Return to the Main Menu</a>
+				<a href="index.php">Return to the Main Menu</a>
 			</div>
 		</div>
 	</div>

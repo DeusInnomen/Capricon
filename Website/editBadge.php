@@ -3,15 +3,16 @@ session_start();
 include_once('includes/functions.php');
 DoCleanup();
 if(!isset($_SESSION["PeopleID"]))
-    header('Location: /login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
+    header('Location: login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
 elseif(!DoesUserBelongHere("RegLead"))
-    header('Location: /index.php');
+    header('Location: index.php');
 elseif(!isset($_GET["id"]))
-    header('Location: /viewRegistrations.php');
+    header('Location: viewRegistrations.php');
 else
 {
     $message = isset($_POST["message"]) ? $_POST["message"] : "";
     $id = $_GET["id"];
+    $return = isset($_GET["return"]) ? $_GET["return"] . ".php" : "index.php";
     
     $result = $db->query("SELECT pb.PeopleID, pb.OneTimeID, pb.BadgeID, pb.BadgeNumber, CASE WHEN pb.PeopleID IS NULL THEN CONCAT(ot.FirstName, ' ', ot.LastName) ELSE CONCAT(p.FirstName, ' ', p.LastName) END AS Name, pb.BadgeName, pb.Created AS Purchased, CASE WHEN pb.PeopleID IS NULL THEN ot.LastName ELSE p.LastName END AS LastName, CASE WHEN pb.PeopleID IS NULL THEN ot.FirstName ELSE p.FirstName END AS FirstName, pb.Department, pb.PaymentSource, pb.PaymentReference, pc.Code, pb.BadgeTypeID, pb.AmountPaid, pb.Status FROM PurchasedBadges pb LEFT OUTER JOIN People p ON p.PeopleID = pb.PeopleID LEFT OUTER JOIN OneTimeRegistrations ot ON ot.OneTimeID = pb.OneTimeID LEFT OUTER JOIN PromoCodes pc ON pc.CodeID = pb.PromoCodeID WHERE pb.BadgeID = $id UNION SELECT pb.PeopleID, pb.OneTimeID, pb.BadgeID, pb.BadgeNumber, CASE WHEN pb.PeopleID IS NULL THEN CONCAT(ot.FirstName, ' ', ot.LastName) ELSE CONCAT(p.FirstName, ' ', p.LastName) END AS Name, pb.BadgeName, pb.Created AS Purchased, CASE WHEN pb.PeopleID IS NULL THEN ot.LastName ELSE p.LastName END AS LastName, CASE WHEN pb.PeopleID IS NULL THEN ot.FirstName ELSE p.FirstName END AS FirstName, pb.Department, pb.PaymentSource, pb.PaymentReference, pc.Code, pb.BadgeTypeID, pb.AmountPaid, pb.Status FROM PurchasedBadges pb LEFT OUTER JOIN People p ON p.PeopleID = pb.PeopleID LEFT OUTER JOIN OneTimeRegistrations ot ON ot.OneTimeID = pb.OneTimeID LEFT OUTER JOIN PromoCodes pc ON pc.CodeID = pb.PromoCodeID JOIN PurchasedBadges pb2 ON pb2.PaymentReference = pb.PaymentReference WHERE pb2.BadgeID = $id and pb2.PaymentSource IN ('Stripe', 'PayPal', 'Cash', 'Check')");
     
@@ -56,7 +57,7 @@ else
 <head>
 	<title>Capricon Registration System -- Edit Badge</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<link rel="stylesheet" type="text/css" href="includes/style.css" />
+	<link rel="stylesheet" type="text/css" href="includes/style.css?<?php echo filemtime("includes/style.css"); ?>" />
 	<link rel="icon" href="includes/favicon.png" />
 	<link rel="shortcut icon" href="includes/favicon.ico" />
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
@@ -275,15 +276,13 @@ if(isset($badge))
                       }
                       if(DoesUserBelongHere("Treasurer"))
                       {
-                          echo 'Refunds should only be done in extreme cases.<br>';
                           if($disableRefund)
                               echo '<input type="submit" onclick="return false;" value="Refund Badge" class="masterTooltip" title="' . $disableMessage . '" readonly><br><br>';
                           else
                               echo '<input type="submit" onclick="refundBadge(); return false;" value="Refund Badge">' . ($badge["PaymentSource"] == "PayPal" ? " Note: This badge can only be refunded in the next " . (60 - $diff) . " day" . ((60 - $diff) == 1 ? "" : "s") . " via PayPal." : "") . '<br><br>';
                       } ?>
 				<?php echo ($badge["PaymentSource"] == "PayPal" ? '<p style="font-weight: bold;">CONTACT CHRIS (IT) BEFORE REFUNDING PAYPAL! Untested code!</p>' : ""); ?>
-				<?php /*  <input type="submit" onclick="rolloverBadge(); return false;" value="Rollover Badge to <?php echo date("n") >= 3 ? date("Y") + 2: date("Y") + 1; ?>" <?php echo (($badge["Status"] == "Rolled Over" || $badge["AmountPaid"] == 0) ? "disabled" : ""); ?>> */ ?>
-				<p>The rollover option has been removed per the Board. Phandemonium does not do rollovers.</p>
+				<input type="submit" onclick="rolloverBadge(); return false;" value="Rollover Badge to <?php echo date("n") >= 3 ? date("Y") + 2: date("Y") + 1; ?>" <?php echo (($badge["Status"] == "Rolled Over" || $badge["AmountPaid"] == 0) ? "disabled" : ""); ?>>
 				<br>
 				</form>
 				<div id="actionResult"></div>
@@ -314,7 +313,7 @@ if(isset($badge))
 			<div class="noticeSection" id="badgeActionNotice"><?php echo $message; ?></div>
 			<div class="clearfix"></div>
 			<div class="goback">
-				<a href="/index.php">Return to the Main Menu</a>
+				<a href="<?php echo $return; ?>">Return to the Previous Page</a>
 			</div>
 		</div>
 	</div>

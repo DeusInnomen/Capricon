@@ -57,7 +57,7 @@
 		 
 	}else{
 		$_SESSION["PayPalError"] = urldecode($response["L_ERRORCODE0"]) . ": " . urldecode($response["L_LONGMESSAGE0"]);
-		header('Location: /shoppingCart.php');
+		header('Location: shoppingCart.php');
 	}
 				
 ?>
@@ -66,7 +66,7 @@
 <head>
 	<title>Capricon Registration System -- Shopping Cart</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<link rel="stylesheet" type="text/css" href="includes/style.css">
+	<link rel="stylesheet" type="text/css" href="includes/style.css?<?php echo filemtime("includes/style.css"); ?>">
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 	<script type="text/javascript" src="includes/global.js"></script>
 </head>

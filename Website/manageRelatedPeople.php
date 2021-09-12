@@ -2,7 +2,7 @@
 	session_start();
 	include_once('includes/functions.php');
 	if(!isset($_SESSION["PeopleID"]))
-		header('Location: /login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
+		header('Location: login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
 	else
 	{
 		$buyer = "";
@@ -35,7 +35,7 @@
 <head>
 	<title>Capricon Registration System -- Manage Related People</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<link rel="stylesheet" type="text/css" href="includes/style.css" />
+	<link rel="stylesheet" type="text/css" href="includes/style.css?<?php echo filemtime("includes/style.css"); ?>" />
 	<link rel="stylesheet" type="text/css" href="includes/jquery-ui-1.10.3/themes/redmond/jquery-ui.css" />
 	<link rel="stylesheet" type="text/css" href="includes/jquery.validate.password.css" />
 	<link rel="icon" href="includes/favicon.png" />
@@ -371,7 +371,7 @@
 			</div>
 <?php } ?>			
 			<div class="goback">
-				<a href="/index.php">Return to the Main Menu</a> - <a href="/manageAccount.php">Manage Your Account</a>
+				<a href="index.php">Return to the Main Menu</a> - <a href="manageAccount.php">Manage Your Account</a>
 			</div>
 		</div>
 	</div>

@@ -2,7 +2,7 @@
 	session_start();
 	include_once('includes/functions.php');
 	if(!DoesUserBelongHere("RegStaff"))
-		header('Location: /index.php');
+		header('Location: index.php');
 		
 	$year = date("n") >= 3 ? date("Y") + 1: date("Y");
 	$sql = "SELECT p.PeopleID, p.FirstName, p.LastName, p.BadgeName, p.Email, CASE WHEN pb.BadgeID IS NOT NULL THEN 1 ELSE 0 END AS HasBadge FROM People p LEFT OUTER JOIN PurchasedBadges pb ON pb.PeopleID = p.PeopleID AND pb.Year = $year ";

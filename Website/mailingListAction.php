@@ -2,7 +2,7 @@
 	session_start();
 	include_once('includes/functions.php');
 	if(empty($_GET["code"]))
-		header('Location: /manageMailingLists.php');
+		header('Location: manageMailingLists.php');
 	$name = !empty($_GET["name"]) ? $_GET["name"] : (!empty($_SESSION["FullName"]) ? $_SESSION["FullName"] : "");
 	$email = !empty($_GET["address"]) ? $_GET["address"] : (!empty($_SESSION["Email"]) ? $_SESSION["Email"] : "");
 	$code = $_GET["code"];
@@ -12,7 +12,7 @@
 <head>
 	<title>Capricon Registration System -- Manage Mailing Lists</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<link rel="stylesheet" type="text/css" href="includes/style.css" />
+	<link rel="stylesheet" type="text/css" href="includes/style.css?<?php echo filemtime("includes/style.css"); ?>" />
 	<link rel="icon" href="includes/favicon.png" />
 	<link rel="shortcut icon" href="includes/favicon.ico" />
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
@@ -46,11 +46,11 @@
 					echo "<p>An invalid email address was provided. Please hit Back on your browser and verify you typed your address correctly.</p>";
 				}
 				else
-					header('Location: /manageMailingLists.php');
+					header('Location: manageMailingLists.php');
 			?>
 			<p>At any time, you may return to the <a href="manageMailingLists.php">Manage Mailing Lists</a> page to change your subscription settings.</p>
 			<div class="goback">
-				<a href="/index.php">Return to the Main Menu</a>
+				<a href="index.php">Return to the Main Menu</a>
 			</div>
 		</div>
 	</div>

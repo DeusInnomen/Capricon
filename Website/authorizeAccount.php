@@ -1,10 +1,10 @@
 <?php
 	session_start();
 	if(!isset($_GET['id']))
-		header('Location: /index.php');
+		header('Location: index.php');
 	include_once('includes/functions.php');
 	if(!isset($_SESSION["PeopleID"]))
-		header('Location: /login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
+		header('Location: login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
 	$data = $db->real_escape_string($_GET['id']);
 	
 	DoCleanup();
@@ -18,7 +18,7 @@
 		$email = $row["Data"];
 		$result->close();
 		
-		if($email == $_SESSION['Email'])
+		if(strtolower($email) == strtolower($_SESSION['Email']))
 		{
 			$db->query("UPDATE People SET ParentID = $id WHERE PeopleID = " . $_SESSION["PeopleID"]);
 			$db->query("DELETE FROM ConfirmationLinks WHERE Code = '$data' and Type = 'Authorize'");
@@ -43,7 +43,7 @@
 <head>
 	<title>Capricon Registration System -- Authorize Account</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<link rel="stylesheet" type="text/css" href="includes/style.css" />
+	<link rel="stylesheet" type="text/css" href="includes/style.css?<?php echo filemtime("includes/style.css"); ?>" />
 	<link rel="icon" href="includes/favicon.png" />
 	<link rel="shortcut icon" href="includes/favicon.ico" />
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
@@ -55,7 +55,7 @@
 		<div class="centerboxnarrow">
 			<p><?php echo $message; ?></p>
 			<div class="goback">
-				<a href="/index.php">Return to the Main Menu</a>
+				<a href="index.php">Return to the Main Menu</a>
 			</div>
 		</div>
 	</div>

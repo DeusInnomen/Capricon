@@ -2,16 +2,16 @@
 	session_start();
 	include_once('includes/functions.php');
 	if(!isset($_SESSION["PeopleID"]))
-		header('Location: /login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
+		header('Location: login.php?return=' . urlencode($_SERVER['REQUEST_URI']));
 	elseif(!DoesUserBelongHere("Artist"))
-		header('Location: /main.php');
+		header('Location: index.php');
 	else
 	{
 		$year = date("n") >= 3 ? date("Y") + 1: date("Y");
 		$capriconYear = $year - 1980;
 		$result = $db->query("SELECT ArtistID FROM ArtistDetails WHERE PeopleID = " . $_SESSION["PeopleID"]);
 		if($result->num_rows == 0)
-			header('Location: /artistInformation.php');
+			header('Location: artistInformation.php');
 		else
 		{
 			$result->close();
@@ -46,7 +46,7 @@
 <head>
 	<title>Capricon Registration System -- Request Art Show Space</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<link rel="stylesheet" type="text/css" href="includes/style.css" />
+	<link rel="stylesheet" type="text/css" href="includes/style.css?<?php echo filemtime("includes/style.css"); ?>" />
 	<link rel="icon" href="includes/favicon.png" />
 	<link rel="shortcut icon" href="includes/favicon.ico" />
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
@@ -54,7 +54,7 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$(":submit").click(function () {
-				if(this.name == "updateInfo") window.location = "/artistInformation.php";
+				if(this.name == "updateInfo") window.location = "artistInformation.php";
 			});
 			$("select#shippingPref option").each(function() { this.selected = (this.value == "<?php echo $request["ShippingPref"]; ?>"); });
 			$("#requestForm :radio").click(function () {
@@ -130,8 +130,8 @@
 					<div class="headertitle">About My Artwork</div>
 					<label for="needsElectricity"><input type="checkbox" name="needsElectricity" id="needsElectricity" <?php echo ($request["NeedsElectricity"] ? "checked" : ""); ?> />Some of my work will require electricity.</label></br />
 					<label for="hasPrintShop"><input type="checkbox" name="hasPrintShop" id="hasPrintShop" <?php echo ($request["HasPrintShop"] ? "checked" : ""); ?> />I have items to sell in the Print Shop.</label></br />
-					<label for="numTables">Anticipated Number of 1.5' by 6' Tables Needed: <input type="number" name="numTables" id="numTables" min="0" max="9" value="<?php echo $request["NumTables"]; ?>" /></label></br />
-					<label for="numGrid">Anticipated Number of 4' Wide by 7' Tall Gridwall Needed: <input type="number" name="numGrid" id="numGrid" min="0" max="9" value="<?php echo $request["NumGrid"]; ?>" /></label></br />
+					<label for="numTables">Anticipated # of 1.5' by 6' Tables Needed: <input type="number" name="numTables" id="numTables" min="0" max="9" value="<?php echo $request["NumTables"]; ?>" /></label></br />
+					<label for="numGrid">Anticipated # of 4' Wide by 7' Tall Gridwall Panels Needed: <input type="number" name="numGrid" id="numGrid" min="0" max="9" value="<?php echo $request["NumGrid"]; ?>" /></label></br />
 					<span style="font-style: italic; font-size: 0.9em;">A reminder: this is a gallery-style show. You are reserving auction display space only, not vendor's space.</span>
 					<div class="headertitle">Method of Delivery and Handling</div>
 					<label for="isAttending" class="fieldLabelShort"><input type="radio" name="delivery" id="isAttending" value="isAttending" 
@@ -168,7 +168,7 @@
 				</form>
 			</div>
 			<div class="goback">
-				<a href="/index.php">Return to the Main Menu</a>
+				<a href="index.php">Return to the Main Menu</a>
 			</div>
 		</div>
 	</div>

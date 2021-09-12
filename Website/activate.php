@@ -1,7 +1,7 @@
 <?php
 	session_start();
 	if(!isset($_GET['id']))
-		header('Location: /index.php');
+		header('Location: index.php');
 	include_once('includes/functions.php');
 	$id = $db->real_escape_string($_GET['id']);
 
@@ -31,11 +31,10 @@
 			    foreach($interests as $interest)
 			    {
 				    $db->query("INSERT INTO PeopleInterests (PeopleID, Interest) VALUES ($peopleID, '$interest')");
-				    // REMOVE AFTER NEXT CAP
 				    if($interest == "ArtShow")
-				    {
 					    $db->query("INSERT INTO Permissions (PeopleID, Permission) VALUES ($peopleID, 'Artist')");
-				    }
+				    if($interest == "Dealer")
+					    $db->query("INSERT INTO Permissions (PeopleID, Permission) VALUES ($peopleID, 'Dealer')");
 			    }
 		    }
         }
@@ -57,7 +56,7 @@
 <head>
 	<title>Capricon Registration System -- Account Activation</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<link rel="stylesheet" type="text/css" href="includes/style.css" />
+	<link rel="stylesheet" type="text/css" href="includes/style.css?<?php echo filemtime("includes/style.css"); ?>" />
 	<link rel="icon" href="includes/favicon.png" />
 	<link rel="shortcut icon" href="includes/favicon.ico" />
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>

@@ -87,7 +87,7 @@
 				
 				// Check to see if this person has a badge for this year already.
 				$result = $db->query("SELECT bt.Description, pb.Created, pb.Year FROM PurchasedBadges pb INNER JOIN BadgeTypes bt ON " .
-					"bt.BadgeTypeID = pb.BadgeTypeID WHERE pb.PeopleID = $id AND pb.Year = $year");
+					"bt.BadgeTypeID = pb.BadgeTypeID WHERE pb.PeopleID = $id AND pb.Year = $year AND pb.Status NOT IN ('Deleted', 'Refunded')");
 				if($result->num_rows > 0)
 				{
 					$row = $result->fetch_array();
