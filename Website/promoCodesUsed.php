@@ -54,7 +54,7 @@ if(!empty($badges))
 				</table>
 <?php } else { ?>
 				<p style="font-size: 0.9em;">There are no promotional codes that have been used at this time.</p>
-<? } ?>
+<?php } ?>
 			</div>
 			<div class="goback">
 				<a href="index.php">Return to the Main Menu</a>

@@ -8,7 +8,7 @@
 	$step = 20;
 
     $year = isset($_POST['year']) ? $_POST['year'] : (date("n") >= 3 ? date("Y") + 1: date("Y"));
-    $sql  = "SELECT SQL_CALC_FOUND_ROWS pb.BadgeID, pb.BadgeNumber, CASE WHEN pb.PeopleID IS NULL THEN CONCAT(ot.FirstName, ' ', ot.LastName) ELSE CONCAT(p.FirstName, ' ', p.LastName) END AS Name, pb.BadgeName, pb.Created AS Purchased, CASE WHEN pb.PeopleID IS NULL THEN ot.LastName ELSE p.LastName END AS LastName, CASE WHEN pb.PeopleID IS NULL THEN ot.FirstName ELSE p.FirstName END AS FirstName, pb.PaymentSource, pb.PaymentReference, pc.Code, pb.Status FROM PurchasedBadges pb LEFT OUTER JOIN People p ON p.PeopleID = pb.PeopleID LEFT OUTER JOIN OneTimeRegistrations ot ON ot.OneTimeID = pb.OneTimeID LEFT OUTER JOIN PromoCodes pc ON pc.CodeID = pb.PromoCodeID ";
+    $sql  = "SELECT SQL_CALC_FOUND_ROWS pb.BadgeID, pb.BadgeNumber, pb.CovidVerified, CASE WHEN pb.PeopleID IS NULL THEN CONCAT(ot.FirstName, ' ', ot.LastName) ELSE CONCAT(p.FirstName, ' ', p.LastName) END AS Name, pb.BadgeName, pb.Created AS Purchased, CASE WHEN pb.PeopleID IS NULL THEN ot.LastName ELSE p.LastName END AS LastName, CASE WHEN pb.PeopleID IS NULL THEN ot.FirstName ELSE p.FirstName END AS FirstName, pb.PaymentSource, pb.PaymentReference, pc.Code, pb.Status FROM PurchasedBadges pb LEFT OUTER JOIN People p ON p.PeopleID = pb.PeopleID LEFT OUTER JOIN OneTimeRegistrations ot ON ot.OneTimeID = pb.OneTimeID LEFT OUTER JOIN PromoCodes pc ON pc.CodeID = pb.PromoCodeID ";
     $where = "WHERE pb.Year = $year ";
 	
 	$order = $_POST["sort"];
@@ -28,7 +28,7 @@
 	{
 		$currentRows = $result->num_rows;
 		echo "<table>\r\n";
-		echo "<tr><th>Name</th><th>Badge Name</th><th>Badge #</th><th>Purchased</th><th>Paid With</th><th>Reference #</th><th>Promo Code</th><th>Status</th></tr>\r\n";
+		echo "<tr><th>Name</th><th>Badge Name</th><th>Badge #</th><th>Purchased</th><th>Paid With</th><th>Reference #</th><th>Promo Code</th><th>Status</th><th>COVID-19 Vaccination</th></tr>\r\n";
 		while($row = $result->fetch_array())
 		{
 			if($showLinks)
@@ -43,7 +43,7 @@
 				$link2 = "";
 			}
 			$fade = $row["Status"] != "Paid" ? " style=\"background-color: #FF6666;\"" : "";
-			echo "<tr" . $fade . "><td>" . $row["Name"] . "</td><td>$link1" . $row["BadgeName"] . "$link2</td><td>" . $row["BadgeNumber"] . "</td><td>" . date("m/d/Y", strtotime($row["Purchased"])) . "</td><td>" . $row["PaymentSource"] . "</td><td>" . $row["PaymentReference"] . "</td><td>" . $row["Code"] . "</td><td>" . $row["Status"] . "</td></tr>\r\n";
+			echo "<tr" . $fade . "><td>" . $row["Name"] . "</td><td>$link1" . $row["BadgeName"] . "$link2</td><td>" . $row["BadgeNumber"] . "</td><td>" . date("m/d/Y", strtotime($row["Purchased"])) . "</td><td>" . $row["PaymentSource"] . "</td><td>" . $row["PaymentReference"] . "</td><td>" . $row["Code"] . "</td><td>" . $row["Status"] . "</td><td>" . $row["CovidVerified"] . "</td></tr>\r\n";
 		}
 		$result->close();
 		echo "</table>\r\n";

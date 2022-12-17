@@ -181,6 +181,8 @@
 			<form id="orderBadgeForm" method="post">
 			<div class="badgeList clearfix">
 				<span style="font-size: 1em;">Next, click the item below that you wish to add to your cart, then press "Add to Cart":</span><br />
+                                <span style="font-size: 1em;"><br/><b>ATTENTION: In-person attendees MUST provide proof of COVID-19 vaccination and wear a mask at ALL TIMES. For details, please read our <a href="https://capricon.org/policies/capricon-covid-policy/">COVID-19 policy!</a></b><br/></span><br />
+				 
 				<?php
 				foreach($badges as $badge)
 				{

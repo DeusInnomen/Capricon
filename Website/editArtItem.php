@@ -71,29 +71,29 @@
                 <input type="hidden" name="task" value="EditPrintShopItem" />
                 <label for="printItemTitle" class="fieldLabelShort">Title: </label>
                 <br />
-                <input type="text" name="printItemTitle" id="printItemTitle" placeholder="Required" style="width: 90%;" value="<? echo $art["Title"]; ?>" />
+                <input type="text" name="printItemTitle" id="printItemTitle" placeholder="Required" style="width: 90%;" value="<?php echo $art["Title"]; ?>" />
                 <br />
                 <label for="printItemOriginalMedia" class="fieldLabelShort">Original Media: </label>
                 <br />
-                <input type="text" name="printItemOriginalMedia" id="printItemOriginalMedia" placeholder="Required" style="width: 90%;" value="<? echo $art["OriginalMedia"]; ?>" />
+                <input type="text" name="printItemOriginalMedia" id="printItemOriginalMedia" placeholder="Required" style="width: 90%;" value="<?php echo $art["OriginalMedia"]; ?>" />
                 <br />
                 <label for="printItemQuantity" class="fieldLabelShort">Quantity Sending:</label>
-                <input type="number" min="1" value="<? echo $art["QuantitySent"]; ?>" name="printItemQuantity" id="printItemQuantity" style="width: 20%;" />
+                <input type="number" min="1" value="<?php echo $art["QuantitySent"]; ?>" name="printItemQuantity" id="printItemQuantity" style="width: 20%;" />
                 <br />
                 <label for="printItemSalePrice" class="fieldLabelShort">Sale Price: </label>
                 <br />
                 $
-                <input type="text" name="printItemSalePrice" id="printItemSalePrice" placeholder="Required" style="width: 60%;" value="<? echo $art["QuickSalePrice"]; ?>" />
+                <input type="text" name="printItemSalePrice" id="printItemSalePrice" placeholder="Required" style="width: 60%;" value="<?php echo $art["QuickSalePrice"]; ?>" />
                 <br>
                 <label for="printItemNotes" class="fieldLabelShort">Additional Notes:</label>
                 </br>
-                <textarea id="printItemNotes" name="printItemNotes" placeholder="Optional" maxlength="500" rows="4" style="width: 90%;"><? echo $art["Notes"]; ?></textarea>
+                <textarea id="printItemNotes" name="printItemNotes" placeholder="Optional" maxlength="500" rows="4" style="width: 90%;"><?php echo $art["Notes"]; ?></textarea>
                 <br />
             <?php } else { ?>
                 <input type="hidden" name="task" value="EditArtShowItem" />
                 <label for="showItemTitle" class="fieldLabelShort">Title: </label>
                 <br />
-                <input type="text" name="showItemTitle" id="showItemTitle" placeholder="Required" style="width: 90%;" value="<? echo $art["Title"]; ?>" />
+                <input type="text" name="showItemTitle" id="showItemTitle" placeholder="Required" style="width: 90%;" value="<?php echo $art["Title"]; ?>" />
                 <br />
                 <label for="showItemIsOriginal">
                     <input type="checkbox" name="showItemIsOriginal" id="showItemIsOriginal" <?php echo ($art["IsOriginal"] == 1 ? "checked" : ""); ?> />
@@ -102,21 +102,21 @@
                 <br />
                 <label for="showItemOriginalMedia" class="fieldLabelShort">Original Media: </label>
                 <br />
-                <input type="text" name="showItemOriginalMedia" id="showItemOriginalMedia" placeholder="Required" style="width: 90%;" value="<? echo $art["OriginalMedia"]; ?>" />
+                <input type="text" name="showItemOriginalMedia" id="showItemOriginalMedia" placeholder="Required" style="width: 90%;" value="<?php echo $art["OriginalMedia"]; ?>" />
                 <br />
                 <label for="showItemPrintNumber" class="fieldLabelShort">Print #</label>
-                <input type="text" name="showItemPrintNumber" id="showItemPrintNumber" style="width: 20%;" value="<? echo $art["PrintNumber"]; ?>" />
+                <input type="text" name="showItemPrintNumber" id="showItemPrintNumber" style="width: 20%;" value="<?php echo $art["PrintNumber"]; ?>" />
                 <span style="font-style: italic;">of </span>
-                <input type="text" name="showItemMaxPrintNumber" id="showItemMaxPrintNumber" placeholder="Optional" style="width: 20%;" value="<? echo $art["PrintMaxNumber"]; ?>" />
+                <input type="text" name="showItemMaxPrintNumber" id="showItemMaxPrintNumber" placeholder="Optional" style="width: 20%;" value="<?php echo $art["PrintMaxNumber"]; ?>" />
                 <br />
                 <label for="showItemMinimumBid" class="fieldLabelShort">Minimum Bid: </label>
                 <br />
                 $
-                <input type="text" name="showItemMinimumBid" id="showItemMinimumBid" placeholder="Leave Blank if Not For Sale" style="width: 60%;" value="<? echo $art["MinimumBid"]; ?>" />
+                <input type="text" name="showItemMinimumBid" id="showItemMinimumBid" placeholder="Leave Blank if Not For Sale" style="width: 60%;" value="<?php echo $art["MinimumBid"]; ?>" />
                 <br>
                 <label for="showItemNotes" class="fieldLabelShort">Additional Notes:</label>
                 <br />
-                <textarea id="showItemNotes" name="showItemNotes" placeholder="Optional" maxlength="500" rows="4" style="width: 90%;"><? echo $art["Notes"]; ?></textarea>
+                <textarea id="showItemNotes" name="showItemNotes" placeholder="Optional" maxlength="500" rows="4" style="width: 90%;"><?php echo $art["Notes"]; ?></textarea>
                 <br />
             <?php } ?>
                 <input type="submit" id="saveChanges" onclick="saveArtChanges(); return false;" value="Save Changes" />

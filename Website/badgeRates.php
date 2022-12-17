@@ -7,7 +7,7 @@
 		header('Location: index.php');
 
     $year = isset($_GET['year']) ? $_GET['year'] : (date("n") >= 3 ? date("Y") + 1: date("Y"));
-    $sql  = "SELECT ab.AvailableBadgeID, bt.Description, ab.Price, ab.AvailableFrom, ab.AvailableTo, ab.AvailableOnline FROM AvailableBadges ab JOIN BadgeTypes bt ON ab.BadgeTypeID = bt.BadgeTypeID WHERE ab.Year = $year ORDER BY ab.AvailableFrom, ab.BadgeTypeID ASC";
+    $sql  = "SELECT ab.AvailableBadgeID, bt.Description, ab.Year, ab.Price, ab.AvailableFrom, ab.AvailableTo, ab.AvailableOnline FROM AvailableBadges ab JOIN BadgeTypes bt ON ab.BadgeTypeID = bt.BadgeTypeID WHERE ab.Year >= $year ORDER BY ab.AvailableFrom, ab.BadgeTypeID ASC";
 
 	$badges = array();
 	$result = $db->query($sql);
@@ -123,7 +123,7 @@
 							$style = " style='background-color: #66E0A3;'";
 						}
 						echo "<tr$style>" . (DoesUserBelongHere("RegLead") ? "<td style=\"text-align: center;\"><input type=\"radio\" name=\"badges\" " . 
-							"value=\"" . $badge["AvailableBadgeID"] . "\" class=\"badgeNumber\" /></td>" : "") . "<td>" . $badge["Description"] . 
+							"value=\"" . $badge["AvailableBadgeID"] . "\" class=\"badgeNumber\" /></td>" : "") . "<td>" . $badge["Description"] . " (" . $badge["Year"]. ")". 
 							"</td><td>" . sprintf("$%01.2f", $badge["Price"]) . "</td><td>" . date("F jS, Y", strtotime($badge["AvailableFrom"])) . 
 							"</td><td>" . date("F jS, Y", strtotime($badge["AvailableTo"])) . "</td><td>$status</td></tr>\r\n";
 					}
