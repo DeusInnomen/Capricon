@@ -27,6 +27,21 @@
 			$db->query("UPDATE PurchasedBadges SET BadgeName = '$badgeName' WHERE BadgeID = $id");
 			echo "<span>Badge Name has been updated to \"" . $_POST["value"] . "\".</span>";
 		}
+                if($_POST["action"] == "SetCovidVerified")
+                {
+                        $id = $db->real_escape_string($_POST["id"]);
+                        $covid = $db->real_escape_string($_POST["value"]);
+
+                        $result = $db->query("SELECT CovidVerified FROM PurchasedBadges WHERE BadgeID = $id");
+                        if($result->num_rows == 0)
+                        {
+                                echo "<span class=\"requiredField\">Invalid badge ID.</span>";
+                                return;
+                        }
+                        $result->close();
+                        $db->query("UPDATE PurchasedBadges SET CovidVerified = '$covid' WHERE BadgeID = $id");
+                        echo "<span>COVID-19 Vaccination Verified has been updated to \"" . $_POST["value"] . "\".</span>";
+                }
 		else if($_POST["action"] == "SetDepartment")
 		{
 			$id = $db->real_escape_string($_POST["id"]);

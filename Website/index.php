@@ -47,7 +47,7 @@ $interests = UserInterests();
                                  echo '<li><a href="manageMailingLists.php">Manage Mailing List Subscriptions</a></li>' . "\r\n";
                                  echo '<hr><div class="headertitle">Convention Participation</div>' . "\r\n";
                                  //echo '<li><a href="https://zambia.capricon.org" target="_new">Program Participant Application</a></li>' . "\r\n";
-                                 echo '<li><a href="https://forms.gle/chiusjGEWR4Fr9pU8" target="_new">Program Participant Application</a></li>' . "\r\n";                                 
+                                 echo '<li><a href="https://forms.gle/jmDXVuWxMN3zxQi1A" target="_new">Program Participant Application</a></li>' . "\r\n";                                 
                                  if(DoesUserBelongHere("Program"))
                                  {
                                      echo '<hr><div class="headertitle">Programming Team</div>' . "\r\n";

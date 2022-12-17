@@ -388,9 +388,10 @@
 		$mail->AddAddress($email, $name);
 		$mail->WordWrap = 70;
 		$mail->Subject = "Receipt for your Capricon Purchase";
-		
+	        //$virtualmessage = "Capricon 42 is a hybrid convention! To access Virtual Capricon 42, please visit <https://virtual.capricon.org/>. The secret word is goats-in-space. Whether you are joining us in person or virtually, we encourage you to join our convention Discord to get the full convention experience. If you have not used Discord before, you will have best results if you visit <https://discord.com> and set up an account BEFORE attempting to join the Server. We also recommend downloading the app rather than using the website version. Click this link to join: <https://discord.gg/N9NZsCXKpt> ";	
+	        $virtualmessage="";
 		$message = "Hello! This email acts as your receipt for purchases you've made at the Capricon Registration " .
-			"System website. Your reference number for this order is '$ref'.\r\n\r\nPurchases:\r\n\r\n";
+			"System website. Your reference number for this order is '$ref'.\r\n$virtualmessage\r\n\r\nPurchases:\r\n\r\n";
 		foreach($purchases as $purchase)
 			$message .= $purchase . "\r\n";
 		$message .= "\r\n"; 
@@ -436,6 +437,3 @@
 	</script>
 </body>
 </html>
-
-processCart.php
-Displaying processCart.php.

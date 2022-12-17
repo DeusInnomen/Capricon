@@ -14,7 +14,7 @@ else
     $id = $_GET["id"];
     $return = isset($_GET["return"]) ? $_GET["return"] . ".php" : "index.php";
     
-    $result = $db->query("SELECT pb.PeopleID, pb.OneTimeID, pb.BadgeID, pb.BadgeNumber, CASE WHEN pb.PeopleID IS NULL THEN CONCAT(ot.FirstName, ' ', ot.LastName) ELSE CONCAT(p.FirstName, ' ', p.LastName) END AS Name, pb.BadgeName, pb.Created AS Purchased, CASE WHEN pb.PeopleID IS NULL THEN ot.LastName ELSE p.LastName END AS LastName, CASE WHEN pb.PeopleID IS NULL THEN ot.FirstName ELSE p.FirstName END AS FirstName, pb.Department, pb.PaymentSource, pb.PaymentReference, pc.Code, pb.BadgeTypeID, pb.AmountPaid, pb.Status FROM PurchasedBadges pb LEFT OUTER JOIN People p ON p.PeopleID = pb.PeopleID LEFT OUTER JOIN OneTimeRegistrations ot ON ot.OneTimeID = pb.OneTimeID LEFT OUTER JOIN PromoCodes pc ON pc.CodeID = pb.PromoCodeID WHERE pb.BadgeID = $id UNION SELECT pb.PeopleID, pb.OneTimeID, pb.BadgeID, pb.BadgeNumber, CASE WHEN pb.PeopleID IS NULL THEN CONCAT(ot.FirstName, ' ', ot.LastName) ELSE CONCAT(p.FirstName, ' ', p.LastName) END AS Name, pb.BadgeName, pb.Created AS Purchased, CASE WHEN pb.PeopleID IS NULL THEN ot.LastName ELSE p.LastName END AS LastName, CASE WHEN pb.PeopleID IS NULL THEN ot.FirstName ELSE p.FirstName END AS FirstName, pb.Department, pb.PaymentSource, pb.PaymentReference, pc.Code, pb.BadgeTypeID, pb.AmountPaid, pb.Status FROM PurchasedBadges pb LEFT OUTER JOIN People p ON p.PeopleID = pb.PeopleID LEFT OUTER JOIN OneTimeRegistrations ot ON ot.OneTimeID = pb.OneTimeID LEFT OUTER JOIN PromoCodes pc ON pc.CodeID = pb.PromoCodeID JOIN PurchasedBadges pb2 ON pb2.PaymentReference = pb.PaymentReference WHERE pb2.BadgeID = $id and pb2.PaymentSource IN ('Stripe', 'PayPal', 'Cash', 'Check')");
+    $result = $db->query("SELECT pb.PeopleID, pb.OneTimeID, pb.BadgeID, pb.BadgeNumber,pb.CovidVerified, CASE WHEN pb.PeopleID IS NULL THEN CONCAT(ot.FirstName, ' ', ot.LastName) ELSE CONCAT(p.FirstName, ' ', p.LastName) END AS Name, pb.BadgeName, pb.Created AS Purchased, CASE WHEN pb.PeopleID IS NULL THEN ot.LastName ELSE p.LastName END AS LastName, CASE WHEN pb.PeopleID IS NULL THEN ot.FirstName ELSE p.FirstName END AS FirstName, pb.Department, pb.PaymentSource, pb.PaymentReference, pc.Code, pb.BadgeTypeID, pb.AmountPaid, pb.Status FROM PurchasedBadges pb LEFT OUTER JOIN People p ON p.PeopleID = pb.PeopleID LEFT OUTER JOIN OneTimeRegistrations ot ON ot.OneTimeID = pb.OneTimeID LEFT OUTER JOIN PromoCodes pc ON pc.CodeID = pb.PromoCodeID WHERE pb.BadgeID = $id UNION SELECT pb.PeopleID, pb.OneTimeID, pb.BadgeID, pb.BadgeNumber,pb.CovidVerified, CASE WHEN pb.PeopleID IS NULL THEN CONCAT(ot.FirstName, ' ', ot.LastName) ELSE CONCAT(p.FirstName, ' ', p.LastName) END AS Name, pb.BadgeName, pb.Created AS Purchased, CASE WHEN pb.PeopleID IS NULL THEN ot.LastName ELSE p.LastName END AS LastName, CASE WHEN pb.PeopleID IS NULL THEN ot.FirstName ELSE p.FirstName END AS FirstName, pb.Department, pb.PaymentSource, pb.PaymentReference, pc.Code, pb.BadgeTypeID, pb.AmountPaid, pb.Status FROM PurchasedBadges pb LEFT OUTER JOIN People p ON p.PeopleID = pb.PeopleID LEFT OUTER JOIN OneTimeRegistrations ot ON ot.OneTimeID = pb.OneTimeID LEFT OUTER JOIN PromoCodes pc ON pc.CodeID = pb.PromoCodeID JOIN PurchasedBadges pb2 ON pb2.PaymentReference = pb.PaymentReference WHERE pb2.BadgeID = $id and pb2.PaymentSource IN ('Stripe', 'PayPal', 'Cash', 'Check')");
     
     if($result->num_rows > 0)
     {
@@ -129,7 +129,23 @@ else
 				$("#actionResult").html(result);
 			});
 		}
-		
+	        function covidVerifiedYes() {
+                        $("#badgeActionNotice").html("");
+                        $("#transferResult").html("");
+                        var value = "YES";
+                        $.post("doBadgeAction.php", { action: "SetCovidVerified", id: <?php echo $id; ?>, value: value }, function(result) {
+                                $("#actionResult").html(result);
+                        });
+                }
+               function covidVerifiedNo() {
+                        $("#badgeActionNotice").html("");
+                        $("#transferResult").html("");
+                        var value = "NO";
+                        $.post("doBadgeAction.php", { action: "SetCovidVerified", id: <?php echo $id; ?>, value: value }, function(result) {
+                                $("#actionResult").html(result);
+                        });
+                }
+	
 		function changeDepartment() {
 			$("#badgeActionNotice").html("");
 			$("#transferResult").html("");
@@ -235,11 +251,11 @@ if(isset($badge))
 			<div class="standardTable">
 				<form id="badgeEditForm" method="post">
 				<table>
-				<tr><th>Name</th><th>Badge Name</th><th>Badge #</th><th>Purchased</th><th>Paid With</th><th>Reference #</th><th>Promo Code</th><?php if(DoesUserBelongHere("Treasurer")) echo "<th>AmountPaid</th>"; ?><th>Status</th></tr>
+				<tr><th>Name</th><th>Badge Name</th><th>Badge #</th><th>Purchased</th><th>Paid With</th><th>Reference #</th><th>Promo Code</th><?php if(DoesUserBelongHere("Treasurer")) echo "<th>AmountPaid</th>"; ?><th>Status</th><th>COVID-19 Vaccine Verified</th></tr>
 				<?php
     $link1 = !empty($badge["PeopleID"]) ? "<a href=\"manageAccountAdmin.php?id=" . $badge["PeopleID"] . "\">" : "";
     $link2 = !empty($badge["PeopleID"]) ? "</a>" : "";
-    echo "<tr><td>$link1" . $badge["Name"] . "$link2</td><td>" . $badge["BadgeName"] . "</td><td>" . $badge["BadgeNumber"] . "</td><td>" . date("m/d/Y", strtotime($badge["Purchased"])) . "</td><td>" . $badge["PaymentSource"] . "</td><td>" . $badge["PaymentReference"] . "</td><td>" . $badge["Code"] . "</td>" . (DoesUserBelongHere("Treasurer") ? "<td>" . $badge["AmountPaid"] . "</td>" : "") . "<td>" . $badge["Status"] . "</td></tr>\r\n"; ?>
+    echo "<tr><td>$link1" . $badge["Name"] . "$link2</td><td>" . $badge["BadgeName"] . "</td><td>" . $badge["BadgeNumber"] . "</td><td>" . date("m/d/Y", strtotime($badge["Purchased"])) . "</td><td>" . $badge["PaymentSource"] . "</td><td>" . $badge["PaymentReference"] . "</td><td>" . $badge["Code"] . "</td>" . (DoesUserBelongHere("Treasurer") ? "<td>" . $badge["AmountPaid"] . "</td>" : "") . "<td>" . $badge["Status"] . "</td><td>" . $badge["CovidVerified"] . "</td></tr>\r\n"; ?>
 				</table>
 				<?php
     if(!empty($others))
@@ -260,6 +276,8 @@ if(isset($badge))
 				<input type="text" id="promoCode" name="promoCode" style="width: 125px;" <?php echo $badge["Code"] == "" ? "" : "disabled"; ?>/><br><br>
 				<input type="submit" onclick="renameBadge(); return false;" value="Change Badge Name" <?php echo ($badge["Status"] != "Paid" ? "disabled" : ""); ?>>
 				<input type="text" id="badgeName" name="badgeName" style="width: 125px;" value="<?php echo isset($badge) ? str_replace('"', '&quot;', $badge["BadgeName"]) : ""; ?>"/><br><br>
+				<input type="submit" onClick="covidVerifiedYes(); return false;" value="COVID-19 Vaccine Verified" <?php echo ($badge["CovidVerified"] == "YES" ? "disabled" : ""); ?>>  
+				<input type="submit" onClick="covidVerifiedNo(); return false;" value="COVID-19 Vaccine NOT Verified" <?php echo ($badge["CovidVerified"] == "NO" ? "disabled" : ""); ?>><br>
 				<?php if(!empty($badge["Department"]))
                       {
                           echo "<input type=\"submit\" onclick=\"changeDepartment(); return false;\" value=\"Change Department\"> ";

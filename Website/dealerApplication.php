@@ -108,6 +108,7 @@ else
     <link rel="stylesheet" type="text/css" href="includes/style.css?<?php echo filemtime("includes/style.css"); ?>" />
     <link rel="icon" href="includes/favicon.png" />
     <link rel="shortcut icon" href="includes/favicon.ico" />
+    <!-- <?php echo($config["BadgeFee"]) ?> -->
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <script type="text/javascript" src="includes/global.js"></script>
     <script type="text/javascript">
@@ -245,7 +246,7 @@ else
                     <span style="font-weight: bold;">Application Status: <?php echo $request["Status"]; ?></span><br/>
                     <?php if(!empty($request["StatusReason"])) echo "<span style='font-weight: bold;'>Status Explanation: " . $request["StatusReason"] . "</span><br/>"; ?><br />
                     <?php if($invoiced) { ?>
-                    <span style="font-weight: bold;">Invoice Status: <?php echo $invoice["Status"]; ?></span><? if($invoice["Status"] == "Sent") echo "&nbsp;&nbsp;<a href='invoices.php'>Click Here To Pay Invoice Now</a>"; ?><br/>
+                    <span style="font-weight: bold;">Invoice Status: <?php echo $invoice["Status"]; ?></span><?php if($invoice["Status"] == "Sent") echo "&nbsp;&nbsp;<a href='invoices.php'>Click Here To Pay Invoice Now</a>"; ?><br/>
                     <span style="font-weight: bold;">Invoice Amount: <?php echo sprintf("$%01.2f", $invoiceTotal); ?></span><br/>
                     <span style="font-weight: bold;">Invoice Sent: <?php echo !empty($invoice["Sent"]) ? date("F d, Y", strtotime($invoice["Sent"])) : "Not Yet"; ?></span><br/>
                     <span style="font-weight: bold;">Invoice Paid: <?php echo !empty($invoice["Fulfilled"]) ? date("F d, Y", strtotime($invoice["Fulfilled"])) : "Not Yet"; ?></span><br/>
@@ -279,12 +280,12 @@ else
                     <p>You already have a badge for this convention year and do not need to buy a badge for yourself. 
                     </p>
                     <?php } else { ?>
-                    <p>The fee for buying Badges to be included with your table is <span style="font-weight: bold;"><? echo sprintf("$%01.2f", $config["BadgeFee"]); ?></span>. A badge for you is 
+                    <p>The fee for buying Badges to be included with your table is <span style="font-weight: bold;"><?php echo sprintf("$%01.2f", $config["BadgeFee"]); ?></span>. A badge for you is 
                         automatically added as we require you to have a badge in order to have a dealer table, and we will create the badge for you using your account information.
                     </p>
                     <?php } ?>
                     <p>If you need to purchase additional badges other than your badge, use the following form. You may add up to five badges, for a fee of <span style="font-weight: bold;">
-                        <? echo sprintf("$%01.2f", $config["BadgeFee"]); ?></span> each. (There is no fee for a kid-in-tow badge if you are bringing someone who is under the age of 13.)
+                        <?php echo sprintf("$%01.2f", $config["BadgeFee"]); ?></span> each. (There is no fee for a kid-in-tow badge if you are bringing someone who is under the age of 13.)
                     </p>
                     Extra Badge #1<br /><label>First Name: <input type="text" name="addlFName1" id="addlFName1" style="width: 100px;" onkeyup="toggleRegFormData();" value="<?php echo $badges[0]["FirstName"]; ?>"></label> 
 					<label>Last Name: <input type="text" name="addlLName1" id="addlLName1" style="width: 100px;" value="<?php echo $badges[0]["LastName"]; ?>"></label> 

@@ -234,7 +234,7 @@
 				<div class="noticeSection" id="codeActionNotice"><?php echo $message; ?></div>
 <?php } else { ?>
 				<p style="font-size: 0.9em;">There are no promotional codes that are active or recently expired at this time.</p>
-<? } ?>
+<?php } ?>
 				<p style="font-size: 0.9em;">Promotional Codes that have been expired for longer than 3 months will no longer be viewable.</p>
 			</div>
 			<div id="createCode">

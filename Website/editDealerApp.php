@@ -222,13 +222,13 @@ else
                     </p>
                     <?php } else { ?>
                     <p>
-                        This dealer requires a badge, which costs <span style="font-weight: bold;"><? echo sprintf("$%01.2f", $config["BadgeFee"]); ?></span>.
+                        This dealer requires a badge, which costs <span style="font-weight: bold;"><?php echo sprintf("$%01.2f", $config["BadgeFee"]); ?></span>.
                     </p>
                     <?php } ?>
                     <p>
                         This application may add up to five badges, for a fee of
                         <span style="font-weight: bold;">
-                            <? echo sprintf("$%01.2f", $config["BadgeFee"]); ?>
+                            <?php echo sprintf("$%01.2f", $config["BadgeFee"]); ?>
                         </span> each. (There is no fee for a kid-in-tow badge for someone who is under the age of 13.)
                     </p>
                     Extra Badge #1
