@@ -8,13 +8,6 @@ elseif(!DoesUserBelongHere("DealerStaff"))
 
 $year = isset($_GET["year"]) ? $_GET["year"] : (date("n") >= 3 ? date("Y") + 1: date("Y"));
 $conYear = $year - 1980;
-header('Content-Type: text/csv; charset=utf-8');
-header('Content-Disposition: attachment; filename=Capricon' . $conYear . 'ApprovedDealers' . date("Ymd") . '.csv');
-
-$output = fopen('php://output', 'w');
-fputcsv($output, array('# Tables', '# Badges', 'Electrical', 'Table #', 'Status', 'Email', 'Representative Name', 'Company Name',
-    'Legal Name', 'Description', 'IL DoR', 'Address1', 'Address2', 'Address3', 'City State', 'Zip', 'Country', 'Phone', 'Phone Type',
-    'Dealer\'s Comments', 'Website', 'Capricon Comments', 'Status Reason', 'Invoice Status', 'Invoice Amount'));
 
 $query = <<<EOD
 SELECT 
@@ -48,7 +41,7 @@ SELECT
         IFNULL(d.URL, ''), 
         '' AS CapDetails, 
         dp.StatusReason, 
-        IFNULL(i.Status, 'Not Created') AS InvoiceStatus,
+        IFNULL(I.Status, 'Not Created') AS InvoiceStatus,
         IL.Amount AS InvoiceAmount  
     FROM 
                         DealerPresence dp 
@@ -89,8 +82,21 @@ EOD;
 
 $result = $db->query($query);
 
+if (!$result) {
+    exit();
+}
+
+header('Content-Type: text/csv; charset=utf-8');
+header('Content-Disposition: attachment; filename=Capricon' . $conYear . 'ApprovedDealers' . date("Ymd") . '.csv');
+
+$output = fopen('php://output', 'w');
+fputcsv($output, array('# Tables', '# Badges', 'Electrical', 'Table #', 'Status', 'Email', 'Representative Name', 'Company Name',
+    'Legal Name', 'Description', 'IL DoR', 'Address1', 'Address2', 'Address3', 'City State', 'Zip', 'Country', 'Phone', 'Phone Type',
+    'Dealer\'s Comments', 'Website', 'Capricon Comments', 'Status Reason', 'Invoice Status', 'Invoice Amount'));
 
 while($row = $result->fetch_array(MYSQLI_ASSOC))
     fputcsv($output, $row);
+
+fclose($output);
 ?>
 
